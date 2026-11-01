@@ -8,7 +8,7 @@
       "output": "assets/characters/lord.png",
       "batch": "01-style-anchor",
       "status": "ready",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -39,6 +39,12 @@
           "status": "ready",
           "by": "claude",
           "note": "r2: simpler, smoother, softer muted colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "r3: full armor, closed horned helmet, glowing eyes"
         }
       ]
     },
