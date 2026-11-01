@@ -6,6 +6,7 @@ import {
   LORD_X,
   DEPTH,
   LORD_Y,
+  LORD_CHEST,
   PRESTIGE_UPGRADES,
   RUN_UPGRADES,
   SCALE,
@@ -237,7 +238,7 @@ export class Game {
     kinds.forEach((kind, i) => {
       const def = HEROES[kind];
       const hpMult = Math.pow(SCALE.hp, wave - 1);
-      const angle = (this.rng() - 0.5) * 0.9;
+      const angle = 0.35 + (this.rng() - 0.5) * 0.9;
       this.heroes.push({
         id: this.nextId++,
         kind,
@@ -300,9 +301,9 @@ export class Game {
     this.run.hitsTaken++;
     const p = heroPos(h);
     if (def.ranged) {
-      this.effects.push({ type: 'arrow', x1: p.x, y1: p.y, x2: LORD_X, y2: LORD_Y, color: h.kind === 'battlemage' ? '#8fe3ff' : '#d9d2c0', t: 0, ttl: 0.25 });
+      this.effects.push({ type: 'arrow', x1: p.x, y1: p.y, x2: LORD_X, y2: LORD_Y - LORD_CHEST, color: h.kind === 'battlemage' ? '#8fe3ff' : '#d9d2c0', t: 0, ttl: 0.25 });
     }
-    this.effects.push({ type: 'text', x: LORD_X + (this.rng() - 0.5) * 30, y: LORD_Y - 40, text: '-' + fmt(taken), color: '#ff7a6b', t: 0, ttl: 0.8 });
+    this.effects.push({ type: 'text', x: LORD_X + (this.rng() - 0.5) * 30, y: LORD_Y - LORD_CHEST - 20, text: '-' + fmt(taken), color: '#ff7a6b', t: 0, ttl: 0.8 });
 
     if (this.stats.thorns > 0) {
       const reflected = h.damage * this.stats.thorns;
@@ -360,7 +361,7 @@ export class Game {
     if (this.stats.bloodPact > 0) this.run.lordHp = Math.min(this.stats.maxHp, this.run.lordHp + this.stats.maxHp * this.stats.bloodPact);
     if (h.kind === 'champion') {
       this.run.lordHp = this.stats.maxHp;
-      this.effects.push({ type: 'text', x: LORD_X + 20, y: LORD_Y - 70, text: 'Champion slain!', color: '#ffd166', t: 0, ttl: 1.8 });
+      this.effects.push({ type: 'text', x: LORD_X + 20, y: LORD_Y - LORD_CHEST - 50, text: 'Champion slain!', color: '#ffd166', t: 0, ttl: 1.8 });
     }
     if (this.stats.corpseBurst) {
       this.effects.push({ type: 'ring', x: p.x, y: p.y, r: 60, color: '#ff9b4a', t: 0, ttl: 0.45 });

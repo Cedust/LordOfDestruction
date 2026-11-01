@@ -1,9 +1,15 @@
-import { DEPTH, HEROES, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W, type HeroKind } from './game/config';
+import { DEPTH, FIELD_ANGLE_MAX, FIELD_ANGLE_MIN, FLOOR_Y, HEROES, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W, type HeroKind } from './game/config';
 import { heroPos, type Game, type Hero } from './game/game';
 import { assetUrl } from './assets';
 
 // Images are optional: a PNG at one of these paths below assets/ replaces the
 // placeholder shape automatically.
+// Background framing (world units). BG_SCALE zooms throne-room.png, BG_SHIFT_X moves
+// it sideways; LORD_FEET_DY is where the Lord's feet sit relative to LORD_Y.
+const BG_SCALE = 0.32;
+const BG_SHIFT_X = 0;
+const LORD_FEET_DY = -6;
+
 const IMAGE_PATHS = {
   lord: 'characters/lord',
   'throne-room': 'environments/throne-room',
@@ -60,11 +66,12 @@ export class Renderer {
     const ctx = this.ctx;
     const bg = images['throne-room'];
     if (bg) {
-      // Cover the world area, anchored to the bottom where the floor is.
-      const s = Math.max(WORLD_W / bg.width, WORLD_H / bg.height);
+      // Anchored to the top and zoomed slightly so the raised platform on the left
+      // of throne-room.png sits right under the Lord's feet.
+      const s = Math.max(WORLD_W / bg.width, WORLD_H / bg.height, BG_SCALE);
       const w = bg.width * s;
       const h = bg.height * s;
-      ctx.drawImage(bg, (WORLD_W - w) / 2, WORLD_H - h, w, h);
+      ctx.drawImage(bg, (WORLD_W - w) / 2 + BG_SHIFT_X, 0, w, h);
       return;
     }
     const wall = ctx.createLinearGradient(0, 0, 0, WORLD_H);
@@ -89,22 +96,77 @@ export class Renderer {
   }
 
   /** Faint range borders on the floor with their names, so players can read who stands where. */
+  /** Clip to the floor so markings never climb the back wall. */
+  private clipFloor(): void {
+    this.ctx.beginPath();
+    this.ctx.rect(0, FLOOR_Y, WORLD_W, WORLD_H - FLOOR_Y);
+    this.ctx.clip();
+  }
+
+  /** Annular sector of the battlefield fan between two radii, squashed onto the floor. */
+  private fanPath(r0: number, r1: number): void {
+    const ctx = this.ctx;
+    ctx.beginPath();
+    ctx.ellipse(LORD_X, LORD_Y, r1, r1 * DEPTH, 0, FIELD_ANGLE_MIN, FIELD_ANGLE_MAX);
+    if (r0 > 0) ctx.ellipse(LORD_X, LORD_Y, r0, r0 * DEPTH, 0, FIELD_ANGLE_MAX, FIELD_ANGLE_MIN, true);
+    else ctx.lineTo(LORD_X, LORD_Y);
+    ctx.closePath();
+  }
+
+  /**
+   * Ranges are painted onto the floor: alternating soft bands for Near, Mid and Far,
+   * a faint rune circle on every fixed spot, and the range names along the bottom.
+   */
   private drawRanges(game: Game): void {
     const ctx = this.ctx;
     ctx.save();
-    ctx.lineWidth = 1;
+    this.clipFloor();
     let inner = 0;
     RANGES.forEach((range, i) => {
       const covered = i <= game.stats.auraReach;
-      ctx.strokeStyle = covered ? 'rgba(190,140,255,0.22)' : 'rgba(255,255,255,0.10)';
+      this.fanPath(inner, range.edge);
+      ctx.fillStyle = i % 2 === 0 ? 'rgba(10,6,18,0.20)' : 'rgba(10,6,18,0.06)';
+      ctx.fill();
+      // Outer border of the band.
+      ctx.strokeStyle = covered ? 'rgba(200,150,255,0.45)' : 'rgba(235,220,255,0.18)';
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash(covered ? [] : [3, 5]);
       ctx.beginPath();
-      ctx.ellipse(LORD_X, LORD_Y, range.edge, range.edge * DEPTH, 0, -Math.PI / 2, Math.PI / 2);
+      ctx.ellipse(LORD_X, LORD_Y, range.edge, range.edge * DEPTH, 0, FIELD_ANGLE_MIN, FIELD_ANGLE_MAX);
       ctx.stroke();
-      ctx.fillStyle = covered ? 'rgba(210,175,255,0.75)' : 'rgba(255,255,255,0.35)';
-      ctx.font = '600 9px system-ui, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(range.name.toUpperCase(), LORD_X + (inner + range.edge) / 2 + 8, WORLD_H - 10);
+      ctx.setLineDash([]);
+      // Fixed spots.
+      for (const a of range.slots) {
+        const x = LORD_X + Math.cos(a) * range.dist;
+        const y = LORD_Y + Math.sin(a) * range.dist * DEPTH;
+        ctx.strokeStyle = covered ? 'rgba(200,150,255,0.35)' : 'rgba(235,220,255,0.14)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.ellipse(x, y + 10, 11, 4, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      inner = range.edge;
+    });
+    ctx.restore();
+
+    // Range names in small pills along the lower edge of the fan, in the middle of each band.
+    ctx.save();
+    ctx.font = '700 8px system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    inner = 0;
+    RANGES.forEach((range, i) => {
+      const covered = i <= game.stats.auraReach;
+      const mid = (inner + range.edge) / 2;
+      const x = LORD_X + Math.cos(FIELD_ANGLE_MAX) * mid + 14;
+      const y = Math.min(WORLD_H - 9, LORD_Y + Math.sin(FIELD_ANGLE_MAX) * mid * DEPTH);
+      const w = ctx.measureText(range.name.toUpperCase()).width + 10;
+      ctx.fillStyle = 'rgba(16,10,26,0.65)';
+      ctx.beginPath();
+      ctx.roundRect(x - w / 2, y - 6, w, 12, 6);
+      ctx.fill();
+      ctx.fillStyle = covered ? 'rgba(215,180,255,0.95)' : 'rgba(235,225,245,0.55)';
+      ctx.fillText(range.name.toUpperCase(), x, y + 0.5);
       inner = range.edge;
     });
     ctx.restore();
@@ -115,20 +177,21 @@ export class Renderer {
     const r = RANGES[game.stats.auraReach].edge;
     const pulse = 1 + Math.sin(game.time * 3) * 0.03;
     const wrath = game.stats.wrath && game.run.lordHp < game.stats.maxHp * 0.5;
-    const g = ctx.createRadialGradient(LORD_X, LORD_Y, r * 0.2, LORD_X, LORD_Y, r * pulse);
-    g.addColorStop(0, wrath ? 'rgba(255,90,60,0.28)' : 'rgba(150,80,255,0.22)');
-    g.addColorStop(0.85, wrath ? 'rgba(255,90,60,0.12)' : 'rgba(150,80,255,0.10)');
-    g.addColorStop(1, 'rgba(150,80,255,0)');
+    const tint = wrath ? '255,90,60' : '150,80,255';
+    ctx.save();
+    this.clipFloor();
+    // The gradient is drawn in a squashed space so it stays round on the floor.
+    ctx.translate(LORD_X, LORD_Y);
+    ctx.scale(1, DEPTH);
+    const g = ctx.createRadialGradient(0, 0, r * 0.15, 0, 0, r * pulse);
+    g.addColorStop(0, `rgba(${tint},0.30)`);
+    g.addColorStop(0.8, `rgba(${tint},0.14)`);
+    g.addColorStop(1, `rgba(${tint},0)`);
     ctx.fillStyle = g;
     ctx.beginPath();
-    ctx.ellipse(LORD_X, LORD_Y, r * pulse, r * pulse * DEPTH, 0, 0, Math.PI * 2);
+    ctx.arc(0, 0, r * pulse, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = wrath ? 'rgba(255,120,80,0.45)' : 'rgba(180,120,255,0.35)';
-    ctx.setLineDash([4, 6]);
-    ctx.beginPath();
-    ctx.ellipse(LORD_X, LORD_Y, r, r * DEPTH, 0, 0, Math.PI * 2);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    ctx.restore();
   }
 
   private drawLord(game: Game): void {
@@ -141,11 +204,12 @@ export class Renderer {
     if (img) {
       const h = 150;
       const w = (img.width / img.height) * h;
-      ctx.drawImage(img, LORD_X - w / 2, LORD_Y - h * 0.62, w, h);
+      const top = LORD_Y + LORD_FEET_DY - h;
+      ctx.drawImage(img, LORD_X - w / 2, top, w, h);
       if (hurt) {
         ctx.globalCompositeOperation = 'source-atop';
         ctx.fillStyle = 'rgba(255,60,60,0.35)';
-        ctx.fillRect(LORD_X - w / 2, LORD_Y - h * 0.62, w, h);
+        ctx.fillRect(LORD_X - w / 2, top, w, h);
       }
       ctx.restore();
       return;
