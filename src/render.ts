@@ -8,7 +8,9 @@ import { assetUrl } from './assets';
 // it sideways; LORD_FEET_DY is where the Lord's feet sit relative to LORD_Y.
 const BG_SCALE = 0.32;
 const BG_SHIFT_X = 0;
-const LORD_FEET_DY = -6;
+const LORD_FEET_DY = 0;
+/** Outline of the raised dais in throne-room.png pixels (top surface plus steps). */
+const DAIS_PX: [number, number][] = [[0, 495], [598, 495], [600, 540], [487, 752], [0, 752]];
 
 const IMAGE_PATHS = {
   lord: 'characters/lord',
@@ -97,10 +99,19 @@ export class Renderer {
 
   /** Faint range borders on the floor with their names, so players can read who stands where. */
   /** Clip to the floor so markings never climb the back wall. */
-  private clipFloor(): void {
-    this.ctx.beginPath();
-    this.ctx.rect(0, FLOOR_Y, WORLD_W, WORLD_H - FLOOR_Y);
-    this.ctx.clip();
+  private clipFloor(excludeDais = false): void {
+    const ctx = this.ctx;
+    ctx.beginPath();
+    ctx.rect(0, FLOOR_Y, WORLD_W, WORLD_H - FLOOR_Y);
+    const bg = images['throne-room'];
+    if (excludeDais && bg) {
+      // Range markings stay on the open floor; the dais is the Lord's ground.
+      const s = Math.max(WORLD_W / bg.width, WORLD_H / bg.height, BG_SCALE);
+      const x0 = (WORLD_W - bg.width * s) / 2 + BG_SHIFT_X;
+      DAIS_PX.forEach(([px, py], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, x0 + px * s, py * s));
+      ctx.closePath();
+    }
+    ctx.clip('evenodd');
   }
 
   /** Annular sector of the battlefield fan between two radii, squashed onto the floor. */
@@ -119,11 +130,12 @@ export class Renderer {
    */
   private drawRanges(game: Game): void {
     const ctx = this.ctx;
-    ctx.save();
-    this.clipFloor();
     let inner = 0;
     RANGES.forEach((range, i) => {
       const covered = i <= game.stats.auraReach;
+      // Near includes the dais the Lord stands on; Mid and Far stay on the open floor.
+      ctx.save();
+      this.clipFloor(i > 0);
       this.fanPath(inner, range.edge);
       ctx.fillStyle = i % 2 === 0 ? 'rgba(10,6,18,0.20)' : 'rgba(10,6,18,0.06)';
       ctx.fill();
@@ -145,9 +157,9 @@ export class Renderer {
         ctx.ellipse(x, y + 10, 11, 4, 0, 0, Math.PI * 2);
         ctx.stroke();
       }
+      ctx.restore();
       inner = range.edge;
     });
-    ctx.restore();
 
     // Range names in small pills along the lower edge of the fan, in the middle of each band.
     ctx.save();

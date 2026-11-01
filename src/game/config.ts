@@ -68,8 +68,8 @@ export const SCALE = {
 
 export const WORLD_W = 420;
 export const WORLD_H = 300;
-export const LORD_X = 72;
-export const LORD_Y = 180;
+export const LORD_X = 64;
+export const LORD_Y = 190;
 /** Vertical squash of the floor plane, so the battlefield reads as seen from the side. */
 export const DEPTH = 0.5;
 /** Where the floor of the throne room begins; floor markings are not drawn above it. */
