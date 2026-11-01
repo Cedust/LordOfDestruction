@@ -15,6 +15,7 @@ Claude schreibt die Prompts, ChatGPT erzeugt daraus die Bilder, Timo gibt sie fr
 ```
 prompts/<kategorie>/<asset_id>.md   eine Datei pro Asset (YAML-Frontmatter + Prompt)
 assets/<kategorie>/<datei>.png      fertige Bilder, Pfad steht im Feld output
+assets/references/                  Stilvorlagen für reference_images (werden nicht ins Spiel gepackt)
 generation-log/manifest.json        Status-Verlauf und Generierungsprotokoll aller Assets
 scripts/validate_asset.py           technische Prüfung eines Bildes gegen seine Prompt-Datei
 ```
@@ -180,6 +181,7 @@ Jedes Asset hat zwei Listen. Bestehende Einträge werden nie verändert oder gel
 | `05-dread-icons` | Icons der Dread-Upgrades | nach Freigabe von Batch 01 |
 
 - Batch `01-style-anchor` muss vollständig generiert und von Timo `approved` sein, bevor ein anderer Batch startet. Claude setzt die abhängigen Prompts erst danach auf `ready`.
+- Für den Lord selbst dient `assets/references/lord_style_reference.png` als Vorlage (von Timo ausgewählt).
 - Der freigegebene Lord unter `assets/characters/lord.png` ist die verbindliche Stilreferenz für alle folgenden Assets.
 - Diese Referenz darf nicht eigenständig durch ein anderes Bild ersetzt werden, auch nicht durch einen besseren Kandidaten.
 - Innerhalb eines Batches werden die Assets nacheinander erzeugt. Jedes Asset bekommt seinen eigenen Lauf und Manifest-Eintrag.

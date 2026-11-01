@@ -8,7 +8,7 @@
       "output": "assets/characters/lord.png",
       "batch": "01-style-anchor",
       "status": "ready",
-      "revision": 3,
+      "revision": 4,
       "history": [
         {
           "date": "2026-11-01",
@@ -45,6 +45,12 @@
           "status": "ready",
           "by": "claude",
           "note": "r3: full armor, closed horned helmet, glowing eyes"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "r4: standing, no throne, crimson cape, style reference chosen by Timo (candidate 4 of r3)"
         }
       ],
       "generations": []
