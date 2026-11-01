@@ -4,7 +4,7 @@ name: Squire
 category: enemies
 type: character_sprite
 batch: 02-heroes
-status: ready
+status: review
 revision: 3
 output: assets/enemies/squire.png
 format: png

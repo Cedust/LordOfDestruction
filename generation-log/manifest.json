@@ -224,7 +224,7 @@
       "prompt": "prompts/enemies/enemy_squire.md",
       "output": "assets/enemies/squire.png",
       "batch": "02-heroes",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -250,9 +250,74 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/enemies/squire.png after checks"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:31:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@1e07aad",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "512x512",
+              "final_size": "512x512",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.632,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Faces left",
+                  "passed": true,
+                  "note": "body, face and sword point left"
+                },
+                {
+                  "check": "Full body, feet near the bottom edge",
+                  "passed": true,
+                  "note": "full figure, boots near bottom edge"
+                },
+                {
+                  "check": "Real transparency",
+                  "passed": true,
+                  "note": "verified by script"
+                },
+                {
+                  "check": "Same style as lord.png",
+                  "passed": true,
+                  "note": "same thick outlines and flat shading; face and proportions slightly cuter than the lord, accepted as readable"
+                },
+                {
+                  "check": "Main colors: steel blue tunic, brown leather, silver metal",
+                  "passed": true,
+                  "note": "all present; extra ochre scarf not in prompt, harmless"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "enemy_archer",
