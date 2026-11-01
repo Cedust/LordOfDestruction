@@ -7,7 +7,7 @@
       "prompt": "prompts/characters/char_lord.md",
       "output": "assets/characters/lord.png",
       "batch": "01-style-anchor",
-      "status": "generating",
+      "status": "ready",
       "revision": 1,
       "history": [
         {
@@ -21,6 +21,13 @@
           "status": "generating",
           "by": "chatgpt",
           "note": "generation started"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "chatgpt",
+          "result": "failed",
+          "note": "Image generated and validated locally, but GitHub connector cannot upload binary PNG content. Asset not committed."
         }
       ]
     },
