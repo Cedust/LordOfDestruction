@@ -324,7 +324,7 @@
       "prompt": "prompts/enemies/enemy_archer.md",
       "output": "assets/enemies/archer.png",
       "batch": "02-heroes",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -350,16 +350,81 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/enemies/archer.png after checks"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:40:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@df4b1ac",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "512x512",
+              "final_size": "512x512",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.644,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Faces left",
+                  "passed": true,
+                  "note": "bow and arrow aimed left"
+                },
+                {
+                  "check": "Full body, feet near the bottom edge",
+                  "passed": true,
+                  "note": "full figure, boots near bottom edge"
+                },
+                {
+                  "check": "Real transparency",
+                  "passed": true,
+                  "note": "verified by script"
+                },
+                {
+                  "check": "Same style as lord.png",
+                  "passed": true,
+                  "note": "same outline weight and flat shading"
+                },
+                {
+                  "check": "Main colors: forest green hood and cloak, light brown leather",
+                  "passed": true,
+                  "note": "green hood and cloak, brown leather"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "enemy_cutpurse",
       "prompt": "prompts/enemies/enemy_cutpurse.md",
       "output": "assets/enemies/cutpurse.png",
       "batch": "02-heroes",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -385,16 +450,81 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/enemies/cutpurse.png after checks"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:40:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@df4b1ac",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "512x512",
+              "final_size": "512x512",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.669,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Faces left",
+                  "passed": true,
+                  "note": "body and lead dagger point left"
+                },
+                {
+                  "check": "Full body, feet near the bottom edge",
+                  "passed": true,
+                  "note": "full crouched figure"
+                },
+                {
+                  "check": "Real transparency",
+                  "passed": true,
+                  "note": "verified by script after clearing alpha noise (1-8)"
+                },
+                {
+                  "check": "Same style as lord.png",
+                  "passed": true,
+                  "note": "same outline weight and flat shading"
+                },
+                {
+                  "check": "Main colors: mustard ochre scarf and vest, dark brown leather",
+                  "passed": true,
+                  "note": "ochre scarf and vest, brown leather"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "enemy_battlemage",
       "prompt": "prompts/enemies/enemy_battlemage.md",
       "output": "assets/enemies/battlemage.png",
       "batch": "02-heroes",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -420,16 +550,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/enemies/battlemage.png after checks"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:40:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@df4b1ac",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "512x512",
+              "final_size": "512x512",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.527,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Faces left",
+                  "passed": true,
+                  "note": "generated facing right; mirrored horizontally by Claude on Timo's instruction"
+                },
+                {
+                  "check": "Full body, feet near the bottom edge",
+                  "passed": true,
+                  "note": "full figure"
+                },
+                {
+                  "check": "Real transparency",
+                  "passed": true,
+                  "note": "verified by script"
+                },
+                {
+                  "check": "Same style as lord.png",
+                  "passed": true,
+                  "note": "same outline weight and flat shading"
+                },
+                {
+                  "check": "Main colors: icy cyan and blue robes, white frost glow",
+                  "passed": true,
+                  "note": "blue robes, icy cyan frost orb"
+                }
+              ]
+            }
+          },
+          "post_processing": "mirrored horizontally (Timo)"
+        }
+      ]
     },
     {
       "asset_id": "enemy_champion",
       "prompt": "prompts/enemies/enemy_champion.md",
       "output": "assets/enemies/champion.png",
       "batch": "02-heroes",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -455,9 +651,74 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/enemies/champion.png after checks"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:40:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@df4b1ac",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "768x768",
+              "final_size": "768x768",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.531,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Faces left",
+                  "passed": true,
+                  "note": "stance and sword oriented left"
+                },
+                {
+                  "check": "Full body, feet near the bottom edge",
+                  "passed": true,
+                  "note": "full figure"
+                },
+                {
+                  "check": "Real transparency",
+                  "passed": true,
+                  "note": "verified by script"
+                },
+                {
+                  "check": "Same style as lord.png",
+                  "passed": true,
+                  "note": "same outline weight and flat shading"
+                },
+                {
+                  "check": "Main colors: gold and white armor, red accents",
+                  "passed": true,
+                  "note": "white and gold armor, red plume, cape and shield cross"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "env_throne_room",

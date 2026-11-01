@@ -4,7 +4,7 @@ name: Archer
 category: enemies
 type: character_sprite
 batch: 02-heroes
-status: ready
+status: review
 revision: 3
 output: assets/enemies/archer.png
 format: png

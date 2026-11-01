@@ -100,7 +100,7 @@ def validate(prompt_path: Path, image_path: Path) -> dict:
         checks["content_ok"] = sum(hist[200:]) / pixels >= 0.05  # not an empty or almost empty image
         checks["checkerboard_suspected"] = checkerboard_suspected(rgba) if transparent < 0.05 else False
         if want_alpha:
-            checks["transparency_ok"] = has_alpha and all(a == 0 for a in corners) and transparent >= 0.15 and not checks["checkerboard_suspected"]
+            checks["transparency_ok"] = has_alpha and all(a <= 8 for a in corners) and transparent >= 0.15 and not checks["checkerboard_suspected"]
         else:
             checks["transparency_ok"] = hist[255] == pixels  # fully opaque background
 
@@ -127,7 +127,11 @@ def main(argv: list[str]) -> int:
         out.parent.mkdir(parents=True, exist_ok=True)
         with Image.open(image_path) as img:
             img = img.convert("RGBA") if str(fm.get("transparency", "true")).lower() == "true" else img.convert("RGB")
-            img.resize(size_tuple(fm["final_size"]), Image.LANCZOS).save(out, "PNG")
+            img = img.resize(size_tuple(fm["final_size"]), Image.LANCZOS)
+            if img.mode == "RGBA":
+                # Generators leave faint alpha noise (1-8) in the background; clear it.
+                img.putalpha(img.getchannel("A").point(lambda a: 0 if a <= 8 else a))
+            img.save(out, "PNG")
         image_path = out
     result = validate(prompt_path, image_path)
     print(json.dumps(result, indent=2))

@@ -86,7 +86,7 @@ Das Skript skaliert den Kandidaten auf `final_size`, speichert ihn unter dem `ou
 | `format_ok` | Datei ist ein PNG |
 | `final_size_ok` | Abmessungen entsprechen `final_size` |
 | `alpha_channel` | PNG hat einen Alpha-Kanal (bei `transparency: true`) |
-| `transparency_ok` | echte Transparenz: Ecken voll transparent, mindestens 15 % transparente Fläche; bei `transparency: false` vollständig deckend |
+| `transparency_ok` | echte Transparenz: Ecken nahezu voll transparent (Alpha ≤ 8, Rauschen wird beim Skalieren entfernt), mindestens 15 % transparente Fläche; bei `transparency: false` vollständig deckend |
 | `checkerboard_suspected` | erkennt ein gemaltes Schachbrettmuster statt echter Transparenz |
 | `content_ok` | das Bild ist nicht leer |
 | `output_path_valid`, `output_path_matches` | Pfad liegt unter `assets/<category>/`, passt zur Kategorie und entspricht exakt `output` |
