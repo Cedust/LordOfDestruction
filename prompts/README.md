@@ -1,14 +1,24 @@
 # Image Generation Workflow
 
-Claude schreibt die Prompts, ChatGPT erzeugt daraus die Bilder, Timo gibt sie frei. Diese Datei ist die verbindliche Arbeitsanweisung für alle drei.
+Claude schreibt die Prompts und prüft die Ergebnisse, Timo erzeugt die Bilder mit dem Bildgenerator (ChatGPT) und gibt sie frei. Diese Datei ist die verbindliche Arbeitsanweisung.
 
 ## Rollen
 
 | Rolle | Aufgaben | Darf diese Status setzen |
 |---|---|---|
-| Claude (Prompt Engineer) | Prompts schreiben und pflegen, Stil konsistent halten, Prompts im Repo ablegen | `draft`, `ready` |
-| ChatGPT (Image Generation Operator) | Prompts mit Status `ready` unverändert verwenden, Bilder erzeugen, technisch und visuell prüfen, ablegen, Ergebnisse protokollieren, Probleme melden | `generating`, `review`, zurück auf `ready` |
-| Timo (Freigabe) | Bilder im Status `review` abnehmen oder ablehnen | `approved`, `rejected` |
+| Claude | Prompts schreiben und pflegen, Timo den fertigen Übergabetext geben, Ergebnisse technisch und visuell prüfen, Bilder ablegen, Manifest pflegen | `draft`, `ready`, `review` |
+| Timo | Übergabetext unverändert in den Bildgenerator geben, Referenzbilder anhängen, Ergebnis an Claude schicken, abnehmen oder ablehnen | `approved`, `rejected` |
+| Bildgenerator (ChatGPT) | erzeugt aus dem Übergabetext ein Bild. Braucht keinen Repo-Zugriff | – |
+
+## Ablauf
+
+1. Claude setzt ein Asset auf `ready` und gibt Timo den **Übergabetext**: den Abschnitt `## Prompt` der Prompt-Datei, exakt und vollständig, plus die Liste der Bilder aus `reference_images`, die angehängt werden müssen.
+2. Timo öffnet einen neuen Chat im Bildgenerator, hängt die Referenzbilder an und schickt den Übergabetext unverändert ab. Keine Ergänzungen, keine früheren Bilder aus anderen Chats.
+3. Timo schickt Claude das erzeugte Bild. Mehrere Kandidaten sind erlaubt; Claude prüft jeden.
+4. Claude prüft technisch (Skript) und visuell (jeder Acceptance check einzeln), legt das bestandene Bild unter `output` ab, trägt den Lauf im Manifest ein und setzt `review`. Fällt ein Check durch, bekommt Timo den Grund und erzeugt neu.
+5. Timo nimmt ab (`approved`) oder lehnt ab (`rejected`). Bei `rejected` überarbeitet Claude den Prompt, erhöht `revision` und setzt wieder `ready`.
+
+Der Bildgenerator schreibt Prompts intern um, bevor er zeichnet. Das lässt sich nicht verhindern und ist kein Fehler. Unverändert bedeutet: Der Übergabetext wird genau so abgeschickt, wie Claude ihn liefert. Die Qualität sichern die Prüfungen und Timos Abnahme.
 
 ## Struktur
 
@@ -52,42 +62,16 @@ Darunter folgen drei Abschnitte:
 - `## Acceptance checks`: die visuellen Prüfungen für jedes erzeugte Bild.
 - `## Changelog`: jede Änderung am Prompt mit Revision und Datum.
 
-## 1. Prompt-Integrität
+## Prompt-Integrität
 
-Der Prompt wird unverändert übergeben. Für ChatGPT gilt verbindlich:
+- Der Übergabetext ist der Abschnitt `## Prompt`, exakt und vollständig. Claude liefert ihn wörtlich aus der Datei.
+- Timo schickt ihn ohne Umformulierung, Kürzung oder Ergänzung ab.
+- Angehängt werden nur die Bilder aus `reference_images`, in der Version aus dem Repo. Ist die Liste leer, wird nichts angehängt.
+- Jeder Lauf wird mit Prompt-Datei, `revision` und Commit im Manifest protokolliert.
 
-- Als Bild-Prompt wird ausschließlich der Abschnitt `## Prompt` verwendet, exakt und vollständig, vom ersten Zeichen nach der Überschrift bis vor `## Acceptance checks`.
-- Keine Umformulierung, Kürzung, Zusammenfassung oder Übersetzung.
-- Keine zusätzlichen Beschreibungen oder kreativen Ergänzungen.
-- Nichts aus Frontmatter, Acceptance checks, Changelog oder dieser Anleitung in den Bild-Prompt übernehmen.
-- Ist `reference_images` leer, werden keine Bilder angehängt, auch keine früheren Bilder aus dem Chat.
-- Referenzbilder werden ausschließlich aus den angegebenen Repository-Pfaden geladen, nie aus dem Chatverlauf oder anderen Quellen.
+## Prüfung
 
-Vor jeder Generierung protokolliert ChatGPT Prompt-Datei, `revision` und Branch beziehungsweise Commit, von dem gelesen wurde, und vergleicht den übergebenen Text mit dem Abschnitt `## Prompt`.
-
-Ist eine unveränderte Übergabe nicht möglich (zum Beispiel weil das Werkzeug den Text kürzt oder umschreibt), wird nicht generiert. Das Problem wird gemeldet und im Manifest mit `"result": "failed"` eingetragen.
-
-## 2. Generierung
-
-ChatGPT darf:
-
-- den freigegebenen Prompt verwenden,
-- Bilder generieren,
-- Ergebnisse prüfen,
-- fehlerhafte Ergebnisse verwerfen und neu generieren. Mehrere Versuche sind normal.
-
-ChatGPT darf nicht:
-
-- den Prompt eigenständig verbessern oder fehlende Details ergänzen,
-- Designentscheidungen aus früheren Bildern übernehmen,
-- ein Ergebnis, das nicht alle Prüfungen besteht, als fertig deklarieren,
-- `approved` oder `rejected` setzen.
-
-Wenn ein Prompt nach mehreren Versuchen nicht zu einem brauchbaren Bild führt, ist das ein Fall für Claude: Problem melden, nicht den Prompt umgehen.
-
-## 3. Prüfung
-
-Jeder Bildkandidat durchläuft zwei getrennte Prüfungen. Erst wenn beide vollständig bestanden sind, darf er abgelegt werden.
+Claude prüft jeden Bildkandidaten in zwei getrennten Schritten. Erst wenn beide vollständig bestanden sind, wird er abgelegt.
 
 ### Technische Prüfung (automatisiert)
 
@@ -107,9 +91,9 @@ Das Skript skaliert den Kandidaten auf `final_size`, speichert ihn unter dem `ou
 | `content_ok` | das Bild ist nicht leer |
 | `output_path_valid`, `output_path_matches` | Pfad liegt unter `assets/<category>/`, passt zur Kategorie und entspricht exakt `output` |
 
-Das Skript braucht nur Pillow (in ChatGPTs Python-Umgebung vorhanden), gibt das Ergebnis als JSON aus und endet mit Exit-Code 0 (bestanden) oder 1 (nicht bestanden). Das JSON wird unverändert als `validation.technical` ins Manifest übernommen.
+Das Skript braucht nur Pillow, gibt das Ergebnis als JSON aus und endet mit Exit-Code 0 (bestanden) oder 1 (nicht bestanden). Das JSON wird unverändert als `validation.technical` ins Manifest übernommen.
 
-### Visuelle Prüfung (manuell durch ChatGPT)
+### Visuelle Prüfung (manuell durch Claude)
 
 - Jeder Eintrag unter `## Acceptance checks` wird einzeln geprüft und mit `passed` und kurzer Begründung festgehalten.
 - Jeder Check ist verpflichtend. Ein einziger nicht bestandener Check verwirft den Kandidaten.
@@ -117,32 +101,29 @@ Das Skript braucht nur Pillow (in ChatGPTs Python-Umgebung vorhanden), gibt das 
 - Ein Check gilt nur als bestanden, wenn er tatsächlich am Bild geprüft wurde. Nicht prüfbare Checks gelten als nicht bestanden.
 - Für jeden neuen Kandidaten wird die komplette Prüfung wiederholt.
 
-## 4. Status
+## Status
 
 ```
-draft ──(Claude)──▶ ready ──(ChatGPT)──▶ generating ──(ChatGPT)──▶ review ──(Timo)──▶ approved
-                      ▲                       │                       │
-                      └──── endgültig ────────┘                       └──(Timo)──▶ rejected ──(Claude überarbeitet)──▶ ready
-                            gescheitert
+draft ──(Claude)──▶ ready ──(Timo erzeugt, Claude prüft)──▶ review ──(Timo)──▶ approved
+                      ▲                                                    │
+                      └────────────(Claude überarbeitet)◀── rejected ◀──(Timo)
 ```
 
-- `draft`: noch nicht freigegeben. Nicht generieren.
-- `ready`: freigegeben. Darf generiert werden.
-- `generating`: ChatGPT arbeitet daran. Verworfene Kandidaten ändern den Status nicht, sie werden nur im Manifest gezählt.
+- `draft`: noch nicht freigegeben. Nicht erzeugen.
+- `ready`: freigegeben. Claude liefert den Übergabetext, Timo erzeugt.
 - `review`: Das Bild liegt unter `output`, hat technische und visuelle Prüfung bestanden und wartet auf Timos Abnahme.
 - `approved`: von Timo abgenommen. Wird nie automatisch neu eingeplant.
 - `rejected`: von Timo abgelehnt. Grund in `history`. Claude überarbeitet den Prompt, erhöht `revision` und setzt wieder `ready`.
+- `generating` wird nicht mehr verwendet; alte Einträge im Manifest bleiben erhalten.
 
-Scheitert die Generierung endgültig (Versuche erschöpft, Upload nicht möglich, Prompt nicht unverändert übergebbar), setzt ChatGPT den Status zurück auf `ready` und dokumentiert Fehler und Anzahl der Versuche im Manifest. Ein erfolgreicher Status wird nur eingetragen, wenn die Datei wirklich im Repo liegt.
+Der Status in der Prompt-Datei ist maßgeblich, `manifest.json` spiegelt ihn. Beide werden im selben Commit geändert.
 
-Der Status in der Prompt-Datei ist maßgeblich, `manifest.json` spiegelt ihn. Beide werden im selben Commit geändert. Nur `status` darf ChatGPT in der Prompt-Datei ändern, sonst nichts.
-
-## 5. Manifest
+## Manifest
 
 Jedes Asset hat zwei Listen. Bestehende Einträge werden nie verändert oder gelöscht, nur ergänzt.
 
-- `history`: jede Statusänderung (`date`, `status`, `by`: `claude`, `chatgpt` oder `timo`, `note`).
-- `generations`: ein Eintrag pro Generierungslauf, also pro Durchgang von `generating` bis `review` oder zurück auf `ready`.
+- `history`: jede Statusänderung (`date`, `status`, `by`: `claude` oder `timo`; ältere Einträge auch `chatgpt`, `note`).
+- `generations`: ein Eintrag pro Prüfungslauf, also pro Bild oder Kandidatenserie, die Timo schickt.
 
 ```json
 {
@@ -170,7 +151,7 @@ Jedes Asset hat zwei Listen. Bestehende Einträge werden nie verändert oder gel
 
 `result` ist `passed` oder `failed`. Bei `failed` steht in `error`, warum der Lauf gescheitert ist, und `validation` enthält die Ergebnisse des letzten Kandidaten.
 
-## 6. Style Anchor und Batches
+## Style Anchor und Batches
 
 | Batch | Inhalt | Startet wann |
 |---|---|---|
@@ -186,16 +167,13 @@ Jedes Asset hat zwei Listen. Bestehende Einträge werden nie verändert oder gel
 - Diese Referenz darf nicht eigenständig durch ein anderes Bild ersetzt werden, auch nicht durch einen besseren Kandidaten.
 - Innerhalb eines Batches werden die Assets nacheinander erzeugt. Jedes Asset bekommt seinen eigenen Lauf und Manifest-Eintrag.
 
-## Vor jeder Generierung (Checkliste für ChatGPT)
+## Bevor Claude einen Übergabetext liefert
 
-1. Steht `status` wirklich auf `ready`?
+1. Steht `status` auf `ready`?
 2. Ist der Abschnitt `## Prompt` vollständig (Stil, Motiv, Komposition, Perspektive, Transparenz, Größe)?
-3. Existieren alle Dateien aus `reference_images` im Repo?
+3. Existieren alle Dateien aus `reference_images` im Repo, und hat Timo sie?
 4. Ist der Batch freigegeben (Batch 01 `approved`, falls es nicht Batch 01 ist)?
-5. Ist `output` ein gültiger Pfad unter `assets/` und existiert dort noch keine Datei?
-6. Kann der Prompt unverändert übergeben werden?
-
-Scheitert eine Prüfung: nicht generieren, im Manifest eintragen und melden.
+5. Ist `output` ein gültiger Pfad unter `assets/`, an dem noch kein freigegebenes Bild liegt?
 
 ## Regeln
 

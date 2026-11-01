@@ -4,7 +4,7 @@ name: Thorns Icon
 category: icons
 type: game_icon
 batch: 04-power-icons
-status: draft
+status: ready
 revision: 3
 output: assets/icons/thorns.png
 format: png

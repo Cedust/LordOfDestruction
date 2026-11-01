@@ -4,7 +4,7 @@ name: Lord of Destruction
 category: characters
 type: character_sprite
 batch: 01-style-anchor
-status: ready
+status: approved
 revision: 4
 output: assets/characters/lord.png
 format: png

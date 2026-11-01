@@ -4,7 +4,7 @@ name: Head Start Icon
 category: icons
 type: game_icon
 batch: 05-dread-icons
-status: draft
+status: ready
 revision: 3
 output: assets/icons/headStart.png
 format: png

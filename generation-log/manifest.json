@@ -7,7 +7,7 @@
       "prompt": "prompts/characters/char_lord.md",
       "output": "assets/characters/lord.png",
       "batch": "01-style-anchor",
-      "status": "ready",
+      "status": "approved",
       "revision": 4,
       "history": [
         {
@@ -51,6 +51,18 @@
           "status": "ready",
           "by": "claude",
           "note": "r4: standing, no throne, crimson cape, style reference chosen by Timo (candidate 4 of r3)"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/characters/lord.png after technical and visual checks"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Wir behalten das Bild'"
         }
       ],
       "generations": [
@@ -130,6 +142,80 @@
             }
           },
           "logged_by": "claude (reported by ChatGPT via Timo)"
+        },
+        {
+          "datetime": "2026-11-01T22:30:00Z",
+          "revision": 4,
+          "source": "claude/project-thread-ev1eok@1792394",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "1024x1024",
+              "final_size": "1024x1024",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.598,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Standing, full body, nothing cropped, no throne",
+                  "passed": true,
+                  "note": "full figure with sword, no throne"
+                },
+                {
+                  "check": "Same style as the reference image: thick dark outlines, flat muted colors",
+                  "passed": true,
+                  "note": "thick dark outlines, flat muted plates"
+                },
+                {
+                  "check": "Turned toward the right",
+                  "passed": true,
+                  "note": "body and helmet turned right"
+                },
+                {
+                  "check": "Full armor and closed helmet, no visible face or skin",
+                  "passed": true,
+                  "note": "closed helmet, only glowing eyes visible"
+                },
+                {
+                  "check": "Muted crimson cape, gold only as thin trim",
+                  "passed": true,
+                  "note": "crimson cape and sash; gold as plate edging (slightly wider than thin, accepted)"
+                },
+                {
+                  "check": "No texture or grain, no ornaments or patterns",
+                  "passed": true,
+                  "note": "smooth plates, no grain or patterns"
+                },
+                {
+                  "check": "Reads clearly at 120 px tall against a dark purple background",
+                  "passed": true,
+                  "note": "checked in-game screenshot on the purple floor"
+                },
+                {
+                  "check": "Real transparency outside the figure",
+                  "passed": true,
+                  "note": "alpha verified by script"
+                }
+              ]
+            }
+          },
+          "note": "Same image as the run at 22:20 that failed on the old strict prompt-integrity rule; re-checked under the new workflow."
         }
       ]
     },
@@ -138,7 +224,7 @@
       "prompt": "prompts/enemies/enemy_squire.md",
       "output": "assets/enemies/squire.png",
       "batch": "02-heroes",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -158,6 +244,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -167,7 +259,7 @@
       "prompt": "prompts/enemies/enemy_archer.md",
       "output": "assets/enemies/archer.png",
       "batch": "02-heroes",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -187,6 +279,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -196,7 +294,7 @@
       "prompt": "prompts/enemies/enemy_cutpurse.md",
       "output": "assets/enemies/cutpurse.png",
       "batch": "02-heroes",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -216,6 +314,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -225,7 +329,7 @@
       "prompt": "prompts/enemies/enemy_battlemage.md",
       "output": "assets/enemies/battlemage.png",
       "batch": "02-heroes",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -245,6 +349,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -254,7 +364,7 @@
       "prompt": "prompts/enemies/enemy_champion.md",
       "output": "assets/enemies/champion.png",
       "batch": "02-heroes",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -274,6 +384,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -283,7 +399,7 @@
       "prompt": "prompts/environments/env_throne_room.md",
       "output": "assets/environments/throne-room.png",
       "batch": "03-environment",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -303,6 +419,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -312,7 +434,7 @@
       "prompt": "prompts/icons/icon_vitality.md",
       "output": "assets/icons/vitality.png",
       "batch": "04-power-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -332,6 +454,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -341,7 +469,7 @@
       "prompt": "prompts/icons/icon_hide.md",
       "output": "assets/icons/hide.png",
       "batch": "04-power-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -361,6 +489,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -370,7 +504,7 @@
       "prompt": "prompts/icons/icon_regen.md",
       "output": "assets/icons/regen.png",
       "batch": "04-power-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -390,6 +524,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -399,7 +539,7 @@
       "prompt": "prompts/icons/icon_aura.md",
       "output": "assets/icons/aura.png",
       "batch": "04-power-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -419,6 +559,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -428,7 +574,7 @@
       "prompt": "prompts/icons/icon_radius.md",
       "output": "assets/icons/radius.png",
       "batch": "04-power-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -448,6 +594,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -457,7 +609,7 @@
       "prompt": "prompts/icons/icon_thorns.md",
       "output": "assets/icons/thorns.png",
       "batch": "04-power-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -477,6 +629,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -486,7 +644,7 @@
       "prompt": "prompts/icons/icon_shockwave.md",
       "output": "assets/icons/shockwave.png",
       "batch": "04-power-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -506,6 +664,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -515,7 +679,7 @@
       "prompt": "prompts/icons/icon_blood_pact.md",
       "output": "assets/icons/bloodPact.png",
       "batch": "04-power-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -535,6 +699,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -544,7 +714,7 @@
       "prompt": "prompts/icons/icon_black_heart.md",
       "output": "assets/icons/blackHeart.png",
       "batch": "05-dread-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -564,6 +734,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -573,7 +749,7 @@
       "prompt": "prompts/icons/icon_malice.md",
       "output": "assets/icons/malice.png",
       "batch": "05-dread-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -593,6 +769,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -602,7 +784,7 @@
       "prompt": "prompts/icons/icon_tithe.md",
       "output": "assets/icons/tithe.png",
       "batch": "05-dread-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -622,6 +804,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -631,7 +819,7 @@
       "prompt": "prompts/icons/icon_wrath.md",
       "output": "assets/icons/wrath.png",
       "batch": "05-dread-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -651,6 +839,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -660,7 +854,7 @@
       "prompt": "prompts/icons/icon_corpse_burst.md",
       "output": "assets/icons/corpseBurst.png",
       "batch": "05-dread-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -680,6 +874,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []
@@ -689,7 +889,7 @@
       "prompt": "prompts/icons/icon_head_start.md",
       "output": "assets/icons/headStart.png",
       "batch": "05-dread-icons",
-      "status": "draft",
+      "status": "ready",
       "revision": 3,
       "history": [
         {
@@ -709,6 +909,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
         }
       ],
       "generations": []

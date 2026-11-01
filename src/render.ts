@@ -139,7 +139,7 @@ export class Renderer {
     ctx.save();
     if (fallen) ctx.globalAlpha = 0.45;
     if (img) {
-      const h = 120;
+      const h = 150;
       const w = (img.width / img.height) * h;
       ctx.drawImage(img, LORD_X - w / 2, LORD_Y - h * 0.62, w, h);
       if (hurt) {
