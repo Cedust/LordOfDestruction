@@ -725,8 +725,8 @@
       "prompt": "prompts/environments/env_throne_room.md",
       "output": "assets/environments/throne-room.png",
       "batch": "03-environment",
-      "status": "review",
-      "revision": 3,
+      "status": "ready",
+      "revision": 4,
       "history": [
         {
           "date": "2026-11-01",
@@ -757,6 +757,18 @@
           "status": "review",
           "by": "claude",
           "note": "image placed at assets/environments/throne-room.png after checks"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "rejected",
+          "by": "timo",
+          "note": "the stairs leave no room for the Lord to stand"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "r4: large flat dais with exact proportions"
         }
       ],
       "generations": [
