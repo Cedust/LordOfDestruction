@@ -61,7 +61,7 @@
       "output": "assets/enemies/squire.png",
       "batch": "02-heroes",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -74,6 +74,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -84,7 +90,7 @@
       "output": "assets/enemies/archer.png",
       "batch": "02-heroes",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -97,6 +103,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -107,7 +119,7 @@
       "output": "assets/enemies/cutpurse.png",
       "batch": "02-heroes",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -120,6 +132,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -130,7 +148,7 @@
       "output": "assets/enemies/battlemage.png",
       "batch": "02-heroes",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -143,6 +161,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -153,7 +177,7 @@
       "output": "assets/enemies/champion.png",
       "batch": "02-heroes",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -166,6 +190,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -176,7 +206,7 @@
       "output": "assets/environments/throne-room.png",
       "batch": "03-environment",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -189,6 +219,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -199,7 +235,7 @@
       "output": "assets/icons/vitality.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -212,6 +248,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -222,7 +264,7 @@
       "output": "assets/icons/hide.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -235,6 +277,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -245,7 +293,7 @@
       "output": "assets/icons/regen.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -258,6 +306,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -268,7 +322,7 @@
       "output": "assets/icons/aura.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -281,6 +335,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -291,7 +351,7 @@
       "output": "assets/icons/radius.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -304,6 +364,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -314,7 +380,7 @@
       "output": "assets/icons/thorns.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -327,6 +393,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -337,7 +409,7 @@
       "output": "assets/icons/shockwave.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -350,6 +422,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -360,7 +438,7 @@
       "output": "assets/icons/bloodPact.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -373,6 +451,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -383,7 +467,7 @@
       "output": "assets/icons/blackHeart.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -396,6 +480,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -406,7 +496,7 @@
       "output": "assets/icons/malice.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -419,6 +509,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -429,7 +525,7 @@
       "output": "assets/icons/tithe.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -442,6 +538,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -452,7 +554,7 @@
       "output": "assets/icons/wrath.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -465,6 +567,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -475,7 +583,7 @@
       "output": "assets/icons/corpseBurst.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -488,6 +596,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []
@@ -498,7 +612,7 @@
       "output": "assets/icons/headStart.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 2,
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
@@ -511,6 +625,12 @@
           "status": "draft",
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
         }
       ],
       "generations": []

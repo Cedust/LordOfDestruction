@@ -5,7 +5,7 @@ category: icons
 type: game_icon
 batch: 05-dread-icons
 status: draft
-revision: 2
+revision: 3
 output: assets/icons/headStart.png
 format: png
 transparency: true
@@ -20,7 +20,7 @@ reference_images:
 
 Game asset for "Lord of Destruction", a browser idle auto-battler. Upgrade button icon for "Head Start" (start runs at a later wave). Shown at 40x40 pixels next to the upgrade name.
 
-Art style: clean, simple 2D cartoon game art like a modern casual mobile game. Large flat color areas with at most one soft shadow tone per color and no extra highlights. Thick, smooth, uniform dark outlines. Smooth surfaces: no texture, no grain, no noise, no visible brush strokes, no hatching, no cracks or scratches. Very few details: no ornaments, engravings, patterns, filigree, chains, jewelry, fur or embroidery. Soft, muted, gently desaturated colors with low contrast inside the figure; the clearest contrast is between the figure and its outline. Chunky cute-but-tough proportions: big head (about a third of the body height), short sturdy body, oversized hands. Light dark-fantasy mood that stays friendly and playful, never grim or realistic.
+Art style: clean 2D cartoon game art. Thick, smooth, dark outlines around every shape. Flat color areas with at most one soft shadow tone per color. Smooth surfaces: no texture, no grain, no noise, no visible brush strokes, no hatching, no scratches. Few details: no engravings, patterns, filigree, chains, jewelry or fur. Soft, muted, gently desaturated colors. Simple, sturdy shapes with natural heroic proportions, slightly stylized. Light dark-fantasy mood, clear and readable rather than grim or realistic.
 
 Subject: an hourglass with a gold coin.
 
@@ -44,3 +44,4 @@ Do not include any text, letters, numbers, logos, watermark, signature, border o
 
 - r1 (2026-11-01): first version.
 - r2 (2026-11-01): calmer, more readable style after Timo rejected the first Lord: no texture, far fewer details, softer muted colors.
+- r3 (2026-11-01): style paragraph aligned with the Lord style reference (thick outlines, natural proportions instead of a big head).

@@ -210,4 +210,4 @@ Scheitert eine Prüfung: nicht generieren, im Manifest eintragen und melden.
 
 ## Gemeinsame Stilvorgaben
 
-Alle Prompts verwenden denselben Stilabsatz: einfache, saubere 2D-Cartoon-Grafik, große flache Farbflächen mit höchstens einem weichen Schattenton, dicke gleichmäßige Outlines, keine Textur, sehr wenige Details, weiche gedämpfte Farben, kompakte Proportionen. Lord und Thronsaal sind dunkel, die Helden haben hellere Rollenfarben. Der Lord schaut nach rechts, alle Helden nach links. Icons sitzen alle auf demselben runden Badge.
+Alle Prompts verwenden denselben Stilabsatz: einfache, saubere 2D-Cartoon-Grafik, große flache Farbflächen mit höchstens einem weichen Schattenton, dicke gleichmäßige Outlines, keine Textur, sehr wenige Details, weiche gedämpfte Farben, natürliche, leicht stilisierte Proportionen. Lord und Thronsaal sind dunkel, die Helden haben hellere Rollenfarben. Der Lord schaut nach rechts, alle Helden nach links. Icons sitzen alle auf demselben runden Badge.
