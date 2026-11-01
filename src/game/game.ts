@@ -1,9 +1,7 @@
 import {
   CHAMPION_AURA_REDUCTION,
   CHAMPION_EVERY,
-  CLERIC_HEAL,
   CORPSE_BURST_SHARE,
-  CLERIC_HEAL_INTERVAL,
   HEROES,
   LORD_X,
   DEPTH,
@@ -11,8 +9,6 @@ import {
   PRESTIGE_UPGRADES,
   RUN_UPGRADES,
   SCALE,
-  RALLY_PER_SECOND,
-  RALLY_START,
   SHOCKWAVE_HITS,
   SPAWN_DIST,
   WAVE_PAUSE,
@@ -36,7 +32,6 @@ export interface Hero {
   maxHp: number;
   damage: number;
   attackTimer: number;
-  healTimer: number;
   gold: number;
   /** Seconds since the last time this hero took damage, for hit flashes. */
   hurt: number;
@@ -74,8 +69,6 @@ export class Game {
   lordHurt = 99;
   time = 0;
   lastSummary: RunSummary | null = null;
-  /** Seconds since the current wave started. */
-  waveTime = 0;
   /** Gold earned during the current wave; not saved, so a reload replays the wave fairly. */
   private waveGold = 0;
   private nextId = 1;
@@ -193,7 +186,6 @@ export class Game {
     }
 
     this.regen(dt);
-    this.waveTime += dt;
     this.moveAndAttack(dt);
     this.applyAura(dt);
     this.removeDead();
@@ -249,20 +241,14 @@ export class Game {
         maxHp: def.hp * hpMult,
         damage: def.damage * Math.pow(SCALE.damage, wave - 1),
         attackTimer: def.attackInterval * (0.3 + this.rng() * 0.7),
-        healTimer: CLERIC_HEAL_INTERVAL,
         gold: def.gold * Math.pow(SCALE.gold, wave - 1),
         hurt: 99,
         anim: this.rng() * 10,
       });
     });
     this.phase = 'fighting';
-    this.waveTime = 0;
   }
 
-  /** Heroes grow bolder the longer a wave lasts, so no fight can stall forever. */
-  rallyMultiplier(): number {
-    return 1 + Math.max(0, this.waveTime - RALLY_START) * RALLY_PER_SECOND;
-  }
 
   private moveAndAttack(dt: number): void {
     for (const h of this.heroes) {
@@ -273,13 +259,6 @@ export class Game {
         h.dist = Math.max(def.stopDist, h.dist - def.speed * dt);
         continue;
       }
-      if (h.kind === 'cleric') {
-        h.healTimer -= dt;
-        if (h.healTimer <= 0) {
-          h.healTimer = CLERIC_HEAL_INTERVAL;
-          this.clericHeal(h);
-        }
-      }
       h.attackTimer -= dt;
       if (h.attackTimer <= 0) {
         h.attackTimer = def.attackInterval;
@@ -288,30 +267,15 @@ export class Game {
     }
   }
 
-  private clericHeal(cleric: Hero): void {
-    let target: Hero | null = null;
-    for (const h of this.heroes) {
-      if (h.hp <= 0 || h.hp >= h.maxHp) continue;
-      if (!target || h.hp / h.maxHp < target.hp / target.maxHp) target = h;
-    }
-    if (!target) return;
-    const amount = target.maxHp * CLERIC_HEAL;
-    target.hp = Math.min(target.maxHp, target.hp + amount);
-    const p = heroPos(target);
-    const c = heroPos(cleric);
-    this.effects.push({ type: 'arrow', x1: c.x, y1: c.y, x2: p.x, y2: p.y, color: '#fff3b0', t: 0, ttl: 0.4 });
-    this.effects.push({ type: 'text', x: p.x, y: p.y - 18, text: '+' + fmt(amount), color: '#9be08a', t: 0, ttl: 0.9 });
-  }
-
   private heroHitsLord(h: Hero): void {
     const def = HEROES[h.kind];
-    const taken = h.damage * this.rallyMultiplier() * (1 - this.stats.armor);
+    const taken = h.damage * (1 - this.stats.armor);
     this.run.lordHp -= taken;
     this.lordHurt = 0;
     this.run.hitsTaken++;
     const p = heroPos(h);
     if (def.ranged) {
-      this.effects.push({ type: 'arrow', x1: p.x, y1: p.y, x2: LORD_X, y2: LORD_Y, color: h.kind === 'cleric' ? '#fff3b0' : '#d9d2c0', t: 0, ttl: 0.25 });
+      this.effects.push({ type: 'arrow', x1: p.x, y1: p.y, x2: LORD_X, y2: LORD_Y, color: h.kind === 'battlemage' ? '#8fe3ff' : '#d9d2c0', t: 0, ttl: 0.25 });
     }
     this.effects.push({ type: 'text', x: LORD_X + (this.rng() - 0.5) * 30, y: LORD_Y - 40, text: '-' + fmt(taken), color: '#ff7a6b', t: 0, ttl: 0.8 });
 

@@ -31,7 +31,7 @@ npm run sim       # headless balance simulation (bot plays several runs)
 
 Drop PNG files into `public/assets/` and they replace the placeholder shapes automatically:
 
-`lord.png`, `throne-room.png`, `squire.png`, `archer.png`, `cutpurse.png`, `cleric.png`, `champion.png`
+`lord.png`, `throne-room.png`, `squire.png`, `archer.png`, `cutpurse.png`, `battlemage.png`, `champion.png`
 
 Upgrade icons go into `public/assets/icons/`, named after the upgrade id:
 `vitality.png`, `hide.png`, `regen.png`, `aura.png`, `radius.png`, `thorns.png`, `shockwave.png`, `bloodPact.png`.

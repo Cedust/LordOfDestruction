@@ -47,7 +47,6 @@ button { font: inherit; color: inherit; }
   position: absolute; left: 0; right: 0; top: 6px; text-align: center; font-size: 13px;
   color: var(--muted); text-shadow: 0 1px 3px #000; pointer-events: none;
 }
-.status.warn { color: #ff9b7a; font-weight: 600; }
 .hp-bar {
   position: relative; height: 22px; margin: 8px 10px 0; background: #2a1a24;
   border: 1px solid var(--line); border-radius: 11px; overflow: hidden;

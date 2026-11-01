@@ -1,6 +1,6 @@
 // All balance numbers live here so they can be tuned in one place.
 
-export type HeroKind = 'squire' | 'archer' | 'cutpurse' | 'cleric' | 'champion';
+export type HeroKind = 'squire' | 'archer' | 'cutpurse' | 'battlemage' | 'champion';
 
 export interface HeroDef {
   name: string;
@@ -26,12 +26,10 @@ export const HEROES: Record<HeroKind, HeroDef> = {
   squire: { name: 'Squire', hp: 20, damage: 3, attackInterval: 1.2, speed: 70, stopDist: 58, gold: 6, fromWave: 1, weight: 5, ranged: false, color: '#7f9cc7', radius: 13 },
   archer: { name: 'Archer', hp: 13, damage: 2.4, attackInterval: 1.5, speed: 60, stopDist: 95, gold: 8, fromWave: 3, weight: 3, ranged: true, color: '#7fb07a', radius: 12 },
   cutpurse: { name: 'Cutpurse', hp: 10, damage: 3.6, attackInterval: 0.7, speed: 110, stopDist: 52, gold: 10, fromWave: 6, weight: 2, ranged: false, color: '#c9a35b', radius: 11 },
-  cleric: { name: 'Cleric', hp: 15, damage: 1, attackInterval: 2, speed: 55, stopDist: 108, gold: 12, fromWave: 8, weight: 1.5, ranged: true, color: '#e8e0c8', radius: 12 },
+  battlemage: { name: 'Battlemage', hp: 12, damage: 6, attackInterval: 2.6, speed: 55, stopDist: 108, gold: 12, fromWave: 8, weight: 1.5, ranged: true, color: '#6fc3d8', radius: 12 },
   champion: { name: 'Champion', hp: 180, damage: 7, attackInterval: 1.4, speed: 45, stopDist: 66, gold: 120, fromWave: 10, weight: 0, ranged: false, color: '#f1c75b', radius: 20 },
 };
 
-export const CLERIC_HEAL = 0.07; // share of the healed hero's max HP per cast
-export const CLERIC_HEAL_INTERVAL = 2.5;
 export const CHAMPION_EVERY = 10;
 export const CHAMPION_AURA_REDUCTION = 0.5; // shield halves aura damage
 
@@ -48,9 +46,6 @@ export const LORD_Y = 195;
 /** Vertical squash of the floor plane, so the battlefield reads as seen from the side. */
 export const DEPTH = 0.45;
 export const SPAWN_DIST = 330;
-/** After this many seconds in a wave, heroes start dealing more damage. */
-export const RALLY_START = 15;
-export const RALLY_PER_SECOND = 0.08;
 export const WAVE_PAUSE = 1.2; // seconds between waves
 
 export function heroCountForWave(wave: number): number {

@@ -100,14 +100,12 @@ export class UI {
     const hpPct = Math.max(0, g.run.lordHp / s.maxHp) * 100;
     $('#hp-fill').style.width = `${hpPct}%`;
     $('#hp-text').textContent = `${fmt(Math.max(0, g.run.lordHp))} / ${fmt(s.maxHp)}`;
-    const rally = g.phase === 'fighting' ? g.rallyMultiplier() : 1;
     const status = $('#status');
     if (g.phase === 'pause') status.textContent = `Wave ${g.run.wave} approaches…`;
     else if (g.phase === 'fighting') {
       const champ = g.heroes.some((h) => h.kind === 'champion');
-      status.textContent = rally > 1 ? `The heroes rally! ×${rally.toFixed(1)} damage` : champ ? `A ${HEROES.champion.name} leads the charge!` : `${g.heroes.length} heroes remain`;
+      status.textContent = champ ? `A ${HEROES.champion.name} leads the charge!` : `${g.heroes.length} heroes remain`;
     } else status.textContent = 'You have fallen.';
-    status.classList.toggle('warn', rally > 1);
 
     for (const def of RUN_UPGRADES) {
       const btn = this.runButtons.get(def.id)!;

@@ -3,7 +3,7 @@ import { heroPos, type Game, type Hero } from './game/game';
 
 // Images are optional: drop a PNG into public/assets/ with one of these names and it
 // replaces the placeholder shape automatically.
-const IMAGE_NAMES = ['lord', 'throne-room', 'squire', 'archer', 'cutpurse', 'cleric', 'champion'] as const;
+const IMAGE_NAMES = ['lord', 'throne-room', 'squire', 'archer', 'cutpurse', 'battlemage', 'champion'] as const;
 type ImageName = (typeof IMAGE_NAMES)[number];
 
 const images: Partial<Record<ImageName, HTMLImageElement>> = {};
@@ -266,6 +266,6 @@ const LETTER: Record<HeroKind, string> = {
   squire: 'S',
   archer: 'A',
   cutpurse: 'C',
-  cleric: '+',
+  battlemage: 'M',
   champion: 'P',
 };
