@@ -4,7 +4,7 @@ name: Dread Icons Sheet
 category: icons
 type: icon_sheet
 batch: 05-dread-icons
-status: ready
+status: review
 revision: 1
 output: assets/icons/sheets/dread-icons.png
 format: png

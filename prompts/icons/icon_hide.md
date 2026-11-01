@@ -4,7 +4,7 @@ name: Hide Icon
 category: icons
 type: game_icon
 batch: 04-power-icons
-status: ready
+status: review
 revision: 3
 output: assets/icons/hide.png
 format: png

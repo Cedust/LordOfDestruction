@@ -4,7 +4,7 @@ name: Wrath Icon
 category: icons
 type: game_icon
 batch: 05-dread-icons
-status: ready
+status: review
 revision: 3
 output: assets/icons/wrath.png
 format: png

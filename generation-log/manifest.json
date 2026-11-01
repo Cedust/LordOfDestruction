@@ -825,7 +825,7 @@
       "prompt": "prompts/icons/icon_vitality.md",
       "output": "assets/icons/vitality.png",
       "batch": "04-power-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -851,16 +851,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 1,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.309,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_hide",
       "prompt": "prompts/icons/icon_hide.md",
       "output": "assets/icons/hide.png",
       "batch": "04-power-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -886,16 +952,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 2,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.301,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_regen",
       "prompt": "prompts/icons/icon_regen.md",
       "output": "assets/icons/regen.png",
       "batch": "04-power-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -921,16 +1053,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 3,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.303,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_aura",
       "prompt": "prompts/icons/icon_aura.md",
       "output": "assets/icons/aura.png",
       "batch": "04-power-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -956,16 +1154,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 4,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.304,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_radius",
       "prompt": "prompts/icons/icon_radius.md",
       "output": "assets/icons/radius.png",
       "batch": "04-power-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -991,16 +1255,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 1,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.306,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_thorns",
       "prompt": "prompts/icons/icon_thorns.md",
       "output": "assets/icons/thorns.png",
       "batch": "04-power-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -1026,16 +1356,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 2,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.304,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_shockwave",
       "prompt": "prompts/icons/icon_shockwave.md",
       "output": "assets/icons/shockwave.png",
       "batch": "04-power-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -1061,16 +1457,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 3,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.299,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_blood_pact",
       "prompt": "prompts/icons/icon_blood_pact.md",
       "output": "assets/icons/bloodPact.png",
       "batch": "04-power-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -1096,16 +1558,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 4,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.302,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_black_heart",
       "prompt": "prompts/icons/icon_black_heart.md",
       "output": "assets/icons/blackHeart.png",
       "batch": "05-dread-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -1131,16 +1659,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 1,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.305,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_malice",
       "prompt": "prompts/icons/icon_malice.md",
       "output": "assets/icons/malice.png",
       "batch": "05-dread-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -1166,16 +1760,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 2,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.296,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_tithe",
       "prompt": "prompts/icons/icon_tithe.md",
       "output": "assets/icons/tithe.png",
       "batch": "05-dread-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -1201,16 +1861,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 3,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.297,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_wrath",
       "prompt": "prompts/icons/icon_wrath.md",
       "output": "assets/icons/wrath.png",
       "batch": "05-dread-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -1236,16 +1962,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 1,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.302,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_corpse_burst",
       "prompt": "prompts/icons/icon_corpse_burst.md",
       "output": "assets/icons/corpseBurst.png",
       "batch": "05-dread-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -1271,16 +2063,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 2,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.371,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_head_start",
       "prompt": "prompts/icons/icon_head_start.md",
       "output": "assets/icons/headStart.png",
       "batch": "05-dread-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -1306,16 +2164,82 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 3,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.294,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "sheet_power_icons",
       "prompt": "prompts/icons/sheet_power_icons.md",
       "output": "assets/icons/sheets/power-icons.png",
       "batch": "04-power-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 1,
       "history": [
         {
@@ -1323,16 +2247,74 @@
           "status": "ready",
           "by": "claude",
           "note": "created: one sheet instead of single icons (Timo)"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "sheet sliced into icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 1,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "note": "per-icon results in the icon entries"
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Exactly 8 badges in a 4x2 grid, none touching",
+                  "passed": true,
+                  "note": "grid kept; badges sit close to each other but every cell cut cleanly"
+                },
+                {
+                  "check": "Order and symbols match the list",
+                  "passed": true,
+                  "note": "order and symbols match the list"
+                },
+                {
+                  "check": "All badges identical: round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "identical plum badges with orange rim"
+                },
+                {
+                  "check": "No texture, no fine detail, one clear symbol per badge",
+                  "passed": true,
+                  "note": "bold symbols, no texture"
+                },
+                {
+                  "check": "Each icon readable at 40 px",
+                  "passed": true,
+                  "note": "checked at 40 px in the upgrade list"
+                },
+                {
+                  "check": "Transparent outside the badges",
+                  "passed": true,
+                  "note": "alpha 0 outside badges (RGB under it is orange, invisible)"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "sheet_dread_icons",
       "prompt": "prompts/icons/sheet_dread_icons.md",
       "output": "assets/icons/sheets/dread-icons.png",
       "batch": "05-dread-icons",
-      "status": "ready",
+      "status": "review",
       "revision": 1,
       "history": [
         {
@@ -1340,9 +2322,67 @@
           "status": "ready",
           "by": "claude",
           "note": "created: one sheet instead of single icons (Timo)"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "sheet sliced into icons"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 1,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "note": "per-icon results in the icon entries"
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Exactly 6 badges in a 3x2 grid, none touching",
+                  "passed": true,
+                  "note": "grid kept; badges sit close to each other but every cell cut cleanly"
+                },
+                {
+                  "check": "Order and symbols match the list",
+                  "passed": true,
+                  "note": "order and symbols match the list"
+                },
+                {
+                  "check": "All badges identical: round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "identical plum badges with orange rim"
+                },
+                {
+                  "check": "No texture, no fine detail, one clear symbol per badge",
+                  "passed": true,
+                  "note": "bold symbols, no texture"
+                },
+                {
+                  "check": "Each icon readable at 40 px",
+                  "passed": true,
+                  "note": "checked at 40 px in the upgrade list"
+                },
+                {
+                  "check": "Transparent outside the badges",
+                  "passed": true,
+                  "note": "alpha 0 outside badges (RGB under it is orange, invisible)"
+                }
+              ]
+            }
+          }
+        }
+      ]
     }
   ]
 }
