@@ -15,9 +15,9 @@ export interface RangeDef {
 
 /** Three fixed ranges. Order matters: index 0 is closest to the lord. */
 export const RANGES: RangeDef[] = [
-  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [-0.1, 0.35, 0.8, 1.2] },
-  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [-0.05, 0.38, 0.8] },
-  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [-0.04, 0.3, 0.64] },
+  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [-0.1, 0.45, 1.0, 1.5] },
+  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [-0.05, 0.6, 1.25] },
+  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [-0.04, 0.45, 0.95] },
 ];
 
 /** Heroes without a free spot wait this far behind their range. */
@@ -76,7 +76,7 @@ export const DEPTH = 0.5;
 export const FLOOR_Y = 166;
 /** Heroes fight in a fan that opens to the right and down across the floor (radians). */
 export const FIELD_ANGLE_MIN = -0.25;
-export const FIELD_ANGLE_MAX = 1.4;
+export const FIELD_ANGLE_MAX = Math.PI / 2;
 /** Height of the Lord's chest above LORD_Y, where projectiles hit and numbers pop. */
 export const LORD_CHEST = 55;
 export const SPAWN_DIST = 330;

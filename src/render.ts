@@ -25,14 +25,28 @@ type ImageName = keyof typeof IMAGE_PATHS;
 
 const images: Partial<Record<ImageName, HTMLImageElement>> = {};
 
-export function loadImages(): void {
+/**
+ * Loads all game art. Resolves once every image has loaded or failed, so the first
+ * frame already shows the real art instead of flashing the placeholder shapes.
+ */
+export function loadImages(): Promise<void> {
+  const pending: Promise<void>[] = [];
   for (const name of Object.keys(IMAGE_PATHS) as ImageName[]) {
     const url = assetUrl(IMAGE_PATHS[name]);
     if (!url) continue;
     const img = new Image();
-    img.onload = () => (images[name] = img);
+    pending.push(
+      new Promise((resolve) => {
+        img.onload = () => {
+          images[name] = img;
+          resolve();
+        };
+        img.onerror = () => resolve();
+      }),
+    );
     img.src = url;
   }
+  return Promise.all(pending).then(() => undefined);
 }
 
 export class Renderer {
