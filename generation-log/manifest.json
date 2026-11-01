@@ -1,6 +1,6 @@
 {
-  "schema": 1,
-  "description": "Generation log for LordOfDestruction image assets. The status in each prompt file is authoritative; this file mirrors it and keeps the history.",
+  "schema": 2,
+  "description": "Generation log for LordOfDestruction image assets. The status in each prompt file is authoritative; this file mirrors it. 'history' records every status change, 'generations' records every generation run with its validation results. See prompts/README.md.",
   "assets": [
     {
       "asset_id": "char_lord",
@@ -46,7 +46,8 @@
           "by": "claude",
           "note": "r3: full armor, closed horned helmet, glowing eyes"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "enemy_squire",
@@ -68,7 +69,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "enemy_archer",
@@ -90,7 +92,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "enemy_cutpurse",
@@ -112,7 +115,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "enemy_battlemage",
@@ -134,7 +138,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "enemy_champion",
@@ -156,7 +161,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "env_throne_room",
@@ -178,7 +184,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_vitality",
@@ -200,7 +207,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_hide",
@@ -222,7 +230,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_regen",
@@ -244,7 +253,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_aura",
@@ -266,7 +276,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_radius",
@@ -288,7 +299,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_thorns",
@@ -310,7 +322,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_shockwave",
@@ -332,7 +345,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_blood_pact",
@@ -354,7 +368,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_black_heart",
@@ -376,7 +391,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_malice",
@@ -398,7 +414,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_tithe",
@@ -420,7 +437,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_wrath",
@@ -442,7 +460,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_corpse_burst",
@@ -464,7 +483,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     },
     {
       "asset_id": "icon_head_start",
@@ -486,7 +506,8 @@
           "by": "claude",
           "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
-      ]
+      ],
+      "generations": []
     }
   ]
 }
