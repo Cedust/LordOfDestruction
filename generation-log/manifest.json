@@ -8,7 +8,7 @@
       "output": "assets/characters/lord.png",
       "batch": "01-style-anchor",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
@@ -27,6 +27,18 @@
           "status": "ready",
           "by": "chatgpt",
           "note": "Reset after branch workflow started; active work continues on assets/lord-of-destruction."
+        },
+        {
+          "date": "2026-11-01",
+          "status": "rejected",
+          "by": "timo",
+          "note": "r1 result too busy: too much texture and detail, colors too harsh, poor readability"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: simpler, smoother, softer muted colors"
         }
       ]
     },
@@ -36,13 +48,19 @@
       "output": "assets/enemies/squire.png",
       "batch": "02-heroes",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -52,13 +70,19 @@
       "output": "assets/enemies/archer.png",
       "batch": "02-heroes",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -68,13 +92,19 @@
       "output": "assets/enemies/cutpurse.png",
       "batch": "02-heroes",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -84,13 +114,19 @@
       "output": "assets/enemies/battlemage.png",
       "batch": "02-heroes",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -100,13 +136,19 @@
       "output": "assets/enemies/champion.png",
       "batch": "02-heroes",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -116,13 +158,19 @@
       "output": "assets/environments/throne-room.png",
       "batch": "03-environment",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -132,13 +180,19 @@
       "output": "assets/icons/vitality.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -148,13 +202,19 @@
       "output": "assets/icons/hide.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -164,13 +224,19 @@
       "output": "assets/icons/regen.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -180,13 +246,19 @@
       "output": "assets/icons/aura.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -196,13 +268,19 @@
       "output": "assets/icons/radius.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -212,13 +290,19 @@
       "output": "assets/icons/thorns.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -228,13 +312,19 @@
       "output": "assets/icons/shockwave.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -244,13 +334,19 @@
       "output": "assets/icons/bloodPact.png",
       "batch": "04-power-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -260,13 +356,19 @@
       "output": "assets/icons/blackHeart.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -276,13 +378,19 @@
       "output": "assets/icons/malice.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -292,13 +400,19 @@
       "output": "assets/icons/tithe.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -308,13 +422,19 @@
       "output": "assets/icons/wrath.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -324,13 +444,19 @@
       "output": "assets/icons/corpseBurst.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     },
@@ -340,13 +466,19 @@
       "output": "assets/icons/headStart.png",
       "batch": "05-dread-icons",
       "status": "draft",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
         }
       ]
     }

@@ -5,7 +5,7 @@ category: environments
 type: background
 batch: 03-environment
 status: draft
-revision: 1
+revision: 2
 output: assets/environments/throne-room.png
 format: png
 transparency: false
@@ -20,7 +20,7 @@ reference_images:
 
 Game asset for "Lord of Destruction", a browser idle auto-battler. The battlefield background. The game shows it in a wide landscape frame (about 7:5) and anchors it to the bottom edge, so a little of the top may be cropped. The dark lord sprite is drawn on top at the left, heroes on the floor in the middle and right.
 
-Art style: stylized 2D cartoon game art with a hand-painted look. Flat colors with soft cel shading, clean bold dark outlines of even weight, chunky readable proportions with a slightly oversized head and hands, simple shapes and few small details, light dark-fantasy mood that stays playful rather than grim or realistic.
+Art style: clean, simple 2D cartoon game art like a modern casual mobile game. Large flat color areas with at most one soft shadow tone per color and no extra highlights. Thick, smooth, uniform dark outlines. Smooth surfaces: no texture, no grain, no noise, no visible brush strokes, no hatching, no cracks or scratches. Very few details: no ornaments, engravings, patterns, filigree, chains, jewelry, fur or embroidery. Soft, muted, gently desaturated colors with low contrast inside the figure; the clearest contrast is between the figure and its outline. Chunky cute-but-tough proportions: big head (about a third of the body height), short sturdy body, oversized hands. Light dark-fantasy mood that stays friendly and playful, never grim or realistic.
 
 Subject: wide interior of a dark fantasy throne room. Flat stone floor fills the lower 55 percent of the image. An empty raised stone platform sits on the far left (no throne; the throne is a separate sprite). Pillars, torn purple banners and ember braziers line the back wall. No characters, no creatures.
 
@@ -45,3 +45,4 @@ Do not include any text, letters, numbers, logos, watermark, signature, border o
 ## Changelog
 
 - r1 (2026-11-01): first version.
+- r2 (2026-11-01): calmer, more readable style after Timo rejected the first Lord: no texture, far fewer details, softer muted colors.
