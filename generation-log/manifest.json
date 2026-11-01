@@ -725,7 +725,7 @@
       "prompt": "prompts/environments/env_throne_room.md",
       "output": "assets/environments/throne-room.png",
       "batch": "03-environment",
-      "status": "ready",
+      "status": "review",
       "revision": 3,
       "history": [
         {
@@ -751,9 +751,74 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/environments/throne-room.png after checks"
         }
       ],
-      "generations": []
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:45:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@72a6b4d",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "1536x1024",
+              "final_size": "1536x1024",
+              "final_size_ok": true,
+              "alpha_channel": false,
+              "transparent_pixel_share": 0.0,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Landscape 1536x1024",
+                  "passed": true,
+                  "note": "1536x1024 by script"
+                },
+                {
+                  "check": "No characters, no throne",
+                  "passed": true,
+                  "note": "empty hall"
+                },
+                {
+                  "check": "Empty platform on the far left",
+                  "passed": true,
+                  "note": "stepped stone platform on the left"
+                },
+                {
+                  "check": "Floor covers lower ~55%",
+                  "passed": true,
+                  "note": "floor starts at about 50% height"
+                },
+                {
+                  "check": "Dark and low-contrast",
+                  "passed": true,
+                  "note": "muted purple stone; braziers and windows warm but calm; checked in-game with lord and squire"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "asset_id": "icon_vitality",
@@ -1241,6 +1306,40 @@
           "status": "ready",
           "by": "claude",
           "note": "style anchor approved; reference assets/characters/lord.png available"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "sheet_power_icons",
+      "prompt": "prompts/icons/sheet_power_icons.md",
+      "output": "assets/icons/sheets/power-icons.png",
+      "batch": "04-power-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "created: one sheet instead of single icons (Timo)"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "sheet_dread_icons",
+      "prompt": "prompts/icons/sheet_dread_icons.md",
+      "output": "assets/icons/sheets/dread-icons.png",
+      "batch": "05-dread-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "created: one sheet instead of single icons (Timo)"
         }
       ],
       "generations": []

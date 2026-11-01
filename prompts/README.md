@@ -28,6 +28,7 @@ assets/<kategorie>/<datei>.png      fertige Bilder, Pfad steht im Feld output
 assets/references/                  Stilvorlagen für reference_images (werden nicht ins Spiel gepackt)
 generation-log/manifest.json        Status-Verlauf und Generierungsprotokoll aller Assets
 scripts/validate_asset.py           technische Prüfung eines Bildes gegen seine Prompt-Datei
+scripts/slice_sheet.py              zerlegt ein Icon-Sheet in die einzelnen Icon-Dateien
 ```
 
 Kategorien: `characters`, `enemies`, `equipment`, `icons`, `ui`, `environments`.
@@ -100,6 +101,14 @@ Das Skript braucht nur Pillow, gibt das Ergebnis als JSON aus und endet mit Exit
 - Es gibt keine Freigabe bei teilweise bestandenen Checks.
 - Ein Check gilt nur als bestanden, wenn er tatsächlich am Bild geprüft wurde. Nicht prüfbare Checks gelten als nicht bestanden.
 - Für jeden neuen Kandidaten wird die komplette Prüfung wiederholt.
+
+## Icon-Sheets
+
+Icons werden als Sheet erzeugt statt einzeln (, z. B. ). Das Sheet-Prompt nennt  (Spalten x Zeilen) und  (die Icon-Asset-IDs in Lesereihenfolge).
+
+
+
+Das Skript legt das Sheet unter seinem  ab, schneidet jede Zelle am Badge aus, skaliert auf  des Icons, speichert unter dessen  und prüft jedes Icon technisch. Visuell geprüft werden die Checks des Sheets und die jedes Icons. Status und Manifest-Einträge werden pro Icon geführt; das Sheet bekommt einen eigenen Eintrag. Die Einzel-Prompts der Icons bleiben als Ersatz, falls ein Icon im Sheet nicht gelingt. Sheets () werden nicht ins Spiel gepackt.
 
 ## Status
 
