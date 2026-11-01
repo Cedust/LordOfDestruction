@@ -1,18 +1,29 @@
 import { DEPTH, HEROES, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W, type HeroKind } from './game/config';
 import { heroPos, type Game, type Hero } from './game/game';
+import { assetUrl } from './assets';
 
-// Images are optional: drop a PNG into public/assets/ with one of these names and it
-// replaces the placeholder shape automatically.
-const IMAGE_NAMES = ['lord', 'throne-room', 'squire', 'archer', 'cutpurse', 'battlemage', 'champion'] as const;
-type ImageName = (typeof IMAGE_NAMES)[number];
+// Images are optional: a PNG at one of these paths below assets/ replaces the
+// placeholder shape automatically.
+const IMAGE_PATHS = {
+  lord: 'characters/lord',
+  'throne-room': 'environments/throne-room',
+  squire: 'enemies/squire',
+  archer: 'enemies/archer',
+  cutpurse: 'enemies/cutpurse',
+  battlemage: 'enemies/battlemage',
+  champion: 'enemies/champion',
+} as const;
+type ImageName = keyof typeof IMAGE_PATHS;
 
 const images: Partial<Record<ImageName, HTMLImageElement>> = {};
 
 export function loadImages(): void {
-  for (const name of IMAGE_NAMES) {
+  for (const name of Object.keys(IMAGE_PATHS) as ImageName[]) {
+    const url = assetUrl(IMAGE_PATHS[name]);
+    if (!url) continue;
     const img = new Image();
     img.onload = () => (images[name] = img);
-    img.src = `assets/${name}.png`;
+    img.src = url;
   }
 }
 

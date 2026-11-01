@@ -1,0 +1,342 @@
+{
+  "schema": 1,
+  "description": "Generation log for LordOfDestruction image assets. The status in each prompt file is authoritative; this file mirrors it and keeps the history.",
+  "assets": [
+    {
+      "asset_id": "char_lord",
+      "prompt": "prompts/characters/char_lord.md",
+      "output": "assets/characters/lord.png",
+      "batch": "01-style-anchor",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "enemy_squire",
+      "prompt": "prompts/enemies/enemy_squire.md",
+      "output": "assets/enemies/squire.png",
+      "batch": "02-heroes",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "enemy_archer",
+      "prompt": "prompts/enemies/enemy_archer.md",
+      "output": "assets/enemies/archer.png",
+      "batch": "02-heroes",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "enemy_cutpurse",
+      "prompt": "prompts/enemies/enemy_cutpurse.md",
+      "output": "assets/enemies/cutpurse.png",
+      "batch": "02-heroes",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "enemy_battlemage",
+      "prompt": "prompts/enemies/enemy_battlemage.md",
+      "output": "assets/enemies/battlemage.png",
+      "batch": "02-heroes",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "enemy_champion",
+      "prompt": "prompts/enemies/enemy_champion.md",
+      "output": "assets/enemies/champion.png",
+      "batch": "02-heroes",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "env_throne_room",
+      "prompt": "prompts/environments/env_throne_room.md",
+      "output": "assets/environments/throne-room.png",
+      "batch": "03-environment",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_vitality",
+      "prompt": "prompts/icons/icon_vitality.md",
+      "output": "assets/icons/vitality.png",
+      "batch": "04-power-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_hide",
+      "prompt": "prompts/icons/icon_hide.md",
+      "output": "assets/icons/hide.png",
+      "batch": "04-power-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_regen",
+      "prompt": "prompts/icons/icon_regen.md",
+      "output": "assets/icons/regen.png",
+      "batch": "04-power-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_aura",
+      "prompt": "prompts/icons/icon_aura.md",
+      "output": "assets/icons/aura.png",
+      "batch": "04-power-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_radius",
+      "prompt": "prompts/icons/icon_radius.md",
+      "output": "assets/icons/radius.png",
+      "batch": "04-power-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_thorns",
+      "prompt": "prompts/icons/icon_thorns.md",
+      "output": "assets/icons/thorns.png",
+      "batch": "04-power-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_shockwave",
+      "prompt": "prompts/icons/icon_shockwave.md",
+      "output": "assets/icons/shockwave.png",
+      "batch": "04-power-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_blood_pact",
+      "prompt": "prompts/icons/icon_blood_pact.md",
+      "output": "assets/icons/bloodPact.png",
+      "batch": "04-power-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_black_heart",
+      "prompt": "prompts/icons/icon_black_heart.md",
+      "output": "assets/icons/blackHeart.png",
+      "batch": "05-dread-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_malice",
+      "prompt": "prompts/icons/icon_malice.md",
+      "output": "assets/icons/malice.png",
+      "batch": "05-dread-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_tithe",
+      "prompt": "prompts/icons/icon_tithe.md",
+      "output": "assets/icons/tithe.png",
+      "batch": "05-dread-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_wrath",
+      "prompt": "prompts/icons/icon_wrath.md",
+      "output": "assets/icons/wrath.png",
+      "batch": "05-dread-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_corpse_burst",
+      "prompt": "prompts/icons/icon_corpse_burst.md",
+      "output": "assets/icons/corpseBurst.png",
+      "batch": "05-dread-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "icon_head_start",
+      "prompt": "prompts/icons/icon_head_start.md",
+      "output": "assets/icons/headStart.png",
+      "batch": "05-dread-icons",
+      "status": "draft",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    }
+  ]
+}

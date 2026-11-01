@@ -1,8 +1,15 @@
 import { HEROES, RANGES, PRESTIGE_UPGRADES, RUN_UPGRADES, dreadForWave, type PrestigeId, type RunUpgradeId } from './game/config';
 import { fmt, type Game } from './game/game';
 import { computeStats, type LordStats } from './game/stats';
+import { assetUrl } from './assets';
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as T;
+
+/** Upgrade icon from assets/icons/<id>.png, or a lettered placeholder while the image is missing. */
+function iconHtml(id: string, name: string, placeholderClass: string): string {
+  const url = assetUrl(`icons/${id}`);
+  return url ? `<img class="icon" alt="" src="${url}">` : `<span class="icon ${placeholderClass}">${name[0]}</span>`;
+}
 
 /** Human-readable value of the stat an upgrade improves. */
 function statText(id: RunUpgradeId, s: LordStats): string {
@@ -57,7 +64,7 @@ export class UI {
       const btn = document.createElement('button');
       btn.className = 'upgrade';
       btn.innerHTML = `
-        <img class="icon" alt="" src="assets/icons/${def.id}.png" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'icon ph',textContent:'${def.name[0]}'}))">
+        ${iconHtml(def.id, def.name, 'ph')}
         <span class="info"><span class="name">${def.name} <span class="lvl"></span></span><span class="desc">${def.desc}</span><span class="stat"></span></span>
         <span class="cost"></span>`;
       btn.addEventListener('click', () => {
@@ -74,7 +81,7 @@ export class UI {
       btn.className = 'upgrade dread';
       btn.dataset.id = def.id;
       btn.innerHTML = `
-        <span class="icon ph dread-ph">${def.name[0]}</span>
+        ${iconHtml(def.id, def.name, 'ph dread-ph')}
         <span class="info"><span class="name">${def.name} <span class="lvl"></span></span><span class="desc">${def.desc}</span></span>
         <span class="cost"></span>`;
       btn.addEventListener('click', () => {
