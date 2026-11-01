@@ -23,13 +23,13 @@ npm run sim       # headless balance simulation (bot plays several runs)
 | `src/game/stats.ts` | Lord stats from run and prestige levels |
 | `src/game/game.ts` | Simulation: waves, combat, powers, falling and rising |
 | `src/game/state.ts` | Save format and localStorage |
-| `src/render.ts` | Canvas drawing with placeholder shapes |
+| `src/render.ts` | Canvas drawing of the game art |
 | `src/ui.ts` | HTML interface: top bar, upgrade lists, fallen screen |
 | `scripts/sim.ts` | Balance simulation |
 
 ## Art
 
-Images live in `assets/` and are generated from the prompts in `prompts/` (workflow: [prompts/README.md](prompts/README.md), log: `generation-log/manifest.json`). Every PNG under `assets/` is bundled at build time and replaces its placeholder automatically:
+Images live in `assets/` and are generated from the prompts in `prompts/` (workflow: [prompts/README.md](prompts/README.md), log: `generation-log/manifest.json`). Every PNG under `assets/` is bundled at build time:
 
 - `assets/characters/lord.png`
 - `assets/environments/throne-room.png`

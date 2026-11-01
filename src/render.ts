@@ -1,9 +1,9 @@
-import { DEPTH, FIELD_ANGLE_MAX, FIELD_ANGLE_MIN, FLOOR_Y, HEROES, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W, type HeroKind } from './game/config';
+import { DEPTH, FIELD_ANGLE_MAX, FIELD_ANGLE_MIN, FLOOR_Y, HEROES, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W } from './game/config';
 import { heroPos, type Game, type Hero } from './game/game';
 import { assetUrl } from './assets';
 
-// Images are optional: a PNG at one of these paths below assets/ replaces the
-// placeholder shape automatically.
+// Game art from assets/. Everything is drawn from these images; there are no
+// placeholder shapes any more.
 // Background framing (world units). BG_SCALE zooms throne-room.png, BG_SHIFT_X moves
 // it sideways; LORD_FEET_DY is where the Lord's feet sit relative to LORD_Y.
 const BG_SCALE = 0.32;
@@ -27,7 +27,7 @@ const images: Partial<Record<ImageName, HTMLImageElement>> = {};
 
 /**
  * Loads all game art. Resolves once every image has loaded or failed, so the first
- * frame already shows the real art instead of flashing the placeholder shapes.
+ * frame already shows the real art.
  */
 export function loadImages(): Promise<void> {
   const pending: Promise<void>[] = [];
@@ -90,25 +90,8 @@ export class Renderer {
       ctx.drawImage(bg, (WORLD_W - w) / 2 + BG_SHIFT_X, 0, w, h);
       return;
     }
-    const wall = ctx.createLinearGradient(0, 0, 0, WORLD_H);
-    wall.addColorStop(0, '#1b1426');
-    wall.addColorStop(0.45, '#2a1f38');
-    wall.addColorStop(0.46, '#3a2f45');
-    wall.addColorStop(1, '#241c2e');
-    ctx.fillStyle = wall;
+    ctx.fillStyle = '#1b1426';
     ctx.fillRect(0, 0, WORLD_W, WORLD_H);
-    // Pillars
-    ctx.fillStyle = '#231a30';
-    for (const x of [150, 270, 390]) ctx.fillRect(x - 12, 0, 24, WORLD_H * 0.46);
-    // Floor tiles
-    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
-    ctx.lineWidth = 1;
-    for (let y = WORLD_H * 0.46; y < WORLD_H; y += 22) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(WORLD_W, y);
-      ctx.stroke();
-    }
   }
 
   /** Faint range borders on the floor with their names, so players can read who stands where. */
@@ -206,6 +189,10 @@ export class Renderer {
     const tint = wrath ? '255,90,60' : '150,80,255';
     ctx.save();
     this.clipFloor();
+    // The aura ends on a vertical line straight down from the Lord, like the range fan.
+    ctx.beginPath();
+    ctx.rect(LORD_X, 0, WORLD_W - LORD_X, WORLD_H);
+    ctx.clip();
     // The gradient is drawn in a squashed space so it stays round on the floor.
     ctx.translate(LORD_X, LORD_Y);
     ctx.scale(1, DEPTH);
@@ -237,42 +224,7 @@ export class Renderer {
         ctx.fillStyle = 'rgba(255,60,60,0.35)';
         ctx.fillRect(LORD_X - w / 2, top, w, h);
       }
-      ctx.restore();
-      return;
     }
-    // Placeholder: throne, body, crown, glowing eyes.
-    ctx.fillStyle = '#120d18';
-    ctx.beginPath();
-    ctx.moveTo(LORD_X - 34, LORD_Y + 40);
-    ctx.lineTo(LORD_X - 30, LORD_Y - 60);
-    ctx.lineTo(LORD_X - 14, LORD_Y - 44);
-    ctx.lineTo(LORD_X, LORD_Y - 72);
-    ctx.lineTo(LORD_X + 14, LORD_Y - 44);
-    ctx.lineTo(LORD_X + 30, LORD_Y - 60);
-    ctx.lineTo(LORD_X + 34, LORD_Y + 40);
-    ctx.closePath();
-    ctx.fill();
-    ctx.fillStyle = hurt ? '#c0405a' : '#5b2a86';
-    ctx.beginPath();
-    ctx.ellipse(LORD_X, LORD_Y + 6, 24, 32, 0, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = hurt ? '#e07a8a' : '#7b3fb0';
-    ctx.beginPath();
-    ctx.arc(LORD_X, LORD_Y - 30, 15, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = '#d8cfc0';
-    for (const s of [-1, 1]) {
-      ctx.beginPath();
-      ctx.moveTo(LORD_X + s * 9, LORD_Y - 40);
-      ctx.lineTo(LORD_X + s * 20, LORD_Y - 58);
-      ctx.lineTo(LORD_X + s * 13, LORD_Y - 38);
-      ctx.fill();
-    }
-    ctx.fillStyle = '#ff9b3d';
-    ctx.shadowColor = '#ff9b3d';
-    ctx.shadowBlur = 8;
-    ctx.fillRect(LORD_X - 7, LORD_Y - 32, 5, 3);
-    ctx.fillRect(LORD_X + 2, LORD_Y - 32, 5, 3);
     ctx.restore();
   }
 
@@ -298,26 +250,6 @@ export class Renderer {
     if (img) {
       const size = r * 3.4;
       ctx.drawImage(img, x - size / 2, y + r - size, size, size);
-    } else {
-      ctx.fillStyle = def.color;
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.strokeStyle = 'rgba(0,0,0,0.5)';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-      ctx.fillStyle = '#1b1426';
-      ctx.font = `bold ${Math.round(r * 1.1)}px system-ui, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(LETTER[h.kind], x, y + 1);
-      if (h.kind === 'champion') {
-        ctx.strokeStyle = 'rgba(255,230,140,0.8)';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.arc(x, y, r + 4, 0, Math.PI * 2);
-        ctx.stroke();
-      }
     }
     if (h.hurt < 0.12) {
       ctx.fillStyle = 'rgba(255,255,255,0.45)';
@@ -328,7 +260,7 @@ export class Renderer {
 
     // Health bar
     const bw = r * 2.2;
-    const by = y - r - (img ? r * 1.6 : 8);
+    const by = y - r - r * 1.6;
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
     ctx.fillRect(x - bw / 2, by, bw, 4);
     ctx.fillStyle = h.kind === 'champion' ? '#ffd166' : '#e05a5a';
@@ -385,11 +317,3 @@ export class Renderer {
     ctx.globalAlpha = 1;
   }
 }
-
-const LETTER: Record<HeroKind, string> = {
-  squire: 'S',
-  archer: 'A',
-  cutpurse: 'C',
-  battlemage: 'M',
-  champion: 'P',
-};

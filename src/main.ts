@@ -43,7 +43,7 @@ function frame(now: number): void {
 }
 ui.update();
 // Start drawing once the art is ready (or after 4 s on a very slow connection),
-// so the placeholder shapes never flash on first load.
+// so nothing pops in on first load.
 const timeout = new Promise<void>((resolve) => setTimeout(resolve, 4000));
 Promise.race([loadImages(), timeout]).then(() =>
   requestAnimationFrame((t) => {

@@ -33,7 +33,7 @@ scripts/slice_sheet.py              zerlegt ein Icon-Sheet in die einzelnen Icon
 
 Kategorien: `characters`, `enemies`, `equipment`, `icons`, `ui`, `environments`.
 
-Das Spiel lädt jedes PNG unter `assets/` automatisch beim Build. Fehlt ein Bild, zeigt es weiter den Platzhalter. Die Dateinamen in `output` sind deshalb fest und dürfen nicht abweichen.
+Das Spiel lädt jedes PNG unter `assets/` automatisch beim Build. Die Dateinamen in `output` sind deshalb fest und dürfen nicht abweichen.
 
 ## Prompt-Datei
 

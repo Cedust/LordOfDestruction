@@ -5,10 +5,10 @@ import { assetUrl } from './assets';
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as T;
 
-/** Upgrade icon from assets/icons/<id>.png, or a lettered placeholder while the image is missing. */
-function iconHtml(id: string, name: string, placeholderClass: string): string {
+/** Upgrade icon from assets/icons/<id>.png. */
+function iconHtml(id: string): string {
   const url = assetUrl(`icons/${id}`);
-  return url ? `<img class="icon" alt="" src="${url}">` : `<span class="icon ${placeholderClass}">${name[0]}</span>`;
+  return url ? `<img class="icon" alt="" src="${url}">` : '<span class="icon"></span>';
 }
 
 /** Human-readable value of the stat an upgrade improves. */
@@ -64,7 +64,7 @@ export class UI {
       const btn = document.createElement('button');
       btn.className = 'upgrade';
       btn.innerHTML = `
-        ${iconHtml(def.id, def.name, 'ph')}
+        ${iconHtml(def.id)}
         <span class="info"><span class="name">${def.name} <span class="lvl"></span></span><span class="desc">${def.desc}</span><span class="stat"></span></span>
         <span class="cost"></span>`;
       btn.addEventListener('click', () => {
@@ -81,7 +81,7 @@ export class UI {
       btn.className = 'upgrade dread';
       btn.dataset.id = def.id;
       btn.innerHTML = `
-        ${iconHtml(def.id, def.name, 'ph dread-ph')}
+        ${iconHtml(def.id)}
         <span class="info"><span class="name">${def.name} <span class="lvl"></span></span><span class="desc">${def.desc}</span></span>
         <span class="cost"></span>`;
       btn.addEventListener('click', () => {
