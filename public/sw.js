@@ -1,5 +1,6 @@
-// Offline support: serve from cache first, refresh the cache in the background.
-const CACHE = 'lod-v1';
+// Offline support: network first so new builds show up right away,
+// falling back to the cache when there is no connection.
+const CACHE = 'lod-v2';
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(['./', './index.html'])).then(() => self.skipWaiting()));
@@ -13,17 +14,18 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
-  if (req.method !== 'GET' || new URL(req.url).origin !== self.location.origin) return;
+  const url = new URL(req.url);
+  if (req.method !== 'GET' || url.origin !== self.location.origin) return;
+  // PR previews live below the main game; leave them to the network.
+  if (url.pathname.includes('/pr-preview/') && !self.registration.scope.includes('/pr-preview/')) return;
   event.respondWith(
-    caches.open(CACHE).then(async (cache) => {
-      const cached = await cache.match(req, { ignoreSearch: true });
-      const network = fetch(req)
+    caches.open(CACHE).then((cache) =>
+      fetch(req)
         .then((res) => {
           if (res.ok) cache.put(req, res.clone());
           return res;
         })
-        .catch(() => cached);
-      return cached || network;
-    }),
+        .catch(() => cache.match(req, { ignoreSearch: true }).then((hit) => hit || Response.error())),
+    ),
   );
 });

@@ -35,3 +35,9 @@ Drop PNG files into `public/assets/` and they replace the placeholder shapes aut
 
 Upgrade icons go into `public/assets/icons/`, named after the upgrade id:
 `vitality.png`, `hide.png`, `regen.png`, `aura.png`, `radius.png`, `thorns.png`, `shockwave.png`, `bloodPact.png`.
+
+## Deployment
+
+- `main` is published to GitHub Pages by `.github/workflows/deploy.yml` (branch `gh-pages`).
+- Every pull request gets a preview at `/pr-preview/pr-<number>/` via `.github/workflows/preview.yml`; the link is posted on the PR and removed when it closes.
+- One-time setup: Settings → Pages → Source "Deploy from a branch", branch `gh-pages`, folder `/ (root)`.
