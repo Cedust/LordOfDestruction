@@ -9,7 +9,11 @@ import {
   PRESTIGE_UPGRADES,
   RUN_UPGRADES,
   SCALE,
+  QUEUE_GAP,
+  RANGES,
   SHOCKWAVE_HITS,
+  SHOCKWAVE_REACH,
+  rangeIndex,
   SPAWN_DIST,
   WAVE_PAUSE,
   dreadForWave,
@@ -18,6 +22,7 @@ import {
   runUpgradeCost,
   type HeroKind,
   type PrestigeId,
+  type RangeId,
   type RunUpgradeId,
 } from './config';
 import { computeStats, type LordStats } from './stats';
@@ -37,6 +42,8 @@ export interface Hero {
   hurt: number;
   /** Walk/attack animation clock. */
   anim: number;
+  /** Index of the spot the hero holds in its range, or -1 while waiting for one. */
+  slot: number;
 }
 
 export type Effect =
@@ -227,11 +234,10 @@ export class Game {
       }
       kinds.push(pick);
     }
-    const n = kinds.length;
     kinds.forEach((kind, i) => {
       const def = HEROES[kind];
       const hpMult = Math.pow(SCALE.hp, wave - 1);
-      const angle = n === 1 ? 0 : -0.55 + (1.1 * i) / (n - 1) + (this.rng() - 0.5) * 0.08;
+      const angle = (this.rng() - 0.5) * 0.9;
       this.heroes.push({
         id: this.nextId++,
         kind,
@@ -244,6 +250,7 @@ export class Game {
         gold: def.gold * Math.pow(SCALE.gold, wave - 1),
         hurt: 99,
         anim: this.rng() * 10,
+        slot: -1,
       });
     });
     this.phase = 'fighting';
@@ -255,16 +262,34 @@ export class Game {
       const def = HEROES[h.kind];
       h.hurt += dt;
       h.anim += dt;
-      if (h.dist > def.stopDist) {
-        h.dist = Math.max(def.stopDist, h.dist - def.speed * dt);
+      const range = RANGES[rangeIndex(def.range)];
+      if (h.slot < 0) h.slot = this.freeSlot(def.range);
+      const target = h.slot >= 0 ? range.dist : range.dist + QUEUE_GAP;
+      if (h.slot >= 0) {
+        // Ease toward the assigned spot's angle while walking in.
+        const want = range.slots[h.slot];
+        h.angle += (want - h.angle) * Math.min(1, dt * 3);
+      }
+      if (h.dist > target) {
+        h.dist = Math.max(target, h.dist - def.speed * dt);
         continue;
       }
+      if (h.slot < 0) continue; // waiting for a free spot
       h.attackTimer -= dt;
       if (h.attackTimer <= 0) {
         h.attackTimer = def.attackInterval;
         this.heroHitsLord(h);
       }
     }
+  }
+
+  /** First spot in the range that no living hero holds, or -1. */
+  private freeSlot(range: RangeId): number {
+    const def = RANGES[rangeIndex(range)];
+    for (let i = 0; i < def.slots.length; i++) {
+      if (!this.heroes.some((o) => o.slot === i && HEROES[o.kind].range === range && o.hp > 0)) return i;
+    }
+    return -1;
   }
 
   private heroHitsLord(h: Hero): void {
@@ -285,8 +310,9 @@ export class Game {
       this.effects.push({ type: 'thorn', x: p.x, y: p.y, t: 0, ttl: 0.35 });
     }
     if (this.stats.shockwaveDamage > 0 && this.run.hitsTaken % SHOCKWAVE_HITS === 0) {
-      this.effects.push({ type: 'ring', x: LORD_X, y: LORD_Y, r: 360, color: '#b06bff', t: 0, ttl: 0.6 });
-      for (const other of this.heroes) this.damageHero(other, this.stats.shockwaveDamage, '#d7b0ff');
+      const edge = RANGES[SHOCKWAVE_REACH].edge;
+      this.effects.push({ type: 'ring', x: LORD_X, y: LORD_Y, r: edge, color: '#b06bff', t: 0, ttl: 0.6 });
+      for (const other of this.heroes) if (other.dist <= edge) this.damageHero(other, this.stats.shockwaveDamage, '#d7b0ff');
     }
   }
 
@@ -297,7 +323,7 @@ export class Game {
   private applyAura(dt: number): void {
     const dps = this.stats.auraDps * this.auraMultiplier();
     for (const h of this.heroes) {
-      if (h.dist > this.stats.auraRadius + HEROES[h.kind].radius) continue;
+      if (h.dist > RANGES[this.stats.auraReach].edge) continue;
       const reduction = h.kind === 'champion' ? CHAMPION_AURA_REDUCTION : 1;
       this.damageHero(h, dps * dt * reduction, null);
     }

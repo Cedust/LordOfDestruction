@@ -1,4 +1,4 @@
-import { HEROES, PRESTIGE_UPGRADES, RUN_UPGRADES, dreadForWave, type PrestigeId, type RunUpgradeId } from './game/config';
+import { HEROES, RANGES, PRESTIGE_UPGRADES, RUN_UPGRADES, dreadForWave, type PrestigeId, type RunUpgradeId } from './game/config';
 import { fmt, type Game } from './game/game';
 import { computeStats, type LordStats } from './game/stats';
 
@@ -16,7 +16,7 @@ function statText(id: RunUpgradeId, s: LordStats): string {
     case 'aura':
       return `${fmt(s.auraDps)} dmg/s`;
     case 'radius':
-      return `reach ${Math.round(s.auraRadius)}`;
+      return `reaches ${RANGES[s.auraReach].name}`;
     case 'thorns':
       return `${Math.round(s.thorns * 100)}% reflected`;
     case 'shockwave':

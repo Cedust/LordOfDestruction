@@ -1,4 +1,4 @@
-import { DEPTH, HEROES, LORD_X, LORD_Y, WORLD_H, WORLD_W, type HeroKind } from './game/config';
+import { DEPTH, HEROES, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W, type HeroKind } from './game/config';
 import { heroPos, type Game, type Hero } from './game/game';
 
 // Images are optional: drop a PNG into public/assets/ with one of these names and it
@@ -36,6 +36,7 @@ export class Renderer {
   draw(game: Game): void {
     const ctx = this.ctx;
     this.drawBackground();
+    this.drawRanges(game);
     this.drawAura(game);
     this.drawLord(game);
     const heroes = [...game.heroes].sort((a, b) => heroPos(a).y - heroPos(b).y);
@@ -76,9 +77,31 @@ export class Renderer {
     }
   }
 
+  /** Faint range borders on the floor with their names, so players can read who stands where. */
+  private drawRanges(game: Game): void {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.lineWidth = 1;
+    let inner = 0;
+    RANGES.forEach((range, i) => {
+      const covered = i <= game.stats.auraReach;
+      ctx.strokeStyle = covered ? 'rgba(190,140,255,0.22)' : 'rgba(255,255,255,0.10)';
+      ctx.beginPath();
+      ctx.ellipse(LORD_X, LORD_Y, range.edge, range.edge * DEPTH, 0, -Math.PI / 2, Math.PI / 2);
+      ctx.stroke();
+      ctx.fillStyle = covered ? 'rgba(210,175,255,0.75)' : 'rgba(255,255,255,0.35)';
+      ctx.font = '600 9px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(range.name.toUpperCase(), LORD_X + (inner + range.edge) / 2 + 8, WORLD_H - 10);
+      inner = range.edge;
+    });
+    ctx.restore();
+  }
+
   private drawAura(game: Game): void {
     const ctx = this.ctx;
-    const r = game.stats.auraRadius;
+    const r = RANGES[game.stats.auraReach].edge;
     const pulse = 1 + Math.sin(game.time * 3) * 0.03;
     const wrath = game.stats.wrath && game.run.lordHp < game.stats.maxHp * 0.5;
     const g = ctx.createRadialGradient(LORD_X, LORD_Y, r * 0.2, LORD_X, LORD_Y, r * pulse);
@@ -156,7 +179,7 @@ export class Renderer {
     const ctx = this.ctx;
     const def = HEROES[h.kind];
     const p = heroPos(h);
-    const walking = h.dist > def.stopDist + 0.5;
+    const walking = h.slot < 0 || h.dist > RANGES[rangeIndex(def.range)].dist + 0.5;
     const bob = walking ? Math.abs(Math.sin(h.anim * 9)) * 3 : 0;
     // A small lunge toward the lord right after a melee attack.
     const lunge = !walking && !def.ranged ? Math.max(0, 1 - (def.attackInterval - h.attackTimer) * 6) * 6 : 0;

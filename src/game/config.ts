@@ -1,5 +1,32 @@
 // All balance numbers live here so they can be tuned in one place.
 
+export type RangeId = 'near' | 'mid' | 'far';
+
+export interface RangeDef {
+  id: RangeId;
+  name: string;
+  /** Distance from the lord where heroes of this range stand. */
+  dist: number;
+  /** Outer edge of the range; the aura covers everything up to this edge. */
+  edge: number;
+  /** Fixed spots, as angles around the lord. */
+  slots: number[];
+}
+
+/** Three fixed ranges. Order matters: index 0 is closest to the lord. */
+export const RANGES: RangeDef[] = [
+  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [-0.62, -0.21, 0.21, 0.62] },
+  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [-0.42, 0, 0.42] },
+  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [-0.36, 0, 0.36] },
+];
+
+/** Heroes without a free spot wait this far behind their range. */
+export const QUEUE_GAP = 30;
+
+export function rangeIndex(id: RangeId): number {
+  return RANGES.findIndex((r) => r.id === id);
+}
+
 export type HeroKind = 'squire' | 'archer' | 'cutpurse' | 'battlemage' | 'champion';
 
 export interface HeroDef {
@@ -10,8 +37,8 @@ export interface HeroDef {
   attackInterval: number;
   /** Walk speed in world units per second. */
   speed: number;
-  /** Distance from the lord at which the hero stops and attacks. */
-  stopDist: number;
+  /** The range the hero fights from. */
+  range: RangeId;
   gold: number;
   /** First wave in which this hero can appear. */
   fromWave: number;
@@ -23,11 +50,11 @@ export interface HeroDef {
 }
 
 export const HEROES: Record<HeroKind, HeroDef> = {
-  squire: { name: 'Squire', hp: 20, damage: 3, attackInterval: 1.2, speed: 70, stopDist: 58, gold: 6, fromWave: 1, weight: 5, ranged: false, color: '#7f9cc7', radius: 13 },
-  archer: { name: 'Archer', hp: 13, damage: 2.4, attackInterval: 1.5, speed: 60, stopDist: 95, gold: 8, fromWave: 3, weight: 3, ranged: true, color: '#7fb07a', radius: 12 },
-  cutpurse: { name: 'Cutpurse', hp: 10, damage: 3.6, attackInterval: 0.7, speed: 110, stopDist: 52, gold: 10, fromWave: 6, weight: 2, ranged: false, color: '#c9a35b', radius: 11 },
-  battlemage: { name: 'Battlemage', hp: 12, damage: 6, attackInterval: 2.6, speed: 55, stopDist: 108, gold: 12, fromWave: 8, weight: 1.5, ranged: true, color: '#6fc3d8', radius: 12 },
-  champion: { name: 'Champion', hp: 180, damage: 7, attackInterval: 1.4, speed: 45, stopDist: 66, gold: 120, fromWave: 10, weight: 0, ranged: false, color: '#f1c75b', radius: 20 },
+  squire: { name: 'Squire', hp: 20, damage: 3, attackInterval: 1.2, speed: 70, range: 'near', gold: 6, fromWave: 1, weight: 5, ranged: false, color: '#7f9cc7', radius: 13 },
+  archer: { name: 'Archer', hp: 13, damage: 2.4, attackInterval: 1.5, speed: 60, range: 'mid', gold: 8, fromWave: 3, weight: 3, ranged: true, color: '#7fb07a', radius: 12 },
+  cutpurse: { name: 'Cutpurse', hp: 10, damage: 3.6, attackInterval: 0.7, speed: 110, range: 'near', gold: 10, fromWave: 6, weight: 2, ranged: false, color: '#c9a35b', radius: 11 },
+  battlemage: { name: 'Battlemage', hp: 12, damage: 6, attackInterval: 2.6, speed: 55, range: 'far', gold: 12, fromWave: 8, weight: 1.5, ranged: true, color: '#6fc3d8', radius: 12 },
+  champion: { name: 'Champion', hp: 180, damage: 7, attackInterval: 1.4, speed: 45, range: 'near', gold: 120, fromWave: 10, weight: 0, ranged: false, color: '#f1c75b', radius: 20 },
 };
 
 export const CHAMPION_EVERY = 10;
@@ -79,13 +106,15 @@ export const RUN_UPGRADES: RunUpgradeDef[] = [
   { id: 'hide', name: 'Hide', desc: 'Reduces damage taken.', baseCost: 15, costGrowth: 1.2, maxLevel: 40 },
   { id: 'regen', name: 'Regeneration', desc: 'Life regained per second.', baseCost: 10, costGrowth: 1.16 },
   { id: 'aura', name: 'Dread Aura', desc: 'Damage per second to heroes inside the aura.', baseCost: 8, costGrowth: 1.15 },
-  { id: 'radius', name: 'Aura Reach', desc: 'The aura reaches further.', baseCost: 25, costGrowth: 1.4, maxLevel: 10 },
+  { id: 'radius', name: 'Aura Reach', desc: 'The aura reaches the next range: Mid, then Far.', baseCost: 120, costGrowth: 7, maxLevel: 2 },
   { id: 'thorns', name: 'Thorns', desc: 'Reflects part of every hit back at the attacker.', baseCost: 20, costGrowth: 1.17 },
-  { id: 'shockwave', name: 'Shockwave', desc: 'Every 10 hits taken, a wave strikes all heroes.', baseCost: 60, costGrowth: 1.18 },
+  { id: 'shockwave', name: 'Shockwave', desc: 'Every 10 hits taken, a wave strikes all heroes in Near and Mid.', baseCost: 60, costGrowth: 1.18 },
   { id: 'bloodPact', name: 'Blood Pact', desc: 'Each slain hero heals you.', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
 ];
 
 export const SHOCKWAVE_HITS = 10;
+/** Shockwave reaches Near and Mid. */
+export const SHOCKWAVE_REACH = 1;
 /** Share of a slain hero's max life dealt to heroes nearby (prestige power). */
 export const CORPSE_BURST_SHARE = 0.15;
 
