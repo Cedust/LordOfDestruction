@@ -1,4 +1,4 @@
-import { BUILDS, HEROES, PACTS, PRESTIGE_UPGRADES, RANGES, RUN_UPGRADES, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
+import { BUILDS, HEROES, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
 import { fmt, type Game } from './game/game';
 import { computeStats, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
@@ -24,7 +24,7 @@ function statText(id: RunUpgradeId, s: LordStats): string {
     case 'regen':
       return `${fmt(s.regen)}/s`;
     case 'aura':
-      return RANGES.map((r, i) => `${r.name} ${fmt(s.auraDps[i])}`).join(' · ') + ' dmg/s';
+      return `${fmt(s.auraDps[1])} dmg/s`;
     case 'thorns':
       return `${Math.round(s.thorns * 100)}% of each hit`;
     case 'lash':
