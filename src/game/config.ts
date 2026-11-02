@@ -15,9 +15,9 @@ export interface RangeDef {
 
 /** Three fixed ranges. Order matters: index 0 is closest to the lord. */
 export const RANGES: RangeDef[] = [
-  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [0.125, 0.375, 0.625, 0.875] },
-  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [0.25, 0.5, 0.75] },
-  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [0.25, 0.5, 0.75] },
+  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [0, 0.33, 0.67, 1] },
+  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [0.17, 0.5, 0.83] },
+  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [0.17, 0.5, 0.83] },
 ];
 
 /** Heroes without a free spot wait this far behind their range. */
@@ -82,7 +82,7 @@ export const FLOOR_Y = 166;
  * is how far down it stands between FIELD_TOP and FIELD_BOTTOM.
  */
 export const FIELD_X = 128;
-export const FIELD_TOP = 176;
+export const FIELD_TOP = 160;
 export const FIELD_BOTTOM = 282;
 export const FIELD_REF_Y = 282;
 /** Stretches the strips so Far ends near the right edge of the screen. */

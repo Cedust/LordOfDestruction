@@ -1,4 +1,4 @@
-import { DEPTH, FLOOR_Y, HEROES, fieldPos, fieldX, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W } from './game/config';
+import { DEPTH, FLOOR_Y, HEROES, fieldX, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W } from './game/config';
 import { heroPos, type Game, type Hero } from './game/game';
 import { assetUrl } from './assets';
 
@@ -145,8 +145,8 @@ export class Renderer {
 
   /**
    * Ranges are painted onto the floor as strips from left to right, starting in front of
-   * the dais stairs and following the perspective of the floor tiles: alternating soft bands for Near, Mid and Far, a faint rune
-   * circle on every fixed spot, and the range names along the bottom.
+   * the dais stairs and following the perspective of the floor tiles: alternating soft
+   * bands for Near, Mid and Far, and the range names along the bottom.
    */
   private drawRanges(game: Game): void {
     const ctx = this.ctx;
@@ -165,15 +165,6 @@ export class Renderer {
       if (i === 0) this.vline(0);
       this.vline(range.edge);
       ctx.setLineDash([]);
-      // Fixed spots.
-      for (const a of range.slots) {
-        const { x, y } = fieldPos(range.dist, a);
-        ctx.strokeStyle = covered ? 'rgba(200,150,255,0.35)' : 'rgba(235,220,255,0.14)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.ellipse(x, y + 10, 11, 4, 0, 0, Math.PI * 2);
-        ctx.stroke();
-      }
       ctx.restore();
       inner = range.edge;
     });

@@ -366,7 +366,7 @@ export class Game {
     kinds.forEach((kind, i) => {
       const def = HEROES[kind];
       const hpMult = Math.pow(SCALE.hp, wave - 1);
-      const angle = 0.1 + this.rng() * 0.8; // lane, see fieldPos
+      const angle = this.rng(); // lane, see fieldPos
       this.heroes.push({
         id: this.nextId++,
         kind,
