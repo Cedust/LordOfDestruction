@@ -4,8 +4,8 @@ name: Archer
 category: enemies
 type: character_sprite
 batch: 02-heroes
-status: draft
-revision: 1
+status: review
+revision: 3
 output: assets/enemies/archer.png
 format: png
 transparency: true
@@ -20,7 +20,7 @@ reference_images:
 
 Game asset for "Lord of Destruction", a browser idle auto-battler. An enemy hero (Archer) who walks in from the right and attacks the dark lord standing on the left of the battlefield.
 
-Art style: stylized 2D cartoon game art with a hand-painted look. Flat colors with soft cel shading, clean bold dark outlines of even weight, chunky readable proportions with a slightly oversized head and hands, simple shapes and few small details, light dark-fantasy mood that stays playful rather than grim or realistic.
+Art style: clean 2D cartoon game art. Thick, smooth, dark outlines around every shape. Flat color areas with at most one soft shadow tone per color. Smooth surfaces: no texture, no grain, no noise, no visible brush strokes, no hatching, no scratches. Few details: no engravings, patterns, filigree, chains, jewelry or fur. Soft, muted, gently desaturated colors. Simple, sturdy shapes with natural heroic proportions, slightly stylized. Light dark-fantasy mood, clear and readable rather than grim or realistic.
 
 Subject: a hooded archer hero drawing a longbow at full tension, focused expression, quiver of arrows on the back.
 
@@ -45,3 +45,5 @@ Do not include any text, letters, numbers, logos, watermark, signature, border o
 ## Changelog
 
 - r1 (2026-11-01): first version.
+- r2 (2026-11-01): calmer, more readable style after Timo rejected the first Lord: no texture, far fewer details, softer muted colors.
+- r3 (2026-11-01): style paragraph aligned with the Lord style reference (thick outlines, natural proportions instead of a big head).

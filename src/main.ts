@@ -12,7 +12,6 @@ function persist(): void {
 }
 game.onPersist = persist;
 
-loadImages();
 const renderer = new Renderer(document.querySelector<HTMLCanvasElement>('#battle')!);
 const SPEEDS = [1, 2, 3];
 const ui = new UI(game, () => {
@@ -43,10 +42,15 @@ function frame(now: number): void {
   requestAnimationFrame(frame);
 }
 ui.update();
-requestAnimationFrame((t) => {
-  last = t;
-  frame(t);
-});
+// Start drawing once the art is ready (or after 4 s on a very slow connection),
+// so nothing pops in on first load.
+const timeout = new Promise<void>((resolve) => setTimeout(resolve, 4000));
+Promise.race([loadImages(), timeout]).then(() =>
+  requestAnimationFrame((t) => {
+    last = t;
+    frame(t);
+  }),
+);
 
 setInterval(persist, 5000);
 document.addEventListener('visibilitychange', () => {

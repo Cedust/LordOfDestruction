@@ -15,9 +15,9 @@ export interface RangeDef {
 
 /** Three fixed ranges. Order matters: index 0 is closest to the lord. */
 export const RANGES: RangeDef[] = [
-  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [-0.62, -0.21, 0.21, 0.62] },
-  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [-0.42, 0, 0.42] },
-  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [-0.36, 0, 0.36] },
+  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [-0.24, 0.53, 1.3, 2.07] },
+  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [0.09, 0.83, 1.57] },
+  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [0.04, 0.48, 0.92] },
 ];
 
 /** Heroes without a free spot wait this far behind their range. */
@@ -68,10 +68,14 @@ export const SCALE = {
 
 export const WORLD_W = 420;
 export const WORLD_H = 300;
-export const LORD_X = 72;
-export const LORD_Y = 195;
+export const LORD_X = 64;
+export const LORD_Y = 190;
 /** Vertical squash of the floor plane, so the battlefield reads as seen from the side. */
-export const DEPTH = 0.45;
+export const DEPTH = 0.5;
+/** Where the floor of the throne room begins; floor markings are not drawn above it. */
+export const FLOOR_Y = 166;
+/** Height of the Lord's chest above LORD_Y, where projectiles hit and numbers pop. */
+export const LORD_CHEST = 55;
 export const SPAWN_DIST = 330;
 export const WAVE_PAUSE = 1.2; // seconds between waves
 

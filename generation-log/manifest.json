@@ -1,14 +1,14 @@
 {
-  "schema": 1,
-  "description": "Generation log for LordOfDestruction image assets. The status in each prompt file is authoritative; this file mirrors it and keeps the history.",
+  "schema": 2,
+  "description": "Generation log for LordOfDestruction image assets. The status in each prompt file is authoritative; this file mirrors it. 'history' records every status change, 'generations' records every generation run with its validation results. See prompts/README.md.",
   "assets": [
     {
       "asset_id": "char_lord",
       "prompt": "prompts/characters/char_lord.md",
       "output": "assets/characters/lord.png",
       "batch": "01-style-anchor",
-      "status": "ready",
-      "revision": 1,
+      "status": "approved",
+      "revision": 4,
       "history": [
         {
           "date": "2026-11-01",
@@ -27,6 +27,195 @@
           "status": "ready",
           "by": "chatgpt",
           "note": "Reset after branch workflow started; active work continues on assets/lord-of-destruction."
+        },
+        {
+          "date": "2026-11-01",
+          "status": "rejected",
+          "by": "timo",
+          "note": "r1 result too busy: too much texture and detail, colors too harsh, poor readability"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: simpler, smoother, softer muted colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "r3: full armor, closed horned helmet, glowing eyes"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "r4: standing, no throne, crimson cape, style reference chosen by Timo (candidate 4 of r3)"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/characters/lord.png after technical and visual checks"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Wir behalten das Bild'"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:20:00Z",
+          "revision": 4,
+          "source": "claude/project-thread-ev1eok",
+          "attempts": 1,
+          "result": "failed",
+          "status_after": "ready",
+          "error": "Prompt integrity violation: the image generation tool received a shortened paraphrase instead of the exact text from the Prompt section. Candidate discarded despite passing technical and visual checks.",
+          "rejected_candidates": [
+            {
+              "attempt": 1,
+              "reason": "workflow: exact prompt transmission could not be verified; generator used a shortened description"
+            }
+          ],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "format": "png",
+              "dimensions": "1024x1024",
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.598,
+              "checkerboard_suspected": false,
+              "content_ok": true,
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format_ok": true,
+              "final_size_ok": true,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Standing, full body, nothing cropped, no throne",
+                  "passed": true,
+                  "note": "Full figure visible, no throne."
+                },
+                {
+                  "check": "Same style as reference image: thick dark outlines, flat muted colors",
+                  "passed": true,
+                  "note": "Thick outlines and flat muted color areas."
+                },
+                {
+                  "check": "Turned toward the right",
+                  "passed": true,
+                  "note": "Body and helmet face right."
+                },
+                {
+                  "check": "Full armor and closed helmet, no visible face or skin",
+                  "passed": true,
+                  "note": "Fully armored with closed helmet."
+                },
+                {
+                  "check": "Muted crimson cape, gold only as thin trim",
+                  "passed": true,
+                  "note": "Muted crimson cape and gold armor edging."
+                },
+                {
+                  "check": "No texture or grain, no ornaments or patterns",
+                  "passed": true,
+                  "note": "No visible grain or decorative ornaments."
+                },
+                {
+                  "check": "Reads clearly at 120 px tall against a dark purple background",
+                  "passed": true,
+                  "note": "Clear silhouette and strong color separation."
+                },
+                {
+                  "check": "Real transparency outside the figure",
+                  "passed": true,
+                  "note": "Transparent alpha channel verified."
+                }
+              ]
+            }
+          },
+          "logged_by": "claude (reported by ChatGPT via Timo)"
+        },
+        {
+          "datetime": "2026-11-01T22:30:00Z",
+          "revision": 4,
+          "source": "claude/project-thread-ev1eok@1792394",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "1024x1024",
+              "final_size": "1024x1024",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.598,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Standing, full body, nothing cropped, no throne",
+                  "passed": true,
+                  "note": "full figure with sword, no throne"
+                },
+                {
+                  "check": "Same style as the reference image: thick dark outlines, flat muted colors",
+                  "passed": true,
+                  "note": "thick dark outlines, flat muted plates"
+                },
+                {
+                  "check": "Turned toward the right",
+                  "passed": true,
+                  "note": "body and helmet turned right"
+                },
+                {
+                  "check": "Full armor and closed helmet, no visible face or skin",
+                  "passed": true,
+                  "note": "closed helmet, only glowing eyes visible"
+                },
+                {
+                  "check": "Muted crimson cape, gold only as thin trim",
+                  "passed": true,
+                  "note": "crimson cape and sash; gold as plate edging (slightly wider than thin, accepted)"
+                },
+                {
+                  "check": "No texture or grain, no ornaments or patterns",
+                  "passed": true,
+                  "note": "smooth plates, no grain or patterns"
+                },
+                {
+                  "check": "Reads clearly at 120 px tall against a dark purple background",
+                  "passed": true,
+                  "note": "checked in-game screenshot on the purple floor"
+                },
+                {
+                  "check": "Real transparency outside the figure",
+                  "passed": true,
+                  "note": "alpha verified by script"
+                }
+              ]
+            }
+          },
+          "note": "Same image as the run at 22:20 that failed on the old strict prompt-integrity rule; re-checked under the new workflow."
         }
       ]
     },
@@ -35,14 +224,98 @@
       "prompt": "prompts/enemies/enemy_squire.md",
       "output": "assets/enemies/squire.png",
       "batch": "02-heroes",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/enemies/squire.png after checks"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:31:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@1e07aad",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "512x512",
+              "final_size": "512x512",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.632,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Faces left",
+                  "passed": true,
+                  "note": "body, face and sword point left"
+                },
+                {
+                  "check": "Full body, feet near the bottom edge",
+                  "passed": true,
+                  "note": "full figure, boots near bottom edge"
+                },
+                {
+                  "check": "Real transparency",
+                  "passed": true,
+                  "note": "verified by script"
+                },
+                {
+                  "check": "Same style as lord.png",
+                  "passed": true,
+                  "note": "same thick outlines and flat shading; face and proportions slightly cuter than the lord, accepted as readable"
+                },
+                {
+                  "check": "Main colors: steel blue tunic, brown leather, silver metal",
+                  "passed": true,
+                  "note": "all present; extra ochre scarf not in prompt, harmless"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -51,14 +324,98 @@
       "prompt": "prompts/enemies/enemy_archer.md",
       "output": "assets/enemies/archer.png",
       "batch": "02-heroes",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/enemies/archer.png after checks"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:40:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@df4b1ac",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "512x512",
+              "final_size": "512x512",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.644,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Faces left",
+                  "passed": true,
+                  "note": "bow and arrow aimed left"
+                },
+                {
+                  "check": "Full body, feet near the bottom edge",
+                  "passed": true,
+                  "note": "full figure, boots near bottom edge"
+                },
+                {
+                  "check": "Real transparency",
+                  "passed": true,
+                  "note": "verified by script"
+                },
+                {
+                  "check": "Same style as lord.png",
+                  "passed": true,
+                  "note": "same outline weight and flat shading"
+                },
+                {
+                  "check": "Main colors: forest green hood and cloak, light brown leather",
+                  "passed": true,
+                  "note": "green hood and cloak, brown leather"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -67,14 +424,98 @@
       "prompt": "prompts/enemies/enemy_cutpurse.md",
       "output": "assets/enemies/cutpurse.png",
       "batch": "02-heroes",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/enemies/cutpurse.png after checks"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:40:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@df4b1ac",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "512x512",
+              "final_size": "512x512",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.669,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Faces left",
+                  "passed": true,
+                  "note": "body and lead dagger point left"
+                },
+                {
+                  "check": "Full body, feet near the bottom edge",
+                  "passed": true,
+                  "note": "full crouched figure"
+                },
+                {
+                  "check": "Real transparency",
+                  "passed": true,
+                  "note": "verified by script after clearing alpha noise (1-8)"
+                },
+                {
+                  "check": "Same style as lord.png",
+                  "passed": true,
+                  "note": "same outline weight and flat shading"
+                },
+                {
+                  "check": "Main colors: mustard ochre scarf and vest, dark brown leather",
+                  "passed": true,
+                  "note": "ochre scarf and vest, brown leather"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -83,14 +524,99 @@
       "prompt": "prompts/enemies/enemy_battlemage.md",
       "output": "assets/enemies/battlemage.png",
       "batch": "02-heroes",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/enemies/battlemage.png after checks"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:40:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@df4b1ac",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "512x512",
+              "final_size": "512x512",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.527,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Faces left",
+                  "passed": true,
+                  "note": "generated facing right; mirrored horizontally by Claude on Timo's instruction"
+                },
+                {
+                  "check": "Full body, feet near the bottom edge",
+                  "passed": true,
+                  "note": "full figure"
+                },
+                {
+                  "check": "Real transparency",
+                  "passed": true,
+                  "note": "verified by script"
+                },
+                {
+                  "check": "Same style as lord.png",
+                  "passed": true,
+                  "note": "same outline weight and flat shading"
+                },
+                {
+                  "check": "Main colors: icy cyan and blue robes, white frost glow",
+                  "passed": true,
+                  "note": "blue robes, icy cyan frost orb"
+                }
+              ]
+            }
+          },
+          "post_processing": "mirrored horizontally (Timo)"
         }
       ]
     },
@@ -99,14 +625,98 @@
       "prompt": "prompts/enemies/enemy_champion.md",
       "output": "assets/enemies/champion.png",
       "batch": "02-heroes",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/enemies/champion.png after checks"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:40:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@df4b1ac",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "768x768",
+              "final_size": "768x768",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.531,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Faces left",
+                  "passed": true,
+                  "note": "stance and sword oriented left"
+                },
+                {
+                  "check": "Full body, feet near the bottom edge",
+                  "passed": true,
+                  "note": "full figure"
+                },
+                {
+                  "check": "Real transparency",
+                  "passed": true,
+                  "note": "verified by script"
+                },
+                {
+                  "check": "Same style as lord.png",
+                  "passed": true,
+                  "note": "same outline weight and flat shading"
+                },
+                {
+                  "check": "Main colors: gold and white armor, red accents",
+                  "passed": true,
+                  "note": "white and gold armor, red plume, cape and shield cross"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -115,14 +725,179 @@
       "prompt": "prompts/environments/env_throne_room.md",
       "output": "assets/environments/throne-room.png",
       "batch": "03-environment",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 4,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "image placed at assets/environments/throne-room.png after checks"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "rejected",
+          "by": "timo",
+          "note": "the stairs leave no room for the Lord to stand"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "r4: large flat dais with exact proportions"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "r4 image placed at assets/environments/throne-room.png after checks; Lord and ranges re-aligned to the dais"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:45:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@72a6b4d",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "1536x1024",
+              "final_size": "1536x1024",
+              "final_size_ok": true,
+              "alpha_channel": false,
+              "transparent_pixel_share": 0.0,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Landscape 1536x1024",
+                  "passed": true,
+                  "note": "1536x1024 by script"
+                },
+                {
+                  "check": "No characters, no throne",
+                  "passed": true,
+                  "note": "empty hall"
+                },
+                {
+                  "check": "Empty platform on the far left",
+                  "passed": true,
+                  "note": "stepped stone platform on the left"
+                },
+                {
+                  "check": "Floor covers lower ~55%",
+                  "passed": true,
+                  "note": "floor starts at about 50% height"
+                },
+                {
+                  "check": "Dark and low-contrast",
+                  "passed": true,
+                  "note": "muted purple stone; braziers and windows warm but calm; checked in-game with lord and squire"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "datetime": "2026-11-01T22:54:39Z",
+          "revision": 4,
+          "source": "claude/project-thread-ev1eok@8549b70",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "1536x1024",
+              "final_size": "1536x1024",
+              "final_size_ok": true,
+              "alpha_channel": false,
+              "transparent_pixel_share": 0.0,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Landscape 1536x1024",
+                  "passed": true,
+                  "note": "1536x1024 by script"
+                },
+                {
+                  "check": "No characters, no throne, nothing on the dais",
+                  "passed": true,
+                  "note": "empty hall, empty dais"
+                },
+                {
+                  "check": "Dais covers the left ~35% with a large flat top surface, front edge at ~63% height",
+                  "passed": true,
+                  "note": "dais to x~600 (39%), top surface 48-63% height"
+                },
+                {
+                  "check": "Steps end at ~72% height; floor begins at ~45% height",
+                  "passed": true,
+                  "note": "steps end at ~73%, floor begins at ~49%"
+                },
+                {
+                  "check": "Middle and right floor open and empty",
+                  "passed": true,
+                  "note": "open tiled floor"
+                },
+                {
+                  "check": "Dark and low-contrast",
+                  "passed": true,
+                  "note": "muted purple stone; checked in-game with Lord on the dais"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -131,14 +906,99 @@
       "prompt": "prompts/icons/icon_vitality.md",
       "output": "assets/icons/vitality.png",
       "batch": "04-power-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 1,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.309,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -147,14 +1007,99 @@
       "prompt": "prompts/icons/icon_hide.md",
       "output": "assets/icons/hide.png",
       "batch": "04-power-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 2,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.301,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -163,14 +1108,99 @@
       "prompt": "prompts/icons/icon_regen.md",
       "output": "assets/icons/regen.png",
       "batch": "04-power-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 3,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.303,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -179,14 +1209,99 @@
       "prompt": "prompts/icons/icon_aura.md",
       "output": "assets/icons/aura.png",
       "batch": "04-power-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 4,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.304,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -195,14 +1310,99 @@
       "prompt": "prompts/icons/icon_radius.md",
       "output": "assets/icons/radius.png",
       "batch": "04-power-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 1,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.306,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -211,14 +1411,99 @@
       "prompt": "prompts/icons/icon_thorns.md",
       "output": "assets/icons/thorns.png",
       "batch": "04-power-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 2,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.304,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -227,14 +1512,99 @@
       "prompt": "prompts/icons/icon_shockwave.md",
       "output": "assets/icons/shockwave.png",
       "batch": "04-power-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 3,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.299,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -243,14 +1613,99 @@
       "prompt": "prompts/icons/icon_blood_pact.md",
       "output": "assets/icons/bloodPact.png",
       "batch": "04-power-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_power_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/power-icons.png cell 4,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.302,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -259,14 +1714,99 @@
       "prompt": "prompts/icons/icon_black_heart.md",
       "output": "assets/icons/blackHeart.png",
       "batch": "05-dread-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 1,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.305,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -275,14 +1815,99 @@
       "prompt": "prompts/icons/icon_malice.md",
       "output": "assets/icons/malice.png",
       "batch": "05-dread-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 2,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.296,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -291,14 +1916,99 @@
       "prompt": "prompts/icons/icon_tithe.md",
       "output": "assets/icons/tithe.png",
       "batch": "05-dread-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 3,1",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.297,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -307,14 +2017,99 @@
       "prompt": "prompts/icons/icon_wrath.md",
       "output": "assets/icons/wrath.png",
       "batch": "05-dread-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 1,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.302,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -323,14 +2118,99 @@
       "prompt": "prompts/icons/icon_corpse_burst.md",
       "output": "assets/icons/corpseBurst.png",
       "batch": "05-dread-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 2,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.371,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -339,14 +2219,249 @@
       "prompt": "prompts/icons/icon_head_start.md",
       "output": "assets/icons/headStart.png",
       "batch": "05-dread-icons",
-      "status": "draft",
-      "revision": 1,
+      "status": "review",
+      "revision": 3,
       "history": [
         {
           "date": "2026-11-01",
           "status": "draft",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r2: shared style updated to simpler, smoother, softer colors"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "draft",
+          "by": "claude",
+          "note": "r3: style paragraph aligned with the Lord style reference"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "style anchor approved; reference assets/characters/lord.png available"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "cut from sheet_dread_icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 3,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "sliced_from": "assets/icons/sheets/dread-icons.png cell 3,2",
+          "validation": {
+            "technical": {
+              "passed": true,
+              "failed": [],
+              "output_path_valid": true,
+              "output_path_matches": true,
+              "format": "png",
+              "format_ok": true,
+              "dimensions": "256x256",
+              "final_size": "256x256",
+              "final_size_ok": true,
+              "alpha_channel": true,
+              "transparent_pixel_share": 0.294,
+              "content_ok": true,
+              "checkerboard_suspected": false,
+              "transparency_ok": true
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "No texture, no fine detail",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "One clear symbol",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Readable at 40 px",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                },
+                {
+                  "check": "Transparent outside the badge",
+                  "passed": true,
+                  "note": "checked on the cut icon at 120 px and 40 px"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "sheet_power_icons",
+      "prompt": "prompts/icons/sheet_power_icons.md",
+      "output": "assets/icons/sheets/power-icons.png",
+      "batch": "04-power-icons",
+      "status": "review",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "created: one sheet instead of single icons (Timo)"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "sheet sliced into icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 1,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "note": "per-icon results in the icon entries"
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Exactly 8 badges in a 4x2 grid, none touching",
+                  "passed": true,
+                  "note": "grid kept; badges sit close to each other but every cell cut cleanly"
+                },
+                {
+                  "check": "Order and symbols match the list",
+                  "passed": true,
+                  "note": "order and symbols match the list"
+                },
+                {
+                  "check": "All badges identical: round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "identical plum badges with orange rim"
+                },
+                {
+                  "check": "No texture, no fine detail, one clear symbol per badge",
+                  "passed": true,
+                  "note": "bold symbols, no texture"
+                },
+                {
+                  "check": "Each icon readable at 40 px",
+                  "passed": true,
+                  "note": "checked at 40 px in the upgrade list"
+                },
+                {
+                  "check": "Transparent outside the badges",
+                  "passed": true,
+                  "note": "alpha 0 outside badges (RGB under it is orange, invisible)"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "asset_id": "sheet_dread_icons",
+      "prompt": "prompts/icons/sheet_dread_icons.md",
+      "output": "assets/icons/sheets/dread-icons.png",
+      "batch": "05-dread-icons",
+      "status": "review",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-01",
+          "status": "ready",
+          "by": "claude",
+          "note": "created: one sheet instead of single icons (Timo)"
+        },
+        {
+          "date": "2026-11-01",
+          "status": "review",
+          "by": "claude",
+          "note": "sheet sliced into icons"
+        }
+      ],
+      "generations": [
+        {
+          "datetime": "2026-11-01T22:46:00Z",
+          "revision": 1,
+          "source": "claude/project-thread-ev1eok@a3eac30",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "note": "per-icon results in the icon entries"
+            },
+            "visual": {
+              "passed": true,
+              "checks": [
+                {
+                  "check": "Exactly 6 badges in a 3x2 grid, none touching",
+                  "passed": true,
+                  "note": "grid kept; badges sit close to each other but every cell cut cleanly"
+                },
+                {
+                  "check": "Order and symbols match the list",
+                  "passed": true,
+                  "note": "order and symbols match the list"
+                },
+                {
+                  "check": "All badges identical: round plum badge with soft orange rim",
+                  "passed": true,
+                  "note": "identical plum badges with orange rim"
+                },
+                {
+                  "check": "No texture, no fine detail, one clear symbol per badge",
+                  "passed": true,
+                  "note": "bold symbols, no texture"
+                },
+                {
+                  "check": "Each icon readable at 40 px",
+                  "passed": true,
+                  "note": "checked at 40 px in the upgrade list"
+                },
+                {
+                  "check": "Transparent outside the badges",
+                  "passed": true,
+                  "note": "alpha 0 outside badges (RGB under it is orange, invisible)"
+                }
+              ]
+            }
+          }
         }
       ]
     }

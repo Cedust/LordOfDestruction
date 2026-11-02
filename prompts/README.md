@@ -1,25 +1,39 @@
 # Image Generation Workflow
 
-Claude schreibt die Prompts, ChatGPT erzeugt daraus die Bilder. Diese Datei ist die verbindliche Arbeitsanweisung für beide.
+Claude schreibt die Prompts und prüft die Ergebnisse, Timo erzeugt die Bilder mit dem Bildgenerator (ChatGPT) und gibt sie frei. Diese Datei ist die verbindliche Arbeitsanweisung.
 
 ## Rollen
 
 | Rolle | Aufgaben | Darf diese Status setzen |
 |---|---|---|
-| Claude (Prompt Engineer) | Prompts schreiben und pflegen, Stil konsistent halten, Prompts im Repo ablegen | `draft`, `ready` |
-| ChatGPT (Image Generation Operator) | Prompts mit Status `ready` lesen, Bilder erzeugen, prüfen, ablegen, Status pflegen, Probleme melden | `generating`, `review`, `approved`, `rejected` |
+| Claude | Prompts schreiben und pflegen, Timo den fertigen Übergabetext geben, Ergebnisse technisch und visuell prüfen, Bilder ablegen, Manifest pflegen | `draft`, `ready`, `review` |
+| Timo | Übergabetext unverändert in den Bildgenerator geben, Referenzbilder anhängen, Ergebnis an Claude schicken, abnehmen oder ablehnen | `approved`, `rejected` |
+| Bildgenerator (ChatGPT) | erzeugt aus dem Übergabetext ein Bild. Braucht keinen Repo-Zugriff | – |
+
+## Ablauf
+
+1. Claude setzt ein Asset auf `ready` und gibt Timo den **Übergabetext**: den Abschnitt `## Prompt` der Prompt-Datei, exakt und vollständig, plus die Liste der Bilder aus `reference_images`, die angehängt werden müssen.
+2. Timo öffnet einen neuen Chat im Bildgenerator, hängt die Referenzbilder an und schickt den Übergabetext unverändert ab. Keine Ergänzungen, keine früheren Bilder aus anderen Chats.
+3. Timo schickt Claude das erzeugte Bild. Mehrere Kandidaten sind erlaubt; Claude prüft jeden.
+4. Claude prüft technisch (Skript) und visuell (jeder Acceptance check einzeln), legt das bestandene Bild unter `output` ab, trägt den Lauf im Manifest ein und setzt `review`. Fällt ein Check durch, bekommt Timo den Grund und erzeugt neu.
+5. Timo nimmt ab (`approved`) oder lehnt ab (`rejected`). Bei `rejected` überarbeitet Claude den Prompt, erhöht `revision` und setzt wieder `ready`.
+
+Der Bildgenerator schreibt Prompts intern um, bevor er zeichnet. Das lässt sich nicht verhindern und ist kein Fehler. Unverändert bedeutet: Der Übergabetext wird genau so abgeschickt, wie Claude ihn liefert. Die Qualität sichern die Prüfungen und Timos Abnahme.
 
 ## Struktur
 
 ```
 prompts/<kategorie>/<asset_id>.md   eine Datei pro Asset (YAML-Frontmatter + Prompt)
 assets/<kategorie>/<datei>.png      fertige Bilder, Pfad steht im Feld output
-generation-log/manifest.json        Übersicht und Verlauf aller Assets
+assets/references/                  Stilvorlagen für reference_images (werden nicht ins Spiel gepackt)
+generation-log/manifest.json        Status-Verlauf und Generierungsprotokoll aller Assets
+scripts/validate_asset.py           technische Prüfung eines Bildes gegen seine Prompt-Datei
+scripts/slice_sheet.py              zerlegt ein Icon-Sheet in die einzelnen Icon-Dateien
 ```
 
 Kategorien: `characters`, `enemies`, `equipment`, `icons`, `ui`, `environments`.
 
-Das Spiel lädt jedes PNG unter `assets/` automatisch beim Build. Fehlt ein Bild, zeigt es weiter den Platzhalter. Die Dateinamen in `output` sind deshalb fest und dürfen nicht abweichen.
+Das Spiel lädt jedes PNG unter `assets/` automatisch beim Build. Die Dateinamen in `output` sind deshalb fest und dürfen nicht abweichen.
 
 ## Prompt-Datei
 
@@ -46,63 +60,131 @@ reference_images:
 Darunter folgen drei Abschnitte:
 
 - `## Prompt`: der vollständige Text für die Bildgenerierung. Nur dieser Abschnitt wird an den Bildgenerator gegeben.
-- `## Acceptance checks`: woran das Ergebnis nach der Generierung geprüft wird.
+- `## Acceptance checks`: die visuellen Prüfungen für jedes erzeugte Bild.
 - `## Changelog`: jede Änderung am Prompt mit Revision und Datum.
+
+## Prompt-Integrität
+
+- Der Übergabetext ist der Abschnitt `## Prompt`, exakt und vollständig. Claude liefert ihn wörtlich aus der Datei.
+- Timo schickt ihn ohne Umformulierung, Kürzung oder Ergänzung ab.
+- Angehängt werden nur die Bilder aus `reference_images`, in der Version aus dem Repo. Ist die Liste leer, wird nichts angehängt.
+- Jeder Lauf wird mit Prompt-Datei, `revision` und Commit im Manifest protokolliert.
+
+## Prüfung
+
+Claude prüft jeden Bildkandidaten in zwei getrennten Schritten. Erst wenn beide vollständig bestanden sind, wird er abgelegt.
+
+### Technische Prüfung (automatisiert)
+
+```
+python3 scripts/validate_asset.py <prompt-datei> <kandidat.png> --resize <output-pfad>
+```
+
+Das Skript skaliert den Kandidaten auf `final_size`, speichert ihn unter dem `output`-Pfad und prüft:
+
+| Prüfung | Bedeutung |
+|---|---|
+| `format_ok` | Datei ist ein PNG |
+| `final_size_ok` | Abmessungen entsprechen `final_size` |
+| `alpha_channel` | PNG hat einen Alpha-Kanal (bei `transparency: true`) |
+| `transparency_ok` | echte Transparenz: Ecken nahezu voll transparent (Alpha ≤ 8, Rauschen wird beim Skalieren entfernt), mindestens 15 % transparente Fläche; bei `transparency: false` vollständig deckend |
+| `checkerboard_suspected` | erkennt ein gemaltes Schachbrettmuster statt echter Transparenz |
+| `content_ok` | das Bild ist nicht leer |
+| `output_path_valid`, `output_path_matches` | Pfad liegt unter `assets/<category>/`, passt zur Kategorie und entspricht exakt `output` |
+
+Das Skript braucht nur Pillow, gibt das Ergebnis als JSON aus und endet mit Exit-Code 0 (bestanden) oder 1 (nicht bestanden). Das JSON wird unverändert als `validation.technical` ins Manifest übernommen.
+
+### Visuelle Prüfung (manuell durch Claude)
+
+- Jeder Eintrag unter `## Acceptance checks` wird einzeln geprüft und mit `passed` und kurzer Begründung festgehalten.
+- Jeder Check ist verpflichtend. Ein einziger nicht bestandener Check verwirft den Kandidaten.
+- Es gibt keine Freigabe bei teilweise bestandenen Checks.
+- Ein Check gilt nur als bestanden, wenn er tatsächlich am Bild geprüft wurde. Nicht prüfbare Checks gelten als nicht bestanden.
+- Für jeden neuen Kandidaten wird die komplette Prüfung wiederholt.
+
+## Icon-Sheets
+
+Icons werden als Sheet erzeugt statt einzeln (`type: icon_sheet`, z. B. `prompts/icons/sheet_power_icons.md`). Das Sheet-Prompt nennt `grid` (Spalten x Zeilen) und `produces` (die Icon-Asset-IDs in Lesereihenfolge).
+
+```
+python3 scripts/slice_sheet.py prompts/icons/sheet_power_icons.md <sheet.png>
+```
+
+Das Skript legt das Sheet unter seinem `output` ab, schneidet jede Zelle am Badge aus, skaliert auf das `final_size` des Icons, speichert unter dessen `output` und prüft jedes Icon technisch. Visuell geprüft werden die Checks des Sheets und die jedes Icons. Status und Manifest-Einträge werden pro Icon geführt; das Sheet bekommt einen eigenen Eintrag. Die Einzel-Prompts der Icons bleiben als Ersatz, falls ein Icon im Sheet nicht gelingt. Sheets (`*/sheets/`) werden nicht ins Spiel gepackt.
 
 ## Status
 
 ```
-draft → ready → generating → review → approved
-                                   ↘ rejected → (Claude überarbeitet) → ready
+draft ──(Claude)──▶ ready ──(Timo erzeugt, Claude prüft)──▶ review ──(Timo)──▶ approved
+                      ▲                                                    │
+                      └────────────(Claude überarbeitet)◀── rejected ◀──(Timo)
 ```
 
-- `draft`: noch nicht freigegeben. Nicht generieren.
-- `ready`: freigegeben. Darf generiert werden.
-- `generating`: ChatGPT arbeitet daran.
-- `review`: Bild liegt im Repo und wartet auf Timos Abnahme.
-- `approved`: abgenommen. Wird nie automatisch neu eingeplant.
-- `rejected`: nicht brauchbar. Grund in `manifest.json` vermerken. Claude überarbeitet den Prompt, erhöht `revision` und setzt wieder `ready`.
+- `draft`: noch nicht freigegeben. Nicht erzeugen.
+- `ready`: freigegeben. Claude liefert den Übergabetext, Timo erzeugt.
+- `review`: Das Bild liegt unter `output`, hat technische und visuelle Prüfung bestanden und wartet auf Timos Abnahme.
+- `approved`: von Timo abgenommen. Wird nie automatisch neu eingeplant.
+- `rejected`: von Timo abgelehnt. Grund in `history`. Claude überarbeitet den Prompt, erhöht `revision` und setzt wieder `ready`.
+- `generating` wird nicht mehr verwendet; alte Einträge im Manifest bleiben erhalten.
 
-Der Status in der Prompt-Datei ist maßgeblich, `manifest.json` spiegelt ihn und hält den Verlauf fest. Beide werden im selben Commit geändert.
+Der Status in der Prompt-Datei ist maßgeblich, `manifest.json` spiegelt ihn. Beide werden im selben Commit geändert.
 
-## Ablauf für ChatGPT
+## Manifest
 
-Vor der Generierung prüfen:
+Jedes Asset hat zwei Listen. Bestehende Einträge werden nie verändert oder gelöscht, nur ergänzt.
 
-1. Steht `status` wirklich auf `ready`?
-2. Ist der Prompt vollständig (Stil, Motiv, Komposition, Perspektive, Transparenz, Größe)?
-3. Existieren alle Dateien aus `reference_images` im Repo?
-4. Ist `output` ein gültiger Pfad unter `assets/` und existiert dort noch keine Datei?
-
-Wenn eine Prüfung scheitert: nicht generieren, Problem im Manifest eintragen und melden.
-
-Generierung:
-
-1. Status auf `generating` setzen.
-2. Referenzbilder anhängen und den Abschnitt `## Prompt` verwenden.
-3. In `generation_size` erzeugen, danach auf `final_size` verkleinern.
-4. Ergebnis gegen `## Acceptance checks` und die technischen Vorgaben prüfen, besonders echte Transparenz (kein gemaltes Schachbrettmuster) und die Blickrichtung.
-5. Bild unter `output` ablegen und Status auf `review` setzen.
-
-Schlägt Generierung oder Upload fehl, bleibt der Status auf `ready` und im Manifest wird ein Eintrag mit `"result": "failed"` und dem Grund ergänzt. Ein erfolgreicher Status wird nur eingetragen, wenn die Datei wirklich im Repo liegt.
-
-## Manifest-Eintrag
+- `history`: jede Statusänderung (`date`, `status`, `by`: `claude` oder `timo`; ältere Einträge auch `chatgpt`, `note`).
+- `generations`: ein Eintrag pro Prüfungslauf, also pro Bild oder Kandidatenserie, die Timo schickt.
 
 ```json
 {
-  "asset_id": "enemy_squire",
-  "prompt": "prompts/enemies/enemy_squire.md",
-  "output": "assets/enemies/squire.png",
-  "batch": "02-heroes",
-  "status": "draft",
-  "revision": 1,
-  "history": [
-    { "date": "2026-11-01", "status": "draft", "by": "claude", "note": "created" }
-  ]
+  "datetime": "2026-11-01T22:30:00Z",
+  "revision": 3,
+  "source": "claude/project-thread-ev1eok@12a2530",
+  "attempts": 2,
+  "result": "passed",
+  "status_after": "review",
+  "error": null,
+  "rejected_candidates": [
+    { "attempt": 1, "reason": "visual: 'No texture or grain' failed, stone texture on armor" }
+  ],
+  "validation": {
+    "technical": { "passed": true, "format": "png", "dimensions": "1024x1024", "alpha_channel": true, "...": "Ausgabe von validate_asset.py" },
+    "visual": {
+      "passed": true,
+      "checks": [
+        { "check": "Looks to the right", "passed": true, "note": "body and helmet turned right" }
+      ]
+    }
+  }
 }
 ```
 
-Jede Statusänderung hängt einen Eintrag an `history` an (`by`: `claude`, `chatgpt` oder `timo`). Bei Fehlschlägen zusätzlich `"result": "failed"` und `note` mit dem Grund.
+`result` ist `passed` oder `failed`. Bei `failed` steht in `error`, warum der Lauf gescheitert ist, und `validation` enthält die Ergebnisse des letzten Kandidaten.
+
+## Style Anchor und Batches
+
+| Batch | Inhalt | Startet wann |
+|---|---|---|
+| `01-style-anchor` | Lord | sofort |
+| `02-heroes` | Squire, Archer, Cutpurse, Battlemage, Champion | nach Freigabe von Batch 01 |
+| `03-environment` | Thronsaal | nach Freigabe von Batch 01 |
+| `04-power-icons` | Icons der Gold-Upgrades (als ein Sheet) | nach Freigabe von Batch 01 |
+| `05-dread-icons` | Icons der Dread-Upgrades (als ein Sheet) | nach Freigabe von Batch 01 |
+
+- Batch `01-style-anchor` muss vollständig generiert und von Timo `approved` sein, bevor ein anderer Batch startet. Claude setzt die abhängigen Prompts erst danach auf `ready`.
+- Für den Lord selbst dient `assets/references/lord_style_reference.png` als Vorlage (von Timo ausgewählt).
+- Der freigegebene Lord unter `assets/characters/lord.png` ist die verbindliche Stilreferenz für alle folgenden Assets.
+- Diese Referenz darf nicht eigenständig durch ein anderes Bild ersetzt werden, auch nicht durch einen besseren Kandidaten.
+- Innerhalb eines Batches werden die Assets nacheinander erzeugt. Jedes Asset bekommt seinen eigenen Lauf und Manifest-Eintrag.
+
+## Bevor Claude einen Übergabetext liefert
+
+1. Steht `status` auf `ready`?
+2. Ist der Abschnitt `## Prompt` vollständig (Stil, Motiv, Komposition, Perspektive, Transparenz, Größe)?
+3. Existieren alle Dateien aus `reference_images` im Repo, und hat Timo sie?
+4. Ist der Batch freigegeben (Batch 01 `approved`, falls es nicht Batch 01 ist)?
+5. Ist `output` ein gültiger Pfad unter `assets/`, an dem noch kein freigegebenes Bild liegt?
 
 ## Regeln
 
@@ -110,20 +192,11 @@ Jede Statusänderung hängt einen Eintrag an `history` an (`by`: `claude`, `chat
 2. Jeder Prompt ist für sich verständlich und verweist nicht auf andere Prompts.
 3. Referenzbilder werden immer mit Repo-Pfad angegeben.
 4. Stil, Transparenz, Format, Perspektive, Komposition und Größe stehen in jedem Prompt.
-5. `output` ist exakt der Pfad, den das Spiel erwartet.
-6. Bestehende Prompts werden nicht ohne Rücksprache mit Timo überschrieben. Änderungen erhöhen `revision` und stehen im Changelog.
+5. `output` ist exakt der Pfad, den das Spiel erwartet. Asset-Pfade werden nicht umbenannt.
+6. Bestehende Prompts werden nicht ohne Rücksprache mit Timo geändert. Änderungen erhöhen `revision` und stehen im Changelog.
 7. Assets mit Status `approved` werden nie automatisch neu eingeplant.
-
-## Batches
-
-| Batch | Inhalt | Hinweis |
-|---|---|---|
-| `01-style-anchor` | Lord | Legt den Stil fest. Alle anderen Prompts nutzen ihn als Referenzbild. |
-| `02-heroes` | Squire, Archer, Cutpurse, Battlemage, Champion | `ready`, sobald der Lord `approved` ist |
-| `03-environment` | Thronsaal | `ready`, sobald der Lord `approved` ist |
-| `04-power-icons` | Icons der Gold-Upgrades | `ready`, sobald der Lord `approved` ist |
-| `05-dread-icons` | Icons der Dread-Upgrades | `ready`, sobald der Lord `approved` ist |
+8. Die Manifest-Historie wird nur ergänzt, nie umgeschrieben.
 
 ## Gemeinsame Stilvorgaben
 
-Alle Prompts verwenden denselben Stilabsatz: cartoony, gemalt, flache Farben mit weichem Cel-Shading, dicke dunkle Outlines, kräftige einfache Formen, leicht Dark Fantasy. Lord und Thronsaal sind dunkel (Lila, Schwarz, Knochenweiß, Glut-Orange), die Helden haben hellere Rollenfarben. Der Lord schaut nach rechts, alle Helden nach links. Icons sitzen alle auf demselben runden lila Badge mit Glut-Rand.
+Alle Prompts verwenden denselben Stilabsatz: einfache, saubere 2D-Cartoon-Grafik, große flache Farbflächen mit höchstens einem weichen Schattenton, dicke gleichmäßige Outlines, keine Textur, sehr wenige Details, weiche gedämpfte Farben, natürliche, leicht stilisierte Proportionen. Lord und Thronsaal sind dunkel, die Helden haben hellere Rollenfarben. Der Lord schaut nach rechts, alle Helden nach links. Icons sitzen alle auf demselben runden Badge.
