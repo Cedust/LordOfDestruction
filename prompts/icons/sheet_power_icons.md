@@ -4,7 +4,7 @@ name: Power Icons Sheet
 category: icons
 type: icon_sheet
 batch: 04-power-icons
-status: review
+status: approved
 revision: 1
 output: assets/icons/sheets/power-icons.png
 format: png

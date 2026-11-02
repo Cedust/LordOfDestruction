@@ -4,7 +4,7 @@ name: Battlemage
 category: enemies
 type: character_sprite
 batch: 02-heroes
-status: review
+status: approved
 revision: 3
 output: assets/enemies/battlemage.png
 format: png
