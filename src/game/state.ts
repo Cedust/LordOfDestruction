@@ -33,6 +33,8 @@ export interface SaveData {
   /** The run in progress, resumed at the start of its current wave. */
   run: RunState | null;
   speed: number;
+  /** Show the life and level bars in percent instead of numbers. */
+  barPercent?: boolean;
 }
 
 export function emptyRunLevels(): RunLevels {

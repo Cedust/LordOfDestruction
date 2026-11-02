@@ -111,6 +111,11 @@ export class UI {
       }
       this.update();
     });
+    $('.bars').addEventListener('click', () => {
+      this.game.save.barPercent = !this.game.save.barPercent;
+      this.game.onPersist();
+      this.update();
+    });
     $('#rise').addEventListener('click', () => {
       this.game.rise();
       this.update();
@@ -197,10 +202,11 @@ export class UI {
 
     const hpPct = Math.max(0, g.run.lordHp / s.maxHp) * 100;
     $('#hp-fill').style.width = `${hpPct}%`;
-    $('#hp-text').textContent = `${fmt(Math.max(0, g.run.lordHp))} / ${fmt(s.maxHp)}`;
+    const pct = g.save.barPercent;
+    $('#hp-text').textContent = pct ? `${Math.floor(hpPct)}%` : `${fmt(Math.max(0, g.run.lordHp))} / ${fmt(s.maxHp)}`;
     const lvl = g.levelProgress();
     $('#level-fill').style.width = `${(lvl.into / lvl.need) * 100}%`;
-    $('#level-text').textContent = `${fmt(Math.floor(lvl.into))} / ${fmt(lvl.need)} XP`;
+    $('#level-text').textContent = pct ? `${Math.floor((lvl.into / lvl.need) * 100)}% XP` : `${fmt(Math.floor(lvl.into))} / ${fmt(lvl.need)} XP`;
     $('#level-num').textContent = String(lvl.level);
     $('#level-box').classList.toggle('flash', g.time - g.levelUpTime < 1.2);
     $('#level-bar').classList.toggle('flash', g.time - g.levelUpTime < 1.2);
