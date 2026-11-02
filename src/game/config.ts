@@ -15,9 +15,9 @@ export interface RangeDef {
 
 /** Three fixed ranges. Order matters: index 0 is closest to the lord. */
 export const RANGES: RangeDef[] = [
-  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [-0.1, 0.45, 1.0, 1.5] },
-  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [-0.05, 0.6, 1.25] },
-  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [-0.04, 0.45, 0.95] },
+  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [-0.24, 0.53, 1.3, 2.07] },
+  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [0.09, 0.83, 1.57] },
+  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [0.04, 0.48, 0.92] },
 ];
 
 /** Heroes without a free spot wait this far behind their range. */

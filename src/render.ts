@@ -9,8 +9,8 @@ import { assetUrl } from './assets';
 const BG_SCALE = 0.32;
 const BG_SHIFT_X = 0;
 const LORD_FEET_DY = 0;
-/** Left border of the drawn field (world x), a little behind the Lord. */
-const FIELD_LEFT = LORD_X - 40;
+/** Left border of the drawn field (world x): the left edge of the screen. */
+const FIELD_LEFT = 0;
 /** Outline of the raised dais in throne-room.png pixels (top surface plus steps). */
 const DAIS_PX: [number, number][] = [[0, 495], [598, 495], [600, 540], [487, 752], [0, 752]];
 
@@ -97,20 +97,33 @@ export class Renderer {
   }
 
   /** Faint range borders on the floor with their names, so players can read who stands where. */
-  /** Clip to the floor so markings never climb the back wall. */
-  private clipFloor(excludeDais = false): void {
+  /**
+   * Clip to the floor so markings never climb the back wall. 'with' adds the whole dais
+   * top up to its back edge (Near and the aura), 'without' leaves the dais out (Mid, Far).
+   */
+  private clipFloor(dais: 'with' | 'without'): void {
     const ctx = this.ctx;
+    const bg = images['throne-room'];
     ctx.beginPath();
     ctx.rect(0, FLOOR_Y, WORLD_W, WORLD_H - FLOOR_Y);
-    const bg = images['throne-room'];
-    if (excludeDais && bg) {
-      // Range markings stay on the open floor; the dais is the Lord's ground.
-      const s = Math.max(WORLD_W / bg.width, WORLD_H / bg.height, BG_SCALE);
-      const x0 = (WORLD_W - bg.width * s) / 2 + BG_SHIFT_X;
+    if (!bg) {
+      ctx.clip();
+      return;
+    }
+    const s = Math.max(WORLD_W / bg.width, WORLD_H / bg.height, BG_SCALE);
+    const x0 = (WORLD_W - bg.width * s) / 2 + BG_SHIFT_X;
+    if (dais === 'with') {
       DAIS_PX.forEach(([px, py], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, x0 + px * s, py * s));
       ctx.closePath();
+      ctx.clip('nonzero');
+    } else {
+      ctx.clip();
+      ctx.beginPath();
+      ctx.rect(0, 0, WORLD_W, WORLD_H);
+      DAIS_PX.forEach(([px, py], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, x0 + px * s, py * s));
+      ctx.closePath();
+      ctx.clip('evenodd');
     }
-    ctx.clip('evenodd');
   }
 
   /** Ring of the battlefield between two radii, squashed onto the floor (clip to the field first). */
@@ -121,7 +134,7 @@ export class Renderer {
     if (r0 > 0) ctx.ellipse(LORD_X, LORD_Y, r0, r0 * DEPTH, 0, Math.PI * 2, 0, true);
   }
 
-  /** The field starts at a vertical line FIELD_LEFT, a little behind the Lord. */
+  /** The field starts at the vertical line FIELD_LEFT. */
   private clipField(): void {
     this.ctx.beginPath();
     this.ctx.rect(FIELD_LEFT, 0, WORLD_W - FIELD_LEFT, WORLD_H);
@@ -139,7 +152,7 @@ export class Renderer {
       const covered = i <= game.stats.auraReach;
       // Near includes the dais the Lord stands on; Mid and Far stay on the open floor.
       ctx.save();
-      this.clipFloor(i > 0);
+      this.clipFloor(i > 0 ? 'without' : 'with');
       this.clipField();
       this.fanPath(inner, range.edge);
       ctx.fillStyle = i % 2 === 0 ? 'rgba(10,6,18,0.20)' : 'rgba(10,6,18,0.06)';
@@ -165,16 +178,6 @@ export class Renderer {
       ctx.restore();
       inner = range.edge;
     });
-    // The field's left border: a straight vertical line behind the Lord.
-    ctx.save();
-    this.clipFloor();
-    ctx.strokeStyle = 'rgba(200,150,255,0.35)';
-    ctx.lineWidth = 1.2;
-    ctx.beginPath();
-    ctx.moveTo(FIELD_LEFT, LORD_Y);
-    ctx.lineTo(FIELD_LEFT, WORLD_H);
-    ctx.stroke();
-    ctx.restore();
 
     // Range names in small pills along the lower edge of the fan, in the middle of each band.
     ctx.save();
@@ -206,7 +209,7 @@ export class Renderer {
     const wrath = game.stats.wrath && game.run.lordHp < game.stats.maxHp * 0.5;
     const tint = wrath ? '255,90,60' : '150,80,255';
     ctx.save();
-    this.clipFloor();
+    this.clipFloor('with');
     // The aura ends on the same vertical line as the field.
     this.clipField();
     // The gradient is drawn in a squashed space so it stays round on the floor.
