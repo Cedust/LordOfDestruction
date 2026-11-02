@@ -200,13 +200,15 @@ export class UI {
     $('#hp-text').textContent = `${fmt(Math.max(0, g.run.lordHp))} / ${fmt(s.maxHp)}`;
     const lvl = g.levelProgress();
     $('#level-fill').style.width = `${(lvl.into / lvl.need) * 100}%`;
-    $('#level-text').textContent = `Level ${lvl.level} · ${fmt(Math.floor(lvl.into))} / ${fmt(lvl.need)} XP`;
+    $('#level-text').textContent = `${fmt(Math.floor(lvl.into))} / ${fmt(lvl.need)} XP`;
+    $('#level-num').textContent = String(lvl.level);
+    $('#level-box').classList.toggle('flash', g.time - g.levelUpTime < 1.2);
     $('#level-bar').classList.toggle('flash', g.time - g.levelUpTime < 1.2);
     const prestige = $<HTMLButtonElement>('#prestige');
     prestige.disabled = !g.canPrestige();
     if (prestige.disabled) this.prestigeArmed = false;
     prestige.classList.toggle('confirm', this.prestigeArmed);
-    prestige.textContent = this.prestigeArmed ? 'Tap to Confirm' : 'Prestige';
+    prestige.textContent = this.prestigeArmed ? 'Confirm?' : 'Prestige';
     const status = $('#status');
     if (g.phase === 'pause') status.textContent = `Wave ${g.run.wave} Approaches…`;
     else if (g.phase === 'fighting') {

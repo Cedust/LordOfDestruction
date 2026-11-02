@@ -203,11 +203,37 @@ button { font: inherit; color: inherit; }
   font-size: 12px; font-weight: 700; text-shadow: 0 1px 2px #000; font-variant-numeric: tabular-nums;
 }
 .prestige-btn {
-  flex: none; padding: 0 14px; border: 1px solid #6a32b8; border-radius: 11px; cursor: pointer;
-  background: var(--panel-2); color: var(--dread); font-weight: 800; font-size: 12px; letter-spacing: .04em;
+  /* Chunky game button: filled, dark outline, light top edge, raised bottom. */
+  position: relative; flex: none; width: 116px; padding: 0 8px; cursor: pointer;
+  border: 2px solid #1a0d26; border-radius: 12px;
+  background: linear-gradient(180deg, #b77cf5 0%, #8a4fd8 45%, #6a32b8 100%);
+  color: #fff; font-weight: 900; font-size: 14px; letter-spacing: .05em; text-transform: uppercase;
+  text-shadow: 0 2px 0 #2a1240;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .35), inset 0 -3px 0 rgba(0, 0, 0, .25), 0 3px 0 #1a0d26;
+  transform: translateY(-1px);
 }
-.prestige-btn.confirm { background: linear-gradient(180deg, #9a5ae8, #6a32b8); color: var(--text); }
-.prestige-btn:disabled { opacity: .4; cursor: default; }
+.prestige-btn:not(:disabled):active {
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .25), inset 0 -1px 0 rgba(0, 0, 0, .25), 0 0 0 #1a0d26;
+}
+.prestige-btn.confirm {
+  background: linear-gradient(180deg, #ffb36b 0%, #e8653a 50%, #b8401f 100%);
+  text-shadow: 0 2px 0 #4a1a0a;
+}
+.prestige-btn:disabled {
+  cursor: default; color: #a99bbd; text-shadow: none;
+  background: linear-gradient(180deg, #4a3d5c, #342a42);
+}
+.level-box {
+  flex: none; width: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 2px solid #1a0d26; border-radius: 12px;
+  background: linear-gradient(180deg, #3d2a57 0%, #2a1d3d 100%);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, .12), inset 0 -3px 0 rgba(0, 0, 0, .3), 0 3px 0 #1a0d26;
+  transform: translateY(-1px); transition: box-shadow .2s;
+}
+.level-box .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); line-height: 1; }
+#level-num { font-size: 22px; font-weight: 900; color: var(--dread); line-height: 1.1; text-shadow: 0 2px 0 #1a0d26; font-variant-numeric: tabular-nums; }
+.level-box.flash { box-shadow: inset 0 2px 0 rgba(255, 255, 255, .12), 0 3px 0 #1a0d26, 0 0 0 2px var(--dread), 0 0 14px var(--dread); }
 .level-gain { color: var(--text); font-weight: 700; margin: 10px 0 0; }
 .level-gain:empty { display: none; }
 .locked-hint { color: #ffb27a; }
