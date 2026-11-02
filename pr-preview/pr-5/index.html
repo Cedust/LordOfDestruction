@@ -8,8 +8,8 @@
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="icon.svg" />
     <title>Lord of Destruction</title>
-    <script type="module" crossorigin src="./assets/index-wIG_Z50b.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-DKTkaaod.css">
+    <script type="module" crossorigin src="./assets/index-BQG-KCRF.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-D_x6u5X6.css">
   </head>
   <body>
     <main id="app">
@@ -47,9 +47,16 @@
         <div id="pacts-list" class="list" hidden>
           <p class="hint" id="pacts-preview"></p>
           <div id="pacts-tree"></div>
-          <button class="reset-pacts">Reset pacts</button>
         </div>
       </section>
+
+      <div id="choose" class="overlay" hidden>
+        <div class="panel">
+          <h1 class="choose-title">Choose your path</h1>
+          <p class="sub">Your first pact decides how heroes die. Spend <span id="choose-sigils"></span> on one of them; more pacts follow with every record.</p>
+          <div id="choose-list" class="list compact"></div>
+        </div>
+      </div>
 
       <div id="fallen" class="overlay" hidden>
         <div class="panel">
