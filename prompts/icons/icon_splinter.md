@@ -4,7 +4,7 @@ name: Splinter Icon
 category: icons
 type: game_icon
 batch: 07-thorn-pact-icons
-status: ready
+status: review
 revision: 1
 output: assets/icons/splinter.png
 format: png

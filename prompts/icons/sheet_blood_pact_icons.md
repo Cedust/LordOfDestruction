@@ -4,7 +4,7 @@ name: Blood Pact Icons Sheet
 category: icons
 type: icon_sheet
 batch: 08-blood-pact-icons
-status: ready
+status: review
 revision: 1
 output: assets/icons/sheets/blood-pact-icons.png
 format: png

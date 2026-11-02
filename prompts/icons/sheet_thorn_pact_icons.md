@@ -4,7 +4,7 @@ name: Thorn Pact Icons Sheet
 category: icons
 type: icon_sheet
 batch: 07-thorn-pact-icons
-status: ready
+status: review
 revision: 1
 output: assets/icons/sheets/thorn-pact-icons.png
 format: png

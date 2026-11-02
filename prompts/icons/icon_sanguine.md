@@ -4,7 +4,7 @@ name: Sanguine Icon
 category: icons
 type: game_icon
 batch: 08-blood-pact-icons
-status: ready
+status: review
 revision: 1
 output: assets/icons/sanguine.png
 format: png

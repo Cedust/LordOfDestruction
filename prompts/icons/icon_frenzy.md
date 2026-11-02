@@ -4,7 +4,7 @@ name: Frenzy Icon
 category: icons
 type: game_icon
 batch: 08-blood-pact-icons
-status: ready
+status: review
 revision: 1
 output: assets/icons/frenzy.png
 format: png

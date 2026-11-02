@@ -4,7 +4,7 @@ name: Extra Icons Sheet
 category: icons
 type: icon_sheet
 batch: 09-extra-icons
-status: ready
+status: review
 revision: 1
 output: assets/icons/sheets/extra-icons.png
 format: png
