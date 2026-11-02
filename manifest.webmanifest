@@ -1,6 +1,7 @@
 {
   "name": "Lord of Destruction",
   "short_name": "Lord of Destruction",
+  "id": "lord-of-destruction",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
