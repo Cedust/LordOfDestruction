@@ -96,15 +96,19 @@ export function fieldX(dist: number, y: number): number {
 }
 
 /**
- * Where a distance is drawn: each range's standing distance lands in the middle of its
- * strip, so the spots line up; in between it is interpolated, outside the field unchanged.
+ * Where a distance is drawn. All three strips are drawn equally wide, whatever their
+ * game distances; each range's standing distance lands in the middle of its strip and
+ * everything in between is interpolated. Beyond Far the distance is drawn unchanged.
  */
-function drawnDist(dist: number): number {
+export function drawnDist(dist: number): number {
+  const total = RANGES[RANGES.length - 1].edge;
+  const w = total / RANGES.length;
   let inner = 0;
-  for (const r of RANGES) {
-    const mid = (inner + r.edge) / 2;
-    if (dist <= r.dist) return inner + ((dist - inner) / (r.dist - inner)) * (mid - inner);
-    if (dist <= r.edge) return mid + ((dist - r.dist) / (r.edge - r.dist)) * (r.edge - mid);
+  for (let i = 0; i < RANGES.length; i++) {
+    const r = RANGES[i];
+    const x0 = i * w;
+    if (dist <= r.dist) return x0 + ((dist - inner) / (r.dist - inner)) * (w / 2);
+    if (dist <= r.edge) return x0 + w / 2 + ((dist - r.dist) / (r.edge - r.dist)) * (w / 2);
     inner = r.edge;
   }
   return dist;

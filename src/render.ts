@@ -1,4 +1,4 @@
-import { DEPTH, FLOOR_Y, HEROES, fieldX, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W } from './game/config';
+import { DEPTH, FLOOR_Y, HEROES, drawnDist, fieldX, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W } from './game/config';
 import { heroPos, type Game, type Hero } from './game/game';
 import { assetUrl } from './assets';
 
@@ -155,7 +155,7 @@ export class Renderer {
       const covered = game.stats.auraDps[i] > 0;
       ctx.save();
       this.clipFloor('without');
-      this.stripPath(inner, range.edge);
+      this.stripPath(drawnDist(inner), drawnDist(range.edge));
       ctx.fillStyle = i % 2 === 0 ? 'rgba(10,6,18,0.20)' : 'rgba(10,6,18,0.06)';
       ctx.fill();
       // Outer border of the band.
@@ -163,7 +163,7 @@ export class Renderer {
       ctx.lineWidth = 1.2;
       ctx.setLineDash(covered ? [] : [3, 5]);
       if (i === 0) this.vline(0);
-      this.vline(range.edge);
+      this.vline(drawnDist(range.edge));
       ctx.setLineDash([]);
       ctx.restore();
       inner = range.edge;
@@ -177,7 +177,7 @@ export class Renderer {
     inner = 0;
     RANGES.forEach((range, i) => {
       const covered = game.stats.auraDps[i] > 0;
-      const mid = (inner + range.edge) / 2;
+      const mid = (drawnDist(inner) + drawnDist(range.edge)) / 2;
       const y = WORLD_H - 9;
       const x = fieldX(mid, y);
       const w = ctx.measureText(range.name.toUpperCase()).width + 10;
@@ -202,7 +202,7 @@ export class Renderer {
     this.clipFloor('without');
     // The aura fills the strips it reaches and fades out towards its far edge, drawn as
     // thin slices so the fade follows the floor perspective.
-    const reach = r * pulse;
+    const reach = drawnDist(r) * pulse;
     const slices = 16;
     for (let i = 0; i < slices; i++) {
       const k = i / slices;
@@ -316,7 +316,7 @@ export class Renderer {
           ctx.lineWidth = 4 * (1 - k) + 1;
           if (e.x === LORD_X && e.y === LORD_Y) {
             // Waves from the Lord sweep across the strips as a vertical front.
-            this.vline(e.r * k);
+            this.vline(drawnDist(e.r * k));
             break;
           }
           ctx.beginPath();
