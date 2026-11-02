@@ -4,7 +4,7 @@ name: Regeneration Icon
 category: icons
 type: game_icon
 batch: 04-power-icons
-status: review
+status: approved
 revision: 3
 output: assets/icons/regen.png
 format: png

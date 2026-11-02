@@ -4,7 +4,7 @@ name: Cutpurse
 category: enemies
 type: character_sprite
 batch: 02-heroes
-status: review
+status: approved
 revision: 3
 output: assets/enemies/cutpurse.png
 format: png

@@ -4,7 +4,7 @@ name: Black Heart Icon
 category: icons
 type: game_icon
 batch: 05-dread-icons
-status: review
+status: approved
 revision: 3
 output: assets/icons/blackHeart.png
 format: png

@@ -224,7 +224,7 @@
       "prompt": "prompts/enemies/enemy_squire.md",
       "output": "assets/enemies/squire.png",
       "batch": "02-heroes",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -256,6 +256,12 @@
           "status": "review",
           "by": "claude",
           "note": "image placed at assets/enemies/squire.png after checks"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -324,7 +330,7 @@
       "prompt": "prompts/enemies/enemy_archer.md",
       "output": "assets/enemies/archer.png",
       "batch": "02-heroes",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -356,6 +362,12 @@
           "status": "review",
           "by": "claude",
           "note": "image placed at assets/enemies/archer.png after checks"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -424,7 +436,7 @@
       "prompt": "prompts/enemies/enemy_cutpurse.md",
       "output": "assets/enemies/cutpurse.png",
       "batch": "02-heroes",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -456,6 +468,12 @@
           "status": "review",
           "by": "claude",
           "note": "image placed at assets/enemies/cutpurse.png after checks"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -524,7 +542,7 @@
       "prompt": "prompts/enemies/enemy_battlemage.md",
       "output": "assets/enemies/battlemage.png",
       "batch": "02-heroes",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -556,6 +574,12 @@
           "status": "review",
           "by": "claude",
           "note": "image placed at assets/enemies/battlemage.png after checks"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -625,7 +649,7 @@
       "prompt": "prompts/enemies/enemy_champion.md",
       "output": "assets/enemies/champion.png",
       "batch": "02-heroes",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -657,6 +681,12 @@
           "status": "review",
           "by": "claude",
           "note": "image placed at assets/enemies/champion.png after checks"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -725,7 +755,7 @@
       "prompt": "prompts/environments/env_throne_room.md",
       "output": "assets/environments/throne-room.png",
       "batch": "03-environment",
-      "status": "review",
+      "status": "approved",
       "revision": 4,
       "history": [
         {
@@ -775,6 +805,12 @@
           "status": "review",
           "by": "claude",
           "note": "r4 image placed at assets/environments/throne-room.png after checks; Lord and ranges re-aligned to the dais"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -906,7 +942,7 @@
       "prompt": "prompts/icons/icon_vitality.md",
       "output": "assets/icons/vitality.png",
       "batch": "04-power-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -938,6 +974,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_power_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -1007,7 +1049,7 @@
       "prompt": "prompts/icons/icon_hide.md",
       "output": "assets/icons/hide.png",
       "batch": "04-power-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -1039,6 +1081,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_power_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -1108,7 +1156,7 @@
       "prompt": "prompts/icons/icon_regen.md",
       "output": "assets/icons/regen.png",
       "batch": "04-power-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -1140,6 +1188,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_power_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -1209,7 +1263,7 @@
       "prompt": "prompts/icons/icon_aura.md",
       "output": "assets/icons/aura.png",
       "batch": "04-power-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -1241,6 +1295,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_power_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -1310,7 +1370,7 @@
       "prompt": "prompts/icons/icon_radius.md",
       "output": "assets/icons/radius.png",
       "batch": "04-power-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -1342,6 +1402,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_power_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -1411,7 +1477,7 @@
       "prompt": "prompts/icons/icon_thorns.md",
       "output": "assets/icons/thorns.png",
       "batch": "04-power-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -1443,6 +1509,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_power_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -1512,7 +1584,7 @@
       "prompt": "prompts/icons/icon_shockwave.md",
       "output": "assets/icons/shockwave.png",
       "batch": "04-power-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -1544,6 +1616,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_power_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -1613,7 +1691,7 @@
       "prompt": "prompts/icons/icon_blood_pact.md",
       "output": "assets/icons/bloodPact.png",
       "batch": "04-power-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -1645,6 +1723,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_power_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -1714,7 +1798,7 @@
       "prompt": "prompts/icons/icon_black_heart.md",
       "output": "assets/icons/blackHeart.png",
       "batch": "05-dread-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -1746,6 +1830,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_dread_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -1815,7 +1905,7 @@
       "prompt": "prompts/icons/icon_malice.md",
       "output": "assets/icons/malice.png",
       "batch": "05-dread-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -1847,6 +1937,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_dread_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -1916,7 +2012,7 @@
       "prompt": "prompts/icons/icon_tithe.md",
       "output": "assets/icons/tithe.png",
       "batch": "05-dread-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -1948,6 +2044,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_dread_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -2017,7 +2119,7 @@
       "prompt": "prompts/icons/icon_wrath.md",
       "output": "assets/icons/wrath.png",
       "batch": "05-dread-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -2049,6 +2151,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_dread_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -2118,7 +2226,7 @@
       "prompt": "prompts/icons/icon_corpse_burst.md",
       "output": "assets/icons/corpseBurst.png",
       "batch": "05-dread-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -2150,6 +2258,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_dread_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -2219,7 +2333,7 @@
       "prompt": "prompts/icons/icon_head_start.md",
       "output": "assets/icons/headStart.png",
       "batch": "05-dread-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 3,
       "history": [
         {
@@ -2251,6 +2365,12 @@
           "status": "review",
           "by": "claude",
           "note": "cut from sheet_dread_icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -2320,7 +2440,7 @@
       "prompt": "prompts/icons/sheet_power_icons.md",
       "output": "assets/icons/sheets/power-icons.png",
       "batch": "04-power-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -2334,6 +2454,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [
@@ -2395,7 +2521,7 @@
       "prompt": "prompts/icons/sheet_dread_icons.md",
       "output": "assets/icons/sheets/dread-icons.png",
       "batch": "05-dread-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -2409,6 +2535,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "approved by Timo"
         }
       ],
       "generations": [

@@ -4,7 +4,7 @@ name: Throne Room
 category: environments
 type: background
 batch: 03-environment
-status: review
+status: approved
 revision: 4
 output: assets/environments/throne-room.png
 format: png
