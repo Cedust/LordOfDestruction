@@ -110,7 +110,7 @@ Icons werden als Sheet erzeugt statt einzeln (`type: icon_sheet`, z. B. `prompts
 python3 scripts/slice_sheet.py prompts/icons/sheet_power_icons.md <sheet.png>
 ```
 
-Das Skript legt das Sheet unter seinem `output` ab, schneidet jede Zelle am Badge aus, skaliert auf das `final_size` des Icons, speichert unter dessen `output` und prüft jedes Icon technisch. Visuell geprüft werden die Checks des Sheets und die jedes Icons. Status und Manifest-Einträge werden pro Icon geführt; das Sheet bekommt einen eigenen Eintrag. Die Einzel-Prompts der Icons bleiben als Ersatz, falls ein Icon im Sheet nicht gelingt. Sheets (`*/sheets/`) werden nicht ins Spiel gepackt.
+Das Skript legt das Sheet unter seinem `output` ab, schneidet jede Zelle am Badge aus, skaliert auf das `final_size` des Icons, speichert unter dessen `output` und prüft jedes Icon technisch. Visuell geprüft werden die Checks des Sheets und die jedes Icons. Status und Manifest-Einträge werden pro Icon geführt; das Sheet bekommt einen eigenen Eintrag. Ab Batch 06 hängt jedes Sheet zusätzlich `assets/icons/sheets/power-icons.png` an, damit das Badge gleich bleibt. Die Einzel-Prompts der Icons bleiben als Ersatz, falls ein Icon im Sheet nicht gelingt. Sheets (`*/sheets/`) werden nicht ins Spiel gepackt.
 
 ## Status
 
@@ -171,6 +171,10 @@ Jedes Asset hat zwei Listen. Bestehende Einträge werden nie verändert oder gel
 | `03-environment` | Thronsaal | nach Freigabe von Batch 01 |
 | `04-power-icons` | Icons der Gold-Upgrades (als ein Sheet) | nach Freigabe von Batch 01 |
 | `05-dread-icons` | Icons der Dread-Upgrades (als ein Sheet) | nach Freigabe von Batch 01 |
+| `06-aura-pact-icons` | Icons der Aura-Pakte und von Gloom (als ein Sheet) | nach Freigabe von Batch 01 |
+| `07-thorn-pact-icons` | Icons der Dornen-Pakte und von Barbs (als ein Sheet) | nach Freigabe von Batch 01 |
+| `08-blood-pact-icons` | Icons der Blut-Pakte und von Sanguine (als ein Sheet) | nach Freigabe von Batch 01 |
+| `09-extra-icons` | Blood Lash, Tremor, Avarice, Dread Harvest (als ein Sheet) | nach Freigabe von Batch 01 |
 
 - Batch `01-style-anchor` muss vollständig generiert und von Timo `approved` sein, bevor ein anderer Batch startet. Claude setzt die abhängigen Prompts erst danach auf `ready`.
 - Für den Lord selbst dient `assets/references/lord_style_reference.png` als Vorlage (von Timo ausgewählt).

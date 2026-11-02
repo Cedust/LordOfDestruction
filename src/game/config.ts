@@ -288,7 +288,7 @@ export interface PactDef {
   requires?: PactId[];
   /** Sigils. */
   cost: number;
-  /** Icon file under assets/icons/, when it differs from the id. */
+  /** Stand-in icon under assets/icons/, used until assets/icons/<id>.png exists. */
   icon?: string;
 }
 
