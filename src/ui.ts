@@ -1,4 +1,4 @@
-import { HEROES, PRESTIGE_UPGRADES, RANGES, RUN_UPGRADES, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
+import { BUILDS, HEROES, PACTS, PRESTIGE_UPGRADES, RANGES, RUN_UPGRADES, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
 import { fmt, type Game } from './game/game';
 import { computeStats, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
@@ -24,11 +24,11 @@ function statText(id: RunUpgradeId, s: LordStats): string {
     case 'regen':
       return `${fmt(s.regen)}/s`;
     case 'aura':
-      return `${fmt(s.auraDps)} dmg/s`;
-    case 'radius':
-      return `reaches ${RANGES[s.auraReach].name}`;
+      return RANGES.map((r, i) => `${r.name} ${fmt(s.auraDps[i])}`).join(' · ') + ' dmg/s';
     case 'thorns':
-      return `${Math.round(s.thorns * 100)}% reflected`;
+      return `${Math.round(s.thorns * 100)}% of each hit`;
+    case 'lash':
+      return `${fmt(s.maxHp * s.lash)} dmg per lash`;
     case 'shockwave':
       return s.shockwaveDamage > 0 ? `${fmt(s.shockwaveDamage)} dmg` : 'locked';
     case 'bloodPact':
@@ -61,6 +61,7 @@ export class UI {
       }),
     );
     $('#speed').addEventListener('click', () => this.onSpeed());
+    this.buildChooser();
     $('#rise').addEventListener('click', () => {
       this.game.rise();
       this.update();
@@ -95,6 +96,24 @@ export class UI {
         <span class="cost"></span>`;
       btn.addEventListener('click', () => {
         if (this.game.buyPrestige(def.id)) this.update();
+      });
+      list.appendChild(btn);
+    }
+  }
+
+  /** Start pact picker, shown while no build is owned (first game, or after a reset). */
+  private buildChooser(): void {
+    const list = $('#choose-list');
+    for (const build of BUILDS) {
+      const pact = PACTS.find((p) => p.branch === build.id && p.tier === 1)!;
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.style.setProperty('--branch', build.color);
+      btn.innerHTML = `
+        ${iconHtml(pact.icon ?? pact.id, pact.name)}
+        <span class="info"><span class="name">${build.name}</span><span class="tag">${build.desc}</span><span class="desc">${pact.desc.replace('Start pact. ', '')}</span></span>`;
+      btn.addEventListener('click', () => {
+        if (this.game.chooseBuild(build.id)) this.update();
       });
       list.appendChild(btn);
     }
@@ -139,11 +158,13 @@ export class UI {
 
     for (const def of RUN_UPGRADES) {
       const btn = this.runButtons.get(def.id)!;
+      btn.hidden = !g.isRunUpgradeAvailable(def.id);
+      if (btn.hidden) continue;
       const level = g.run.levels[def.id];
       const maxed = g.isRunUpgradeMaxed(def.id);
       const cost = g.runUpgradeCost(def.id);
       const next = computeStats({ ...g.run.levels, [def.id]: level + 1 }, g.save.prestige, g.save.pacts);
-      btn.querySelector('.lvl')!.textContent = `Lv ${level}`;
+      btn.querySelector('.lvl')!.textContent = `Lv ${g.runUpgradeLevel(def.id)}`;
       btn.querySelector('.stat')!.textContent = maxed ? statText(def.id, s) + ' (max)' : `${statText(def.id, s)} → ${statText(def.id, next)}`;
       btn.querySelector('.cost')!.textContent = maxed ? 'MAX' : `${fmt(cost)}g`;
       btn.disabled = maxed || g.run.gold < cost || g.phase === 'fallen';
@@ -162,13 +183,16 @@ export class UI {
     for (const tree of this.trees) tree.update();
     const spent = g.sigilsSpent();
     document.querySelectorAll<HTMLButtonElement>('.reset-pacts').forEach((b) => {
-      b.disabled = spent === 0;
+      b.disabled = spent === 0 || g.phase !== 'fallen';
       b.textContent = spent > 0 ? `Reset pacts (+${spent} ${SIGIL})` : 'Reset pacts';
     });
     const nextRecord = (Math.floor(g.save.bestWave / SIGIL_WAVES) + 1) * SIGIL_WAVES;
     const sigilHint = `${g.save.sigils} ${SIGIL} Sigils. Fall at wave ${nextRecord} or later for the next one.`;
     $('#pacts-preview').textContent = sigilHint;
     $('#fallen-sigil-hint').textContent = sigilHint;
+
+    $('#choose').hidden = !(g.phase === 'pause' && !g.hasBuild());
+    $('#choose-sigils').textContent = `${g.save.sigils} ${SIGIL}`;
 
     const overlay = $('#fallen');
     overlay.hidden = g.phase !== 'fallen';
@@ -177,7 +201,7 @@ export class UI {
       $('#fallen-wave').textContent = String(sum.wave);
       $('#fallen-dread-gain').textContent = fmt(sum.dread);
       $('#fallen-sigils').textContent = sum.sigils > 0 ? `+${sum.sigils} ${SIGIL} Sigil${sum.sigils > 1 ? 's' : ''} for the new record` : '';
-      $('#fallen-bonus').textContent = sum.dreadBonus > 0 ? `incl. +${fmt(sum.dreadBonus)} from Bounty` : '';
+      $('#fallen-bonus').textContent = sum.dreadBonus > 0 ? `incl. +${fmt(sum.dreadBonus)} from Dread Harvest` : '';
       $('#fallen-runs').textContent = `Fall ${g.save.runs}`;
       $('#fallen-best').textContent = sum.newBest ? 'A new record!' : `Best: wave ${sum.bestWave}`;
       $('#fallen-total').textContent = fmt(g.save.dread);

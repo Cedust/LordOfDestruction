@@ -101,16 +101,28 @@ button { font: inherit; color: inherit; }
 
 /* Dark Pacts skill tree */
 .panel h2 { margin: 16px 0 2px; font-size: 18px; color: var(--dread); }
-.tree { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
-.branch { display: flex; flex-direction: column; align-items: stretch; gap: 14px; position: relative; min-width: 0; }
-/* the line that links the nodes of a branch */
-.branch::before {
-  content: ''; z-index: 0; position: absolute; left: 50%; top: 40px; bottom: 30px; width: 3px; margin-left: -1.5px;
-  background: color-mix(in srgb, var(--branch) 35%, transparent); border-radius: 2px;
+.branch-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; }
+.branch-tab {
+  display: flex; flex-direction: column; align-items: center; padding: 6px 4px; cursor: pointer;
+  background: var(--panel); border: 2px solid var(--line); border-radius: 10px; min-width: 0;
 }
-.branch-head { display: flex; flex-direction: column; align-items: center; text-align: center; min-height: 34px; }
+.branch-tab.active { border-color: var(--branch); background: var(--panel-2); }
 .branch-name { font-weight: 800; font-size: 14px; color: var(--branch); text-transform: uppercase; letter-spacing: .06em; }
-.branch-desc { font-size: 11px; color: var(--muted); }
+.branch-desc { font-size: 11px; color: var(--muted); text-align: center; }
+.tree { display: flex; flex-direction: column; gap: 4px; margin: 4px 0 8px; position: relative; }
+.tree[hidden] { display: none; }
+.tier { display: flex; flex-direction: column; align-items: stretch; position: relative; padding-top: 14px; }
+.tier + .tier::before {
+  /* link from the tier above */
+  content: ''; position: absolute; left: 50%; top: -4px; height: 18px; width: 3px; margin-left: -1.5px;
+  background: color-mix(in srgb, var(--branch) 45%, transparent); border-radius: 2px;
+}
+.tier-name {
+  position: absolute; top: 0; left: 2px; font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--muted);
+}
+.tier-nodes { display: flex; gap: 6px; justify-content: center; }
+.tier-nodes .node { flex: 1; max-width: 160px; }
 .node {
   position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px;
   background: var(--panel); border: 2px solid var(--line); border-radius: 12px; padding: 6px 4px; cursor: pointer; min-width: 0; z-index: 1;
@@ -126,8 +138,8 @@ button { font: inherit; color: inherit; }
 .node.locked .node-icon { filter: grayscale(1); }
 .node.owned { border-color: var(--branch); }
 .node.owned .node-lvl { color: var(--branch); }
-.node.ready { border-color: #5c4680; box-shadow: 0 0 0 1px var(--dread), 0 0 10px -2px var(--dread); }
-.node.ready .node-lvl { color: var(--dread); font-weight: 700; }
+.node.ready { border-color: #5c4680; box-shadow: 0 0 0 1px var(--sigil), 0 0 10px -2px var(--sigil); }
+.node.ready .node-lvl { color: var(--sigil); font-weight: 700; }
 .node.selected { background: var(--panel-2); outline: 2px solid var(--text); outline-offset: 1px; }
 .node-detail {
   display: flex; align-items: center; gap: 10px; text-align: left; margin: 4px 0 8px;
@@ -165,4 +177,13 @@ button { font: inherit; color: inherit; }
   display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px;
   background: #4a3560; color: var(--text); border: 2px solid #c98a5a; border-radius: 50%;
 }
-.branch-head { min-height: 44px; }
+.upgrade[hidden], #choose[hidden] { display: none; }
+.choose-title { color: var(--dread) !important; }
+.choice {
+  display: flex; align-items: center; gap: 12px; text-align: left; width: 100%; cursor: pointer;
+  background: var(--panel-2); border: 2px solid var(--branch); border-radius: 12px; padding: 12px;
+}
+.choice:active { transform: scale(.98); }
+.choice .icon { width: 52px; height: 52px; }
+.choice .name { color: var(--branch); font-size: 17px; }
+.tag { font-size: 12px; font-weight: 700; color: var(--text); }

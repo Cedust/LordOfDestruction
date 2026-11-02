@@ -1,4 +1,4 @@
-import { PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_WAVES, type PactId, type PrestigeId, type RunUpgradeId } from './config';
+import { PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_WAVES, START_SIGILS, type PactId, type PrestigeId, type RunUpgradeId } from './config';
 
 export type RunLevels = Record<RunUpgradeId, number>;
 export type PrestigeLevels = Record<PrestigeId, number>;
@@ -10,10 +10,8 @@ export interface RunState {
   levels: RunLevels;
   lordHp: number;
   hitsTaken: number;
-  /** How often Second Wind saved the lord this run. */
-  secondWinds?: number;
-  /** Last wave in which Martyrdom went off. */
-  martyrdomWave?: number;
+  /** Blood Moon shield. */
+  shield?: number;
 }
 
 export interface SaveData {
@@ -24,6 +22,8 @@ export interface SaveData {
   prestige: PrestigeLevels;
   sigils: number;
   pacts: PactLevels;
+  /** Version of the pact tree the save was made with. */
+  treeVersion?: number;
   /** The run in progress, resumed at the start of its current wave. */
   run: RunState | null;
   speed: number;
@@ -42,8 +42,11 @@ export function emptyPacts(): PactLevels {
 }
 
 export function newSave(): SaveData {
-  return { version: 1, dread: 0, bestWave: 0, runs: 0, prestige: emptyPrestige(), sigils: 0, pacts: emptyPacts(), run: null, speed: 1 };
+  return { version: 1, dread: 0, bestWave: 0, runs: 0, prestige: emptyPrestige(), sigils: START_SIGILS, pacts: emptyPacts(), treeVersion: TREE_VERSION, run: null, speed: 1 };
 }
+
+/** Bumped whenever the pact tree changes; older trees are refunded in Sigils. */
+export const TREE_VERSION = 2;
 
 /** Dread that saves from before the skill tree spent on what are now pacts. */
 const OLD_DREAD_UNLOCKS: Record<string, number> = { wrath: 8, corpseBurst: 12 };
@@ -64,9 +67,15 @@ export function loadSave(): SaveData {
     const base = newSave();
     const oldPrestige = (data.prestige ?? {}) as Record<string, number>;
     if (data.pacts === undefined) {
-      // Save from before the skill tree: refund old Dread unlocks, grant Sigils for the record so far.
+      // Save from before the skill tree: refund the old Dread unlocks.
       for (const [id, cost] of Object.entries(OLD_DREAD_UNLOCKS)) data.dread += (oldPrestige[id] ?? 0) * cost;
-      data.sigils = Math.floor((data.bestWave ?? 0) / SIGIL_WAVES);
+    }
+    if (data.treeVersion !== TREE_VERSION) {
+      // Older or no tree: start the new tree fresh with every Sigil the record has earned.
+      data.pacts = emptyPacts();
+      data.sigils = START_SIGILS + Math.floor((data.bestWave ?? 0) / SIGIL_WAVES);
+      data.treeVersion = TREE_VERSION;
+      data.run = null;
     }
     return {
       ...base,

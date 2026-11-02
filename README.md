@@ -3,7 +3,7 @@
 An idle auto-battler for desktop and mobile browsers. You are the Lord of Destruction: you never strike yourself.
 Waves of heroes storm your throne room and break against your dark powers. When you fall, you rise again stronger.
 
-Falling ends the run and pays two currencies: **Dread** (by the wave reached) buys levelled permanent upgrades, and **Sigils** (one for every 10 waves of a new record) buy pacts in the **Dark Pacts** skill tree. The tree has three branches, Dread (aura), Spite (thorns and triggers) and Blood (survival and spoils); each pact needs the one above it, and the tree can be reset for a full refund.
+Every game starts with one Sigil for a **start pact** that picks a build: **Aura** (steady damage in Near, Mid and Far), **Thorns** (every hit you take strikes back) or **Blood** (Blood Lash executes the weakest hero, paid with your life). Falling ends the run and pays two currencies: **Dread** (by the wave reached) buys permanent upgrades that only raise numbers, and **Sigils** (one for every 10 waves of a new record) buy pacts in the **Dark Pacts** skill tree, which change the rules of a build. The tree can be reset between runs for a full refund.
 
 - Offline single player, no offline progression (a hidden tab simply pauses)
 - Installable as a PWA, saves in the browser (localStorage)
