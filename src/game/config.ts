@@ -9,15 +9,15 @@ export interface RangeDef {
   dist: number;
   /** Outer edge of the range; the aura covers everything up to this edge. */
   edge: number;
-  /** Fixed spots, as angles around the lord. */
+  /** Fixed spots as lanes from the top (0) to the bottom (1) of the floor. */
   slots: number[];
 }
 
 /** Three fixed ranges. Order matters: index 0 is closest to the lord. */
 export const RANGES: RangeDef[] = [
-  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [-0.24, 0.53, 1.3, 2.07] },
-  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [0.09, 0.83, 1.57] },
-  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [0.04, 0.48, 0.92] },
+  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [0, 0.33, 0.67, 1] },
+  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [0.17, 0.5, 0.83] },
+  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [0.17, 0.5, 0.83] },
 ];
 
 /** Heroes without a free spot wait this far behind their range. */
@@ -74,6 +74,52 @@ export const LORD_Y = 190;
 export const DEPTH = 0.5;
 /** Where the floor of the throne room begins; floor markings are not drawn above it. */
 export const FLOOR_Y = 166;
+/**
+ * Ranges are strips on the floor, from left to right, starting in front of the dais
+ * stairs. Their borders follow the perspective of the floor tiles in throne-room.png:
+ * straight lines that meet in a vanishing point (FIELD_VP_X, FIELD_VP_Y) above the hall.
+ * A hero's distance is measured along the row FIELD_REF_Y (FIELD_X + dist * FIELD_SCALE there); its lane
+ * is how far down it stands between FIELD_TOP and FIELD_BOTTOM.
+ */
+export const FIELD_X = 128;
+export const FIELD_TOP = 160;
+export const FIELD_BOTTOM = 282;
+export const FIELD_REF_Y = 282;
+/** Stretches the strips so Far ends near the right edge of the screen. */
+export const FIELD_SCALE = 1.2;
+export const FIELD_VP_X = 225;
+export const FIELD_VP_Y = 2;
+
+/** World x of the line `dist` from the field's left border, at height y. */
+export function fieldX(dist: number, y: number): number {
+  return FIELD_VP_X + (FIELD_X + dist * FIELD_SCALE - FIELD_VP_X) * ((y - FIELD_VP_Y) / (FIELD_REF_Y - FIELD_VP_Y));
+}
+
+/**
+ * Where a distance is drawn. All three strips are drawn equally wide, whatever their
+ * game distances; each range's standing distance lands in the middle of its strip and
+ * everything in between is interpolated. Beyond Far the distance is drawn unchanged.
+ */
+export function drawnDist(dist: number): number {
+  const total = RANGES[RANGES.length - 1].edge;
+  const w = total / RANGES.length;
+  let inner = 0;
+  for (let i = 0; i < RANGES.length; i++) {
+    const r = RANGES[i];
+    const x0 = i * w;
+    if (dist <= r.dist) return x0 + ((dist - inner) / (r.dist - inner)) * (w / 2);
+    if (dist <= r.edge) return x0 + w / 2 + ((dist - r.dist) / (r.edge - r.dist)) * (w / 2);
+    inner = r.edge;
+  }
+  return dist;
+}
+
+export function fieldPos(dist: number, lane: number): { x: number; y: number } {
+  const l = Math.min(1, Math.max(0, lane));
+  const y = FIELD_TOP + l * (FIELD_BOTTOM - FIELD_TOP);
+  return { x: fieldX(drawnDist(dist), y), y };
+}
+
 /** Height of the Lord's chest above LORD_Y, where projectiles hit and numbers pop. */
 export const LORD_CHEST = 55;
 export const SPAWN_DIST = 330;

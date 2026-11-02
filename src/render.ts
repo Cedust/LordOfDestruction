@@ -1,4 +1,4 @@
-import { DEPTH, FLOOR_Y, HEROES, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W } from './game/config';
+import { DEPTH, FLOOR_Y, HEROES, drawnDist, fieldX, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W } from './game/config';
 import { heroPos, type Game, type Hero } from './game/game';
 import { assetUrl } from './assets';
 
@@ -9,8 +9,6 @@ import { assetUrl } from './assets';
 const BG_SCALE = 0.32;
 const BG_SHIFT_X = 0;
 const LORD_FEET_DY = 0;
-/** Left border of the drawn field (world x): the left edge of the screen. */
-const FIELD_LEFT = 0;
 /** Outline of the raised dais in throne-room.png pixels (top surface plus steps). */
 const DAIS_PX: [number, number][] = [[0, 495], [598, 495], [600, 540], [487, 752], [0, 752]];
 
@@ -126,60 +124,52 @@ export class Renderer {
     }
   }
 
-  /** Ring of the battlefield between two radii, squashed onto the floor (clip to the field first). */
-  private fanPath(r0: number, r1: number): void {
+  /** Strip of the floor between two distances, following the floor perspective (see fieldX). */
+  private stripPath(d0: number, d1: number): void {
     const ctx = this.ctx;
     ctx.beginPath();
-    ctx.ellipse(LORD_X, LORD_Y, r1, r1 * DEPTH, 0, 0, Math.PI * 2);
-    if (r0 > 0) ctx.ellipse(LORD_X, LORD_Y, r0, r0 * DEPTH, 0, Math.PI * 2, 0, true);
+    ctx.moveTo(fieldX(d0, FLOOR_Y), FLOOR_Y);
+    ctx.lineTo(fieldX(d1, FLOOR_Y), FLOOR_Y);
+    ctx.lineTo(fieldX(d1, WORLD_H), WORLD_H);
+    ctx.lineTo(fieldX(d0, WORLD_H), WORLD_H);
+    ctx.closePath();
   }
 
-  /** The field starts at the vertical line FIELD_LEFT. */
-  private clipField(): void {
+  /** Border line across the floor at a distance, following the floor perspective. */
+  private vline(d: number): void {
     this.ctx.beginPath();
-    this.ctx.rect(FIELD_LEFT, 0, WORLD_W - FIELD_LEFT, WORLD_H);
-    this.ctx.clip();
+    this.ctx.moveTo(fieldX(d, FLOOR_Y), FLOOR_Y);
+    this.ctx.lineTo(fieldX(d, WORLD_H), WORLD_H);
+    this.ctx.stroke();
   }
 
   /**
-   * Ranges are painted onto the floor: alternating soft bands for Near, Mid and Far,
-   * a faint rune circle on every fixed spot, and the range names along the bottom.
+   * Ranges are painted onto the floor as strips from left to right, starting in front of
+   * the dais stairs and following the perspective of the floor tiles: alternating soft
+   * bands for Near, Mid and Far, and the range names along the bottom.
    */
   private drawRanges(game: Game): void {
     const ctx = this.ctx;
     let inner = 0;
     RANGES.forEach((range, i) => {
       const covered = game.stats.auraDps[i] > 0;
-      // Near includes the dais the Lord stands on; Mid and Far stay on the open floor.
       ctx.save();
-      this.clipFloor(i > 0 ? 'without' : 'with');
-      this.clipField();
-      this.fanPath(inner, range.edge);
+      this.clipFloor('without');
+      this.stripPath(drawnDist(inner), drawnDist(range.edge));
       ctx.fillStyle = i % 2 === 0 ? 'rgba(10,6,18,0.20)' : 'rgba(10,6,18,0.06)';
       ctx.fill();
       // Outer border of the band.
       ctx.strokeStyle = covered ? 'rgba(200,150,255,0.45)' : 'rgba(235,220,255,0.18)';
       ctx.lineWidth = 1.2;
       ctx.setLineDash(covered ? [] : [3, 5]);
-      ctx.beginPath();
-      ctx.ellipse(LORD_X, LORD_Y, range.edge, range.edge * DEPTH, 0, 0, Math.PI * 2);
-      ctx.stroke();
+      if (i === 0) this.vline(0);
+      this.vline(drawnDist(range.edge));
       ctx.setLineDash([]);
-      // Fixed spots.
-      for (const a of range.slots) {
-        const x = LORD_X + Math.cos(a) * range.dist;
-        const y = LORD_Y + Math.sin(a) * range.dist * DEPTH;
-        ctx.strokeStyle = covered ? 'rgba(200,150,255,0.35)' : 'rgba(235,220,255,0.14)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.ellipse(x, y + 10, 11, 4, 0, 0, Math.PI * 2);
-        ctx.stroke();
-      }
       ctx.restore();
       inner = range.edge;
     });
 
-    // Range names in small pills along the lower edge of the fan, in the middle of each band.
+    // Range names in small pills along the bottom, in the middle of each band.
     ctx.save();
     ctx.font = '700 8px system-ui, sans-serif';
     ctx.textAlign = 'center';
@@ -187,9 +177,9 @@ export class Renderer {
     inner = 0;
     RANGES.forEach((range, i) => {
       const covered = game.stats.auraDps[i] > 0;
-      const mid = (inner + range.edge) / 2;
-      const x = FIELD_LEFT + 24;
-      const y = Math.min(WORLD_H - 9, LORD_Y + mid * DEPTH);
+      const mid = (drawnDist(inner) + drawnDist(range.edge)) / 2;
+      const y = WORLD_H - 9;
+      const x = fieldX(mid, y);
       const w = ctx.measureText(range.name.toUpperCase()).width + 10;
       ctx.fillStyle = 'rgba(16,10,26,0.65)';
       ctx.beginPath();
@@ -209,20 +199,18 @@ export class Renderer {
     const pulse = 1 + Math.sin(game.time * 3) * 0.03;
     const tint = '150,80,255';
     ctx.save();
-    this.clipFloor('with');
-    // The aura ends on the same vertical line as the field.
-    this.clipField();
-    // The gradient is drawn in a squashed space so it stays round on the floor.
-    ctx.translate(LORD_X, LORD_Y);
-    ctx.scale(1, DEPTH);
-    const g = ctx.createRadialGradient(0, 0, r * 0.15, 0, 0, r * pulse);
-    g.addColorStop(0, `rgba(${tint},0.30)`);
-    g.addColorStop(0.8, `rgba(${tint},0.14)`);
-    g.addColorStop(1, `rgba(${tint},0)`);
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(0, 0, r * pulse, 0, Math.PI * 2);
-    ctx.fill();
+    this.clipFloor('without');
+    // The aura fills the strips it reaches and fades out towards its far edge, drawn as
+    // thin slices so the fade follows the floor perspective.
+    const reach = drawnDist(r) * pulse;
+    const slices = 16;
+    for (let i = 0; i < slices; i++) {
+      const k = i / slices;
+      const alpha = k < 0.8 ? 0.3 - (0.16 * k) / 0.8 : 0.14 * (1 - (k - 0.8) / 0.2);
+      ctx.fillStyle = `rgba(${tint},${alpha.toFixed(3)})`;
+      this.stripPath(reach * k, reach * (k + 1 / slices) + 0.3);
+      ctx.fill();
+    }
     ctx.restore();
   }
 
@@ -326,6 +314,11 @@ export class Renderer {
         case 'ring':
           ctx.strokeStyle = e.color;
           ctx.lineWidth = 4 * (1 - k) + 1;
+          if (e.x === LORD_X && e.y === LORD_Y) {
+            // Waves from the Lord sweep across the strips as a vertical front.
+            this.vline(drawnDist(e.r * k));
+            break;
+          }
           ctx.beginPath();
           ctx.ellipse(e.x, e.y, e.r * k, e.r * k * DEPTH, 0, 0, Math.PI * 2);
           ctx.stroke();

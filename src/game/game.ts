@@ -4,7 +4,6 @@ import {
   BLOOD_MOON_SHIELD,
   CHAMPION_AURA_REDUCTION,
   CHAMPION_EVERY,
-  DEPTH,
   DESPAIR_BELOW,
   DOOM_MAX,
   DOOM_PER_SECOND,
@@ -52,6 +51,7 @@ import {
 } from './config';
 import { computeStats, powerLevel, type LordStats } from './stats';
 import { emptyPacts, emptyRunLevels, type RunState, type SaveData } from './state';
+import { fieldPos } from './config';
 
 export interface Hero {
   id: number;
@@ -97,7 +97,7 @@ export interface RunSummary {
 }
 
 export function heroPos(h: Hero): { x: number; y: number } {
-  return { x: LORD_X + Math.cos(h.angle) * h.dist, y: LORD_Y + Math.sin(h.angle) * h.dist * DEPTH };
+  return fieldPos(h.dist, h.angle);
 }
 
 /** Range a hero stands in (0 Near .. 2 Far), or -1 while still outside the field. */
@@ -366,7 +366,7 @@ export class Game {
     kinds.forEach((kind, i) => {
       const def = HEROES[kind];
       const hpMult = Math.pow(SCALE.hp, wave - 1);
-      const angle = 0.45 + (this.rng() - 0.5) * 1.1;
+      const angle = this.rng(); // lane, see fieldPos
       this.heroes.push({
         id: this.nextId++,
         kind,
