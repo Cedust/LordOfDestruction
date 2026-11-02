@@ -255,7 +255,7 @@ const BLOOD3: PactId[] = ['frenzy', 'transfusion'];
 
 /** Listed branch by branch, each from start pact to capstone. */
 export const PACTS: PactDef[] = [
-  { id: 'pactAura', name: 'Dread Aura', desc: 'Dread seeps from you into every range.', effect: 'Unlocks Dread Aura', branch: 'aura', tier: 1, cost: 1, icon: 'aura' },
+  { id: 'pactAura', name: 'Dread Aura', desc: 'Every hero in the hall takes damage over time.', effect: 'Unlocks Dread Aura', branch: 'aura', tier: 1, cost: 1, icon: 'aura' },
   { id: 'withering', name: 'Withering', desc: 'Heroes in your aura lose their strength.', effect: '−25% hero damage in the aura', branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1 },
   { id: 'grasp', name: 'Grasp', desc: 'Your aura weighs on every swing.', effect: 'Heroes in the aura attack 30% slower', branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1 },
   { id: 'longShadow', name: 'Long Shadow', desc: 'Your shadow stretches across the hall.', effect: '+60% aura damage in Mid and Far', branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1, icon: 'radius' },
@@ -264,14 +264,14 @@ export const PACTS: PactDef[] = [
   { id: 'innerSanctum', name: 'Inner Sanctum', desc: 'Nothing survives close to you.', effect: '×2 aura damage in Near', branch: 'aura', tier: 3, requires: AURA2, cost: 2 },
   { id: 'blackSun', name: 'Black Sun', desc: 'Now and then, your aura erupts.', effect: 'Every 8 s: 3 s of aura damage at once', branch: 'aura', tier: 5, requires: AURA3, cost: 3 },
 
-  { id: 'pactThorns', name: 'Thorns', desc: 'Every blow comes back to its owner.', effect: 'Unlocks Thorns', branch: 'thorns', tier: 1, cost: 1, icon: 'thorns' },
+  { id: 'pactThorns', name: 'Thorns', desc: 'Every hero that hits you gets hurt in return.', effect: 'Unlocks Thorns', branch: 'thorns', tier: 1, cost: 1, icon: 'thorns' },
   { id: 'splinter', name: 'Splinter', desc: 'Your thorns shatter onto the next hero.', effect: 'Each strike also hits the nearest hero for 50%', branch: 'thorns', tier: 2, requires: ['pactThorns'], cost: 1 },
   { id: 'thornBurst', name: 'Thorn Burst', desc: 'Those your thorns kill burst into spikes.', effect: 'Spikes hit nearby heroes for 15% of the slain hero\'s life', branch: 'thorns', tier: 2, requires: ['pactThorns'], cost: 1, icon: 'corpseBurst' },
   { id: 'spikedHide', name: 'Spiked Hide', desc: 'Your armor bites back.', effect: 'Blocked damage is thrown back ×3', branch: 'thorns', tier: 3, requires: THORNS2, cost: 2 },
   { id: 'retaliation', name: 'Retaliation', desc: 'Now and then, you answer in full.', effect: 'Every 5th hit is thrown back ×3', branch: 'thorns', tier: 3, requires: THORNS2, cost: 2 },
   { id: 'ironMaiden', name: 'Iron Maiden', desc: 'Wounded, you become a trap.', effect: '×3 thorns below 50% life', branch: 'thorns', tier: 5, requires: THORNS3, cost: 3 },
 
-  { id: 'pactBlood', name: 'Blood Lash', desc: 'Your blood becomes a weapon.', effect: 'Unlocks Blood Lash', branch: 'blood', tier: 1, cost: 1, icon: 'lash' },
+  { id: 'pactBlood', name: 'Blood Lash', desc: 'You pay with your own life to strike down the weakest hero.', effect: 'Unlocks Blood Lash', branch: 'blood', tier: 1, cost: 1, icon: 'lash' },
   { id: 'chain', name: 'Chain', desc: 'A kill does not stop the lash.', effect: 'Leftover damage jumps to the next weakest hero', branch: 'blood', tier: 2, requires: ['pactBlood'], cost: 1 },
   { id: 'execute', name: 'Execute', desc: 'The broken are finished at once.', effect: 'Heroes below 15% life die to a lash', branch: 'blood', tier: 2, requires: ['pactBlood'], cost: 1 },
   { id: 'frenzy', name: 'Frenzy', desc: 'The closer to death, the faster you strike.', effect: 'Up to ×2.5 lash speed at low life', branch: 'blood', tier: 3, requires: BLOOD2, cost: 2 },
