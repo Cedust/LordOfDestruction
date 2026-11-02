@@ -30,6 +30,14 @@
         <span id="hp-text" class="hp-text"></span>
       </div>
 
+      <div class="level-row">
+        <div id="level-bar" class="level-bar" aria-label="Your level">
+          <div id="level-fill" class="level-fill"></div>
+          <span id="level-text" class="level-text"></span>
+        </div>
+        <button id="prestige" class="prestige-btn">Prestige</button>
+      </div>
+
       <nav class="tabs">
         <button class="tab" data-tab="powers">Powers</button>
         <button class="tab" data-tab="dread">Dread</button>
@@ -58,12 +66,12 @@
 
       <div id="fallen" class="overlay" hidden>
         <div class="panel">
-          <h1>You Have Fallen</h1>
+          <h1 id="fallen-title">You Have Fallen</h1>
           <p id="fallen-runs" class="sub"></p>
           <p class="big">Wave <span id="fallen-wave">0</span></p>
           <p id="fallen-best" class="sub"></p>
-          <p class="gain">+<span id="fallen-dread-gain">0</span> ☠ Dread <span class="sub">(Total <span id="fallen-total">0</span>)</span></p>
-          <p id="fallen-bonus" class="sub"></p>
+          <p id="fallen-level" class="level-gain"></p>
+          <p class="gain"><span id="fallen-total">0</span> ☠ Dread to Spend</p>
           <p id="fallen-sigils" class="gain sigil"></p>
           <div class="segs">
             <button class="seg" data-view="dread">Dread Upgrades</button>
@@ -77,7 +85,7 @@
           </div>
           <div class="fallen-footer">
             <div id="fallen-detail"></div>
-            <button id="rise" class="rise">Rise Again</button>
+            <button id="rise" class="rise">Start Next Run</button>
           </div>
         </div>
       </div>

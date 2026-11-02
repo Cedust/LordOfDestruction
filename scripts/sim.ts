@@ -39,7 +39,7 @@ for (const build of BUILDS.filter((b) => !only || b.id === only)) {
     }
     const s = game.lastSummary!;
     const lv = Object.entries(game.run.levels).filter(([, v]) => v > 0).map(([k, v]) => `${k}:${v}`).join(' ');
-    console.log(`run ${r + 1}: wave ${s.wave}, ${(t / 60).toFixed(1)} min, +${s.dread} dread, +${s.sigils} sigils | ${lv}`);
+    console.log(`run ${r + 1}: wave ${s.wave}, ${(t / 60).toFixed(1)} min, Lv ${game.level()} (+${s.levels}), +${s.dread} dread, +${s.sigils} sigils | ${lv}`);
     let bought = true;
     while (bought) {
       bought = false;
