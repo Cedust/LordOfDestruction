@@ -36,6 +36,33 @@ function statText(id: RunUpgradeId, s: LordStats): string {
   }
 }
 
+/** What a Dread upgrade gives at a level, in plain numbers. */
+function dreadText(id: PrestigeId, lvl: number): string {
+  const pct = (n: number) => `+${Math.round(n * 100)}%`;
+  switch (id) {
+    case 'blackHeart':
+      return `${pct(0.25 * lvl)} life and regeneration`;
+    case 'malice':
+      return `${pct(0.15 * lvl)} all damage`;
+    case 'gloom':
+      return `${pct(0.4 * lvl)} aura damage`;
+    case 'barbs':
+      return `${pct(0.4 * lvl)} thorns damage`;
+    case 'sanguine':
+      return `${pct(0.4 * lvl)} lash damage`;
+    case 'tremor':
+      return `${pct(0.4 * lvl)} shockwave damage`;
+    case 'tithe':
+      return `${pct(0.2 * lvl)} gold`;
+    case 'avarice':
+      return `−${Math.round(5 * lvl)}% power cost`;
+    case 'dreadHarvest':
+      return `${pct(0.1 * lvl)} Dread`;
+    case 'headStart':
+      return `start at wave ${1 + 5 * lvl}`;
+  }
+}
+
 export class UI {
   private runButtons = new Map<RunUpgradeId, HTMLButtonElement>();
   private trees: SkillTree[] = [];
@@ -92,7 +119,7 @@ export class UI {
       btn.dataset.id = def.id;
       btn.innerHTML = `
         ${iconHtml(def.id, def.name)}
-        <span class="info"><span class="name">${def.name} <span class="lvl"></span></span><span class="desc">${def.desc}</span></span>
+        <span class="info"><span class="name">${def.name} <span class="lvl"></span></span><span class="desc">${def.desc}</span><span class="stat"></span></span>
         <span class="cost"></span>`;
       btn.addEventListener('click', () => {
         if (this.game.buyPrestige(def.id)) this.update();
@@ -111,7 +138,7 @@ export class UI {
       btn.style.setProperty('--branch', build.color);
       btn.innerHTML = `
         ${iconHtml(pact.icon ?? pact.id, pact.name)}
-        <span class="info"><span class="name">${build.name}</span><span class="tag">${build.desc}</span><span class="desc">${pact.desc.replace('Start pact. ', '')}</span></span>`;
+        <span class="info"><span class="name">${build.name}</span><span class="tag">${build.desc}</span><span class="desc">${pact.desc}</span></span>`;
       btn.addEventListener('click', () => {
         if (this.game.chooseBuild(build.id)) this.update();
       });
@@ -176,6 +203,7 @@ export class UI {
       const maxed = g.isPrestigeMaxed(id);
       const cost = g.prestigeCost(id);
       btn.querySelector('.lvl')!.textContent = `Lv ${level}`;
+      btn.querySelector('.stat')!.textContent = maxed ? dreadText(id, level) + ' (max)' : `${dreadText(id, level)} → ${dreadText(id, level + 1)}`;
       btn.querySelector('.cost')!.textContent = maxed ? 'MAX' : `${fmt(cost)} ☠`;
       btn.disabled = maxed || g.save.dread < cost;
     });
@@ -187,12 +215,11 @@ export class UI {
       b.textContent = spent > 0 ? `Reset pacts (+${spent} ${SIGIL})` : 'Reset pacts';
     });
     const nextRecord = (Math.floor(g.save.bestWave / SIGIL_WAVES) + 1) * SIGIL_WAVES;
-    const sigilHint = `${g.save.sigils} ${SIGIL} Sigils. Fall at wave ${nextRecord} or later for the next one.`;
+    const sigilHint = `${g.save.sigils} ${SIGIL} Sigils · next at wave ${nextRecord}`;
     $('#pacts-preview').textContent = sigilHint;
     $('#fallen-sigil-hint').textContent = sigilHint;
 
     $('#choose').hidden = !(g.phase === 'pause' && !g.hasBuild());
-    $('#choose-sigils').textContent = `${g.save.sigils} ${SIGIL}`;
 
     const overlay = $('#fallen');
     overlay.hidden = g.phase !== 'fallen';
@@ -200,12 +227,12 @@ export class UI {
       const sum = g.lastSummary;
       $('#fallen-wave').textContent = String(sum.wave);
       $('#fallen-dread-gain').textContent = fmt(sum.dread);
-      $('#fallen-sigils').textContent = sum.sigils > 0 ? `+${sum.sigils} ${SIGIL} Sigil${sum.sigils > 1 ? 's' : ''} for the new record` : '';
+      $('#fallen-sigils').textContent = sum.sigils > 0 ? `+${sum.sigils} ${SIGIL} Sigil${sum.sigils > 1 ? 's' : ''}` : '';
       $('#fallen-bonus').textContent = sum.dreadBonus > 0 ? `incl. +${fmt(sum.dreadBonus)} from Dread Harvest` : '';
       $('#fallen-runs').textContent = `Fall ${g.save.runs}`;
       $('#fallen-best').textContent = sum.newBest ? 'A new record!' : `Best: wave ${sum.bestWave}`;
       $('#fallen-total').textContent = fmt(g.save.dread);
     }
-    $('#dread-preview').textContent = `If you fall at this wave: +${fmt(g.dreadForFall(g.run.wave))} ☠ Dread.`;
+    $('#dread-preview').textContent = `Falling now: +${fmt(g.dreadForFall(g.run.wave))} ☠ Dread`;
   }
 }

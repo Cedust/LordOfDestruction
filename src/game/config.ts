@@ -97,9 +97,9 @@ export interface BuildDef {
 }
 
 export const BUILDS: BuildDef[] = [
-  { id: 'aura', name: 'Aura', desc: 'Time in the aura', color: '#b07cff' },
-  { id: 'thorns', name: 'Thorns', desc: 'Take it, throw it back', color: '#ff9b4a' },
-  { id: 'blood', name: 'Blood', desc: 'Spend life, execute', color: '#e0566e' },
+  { id: 'aura', name: 'Aura', desc: 'Slow, certain ruin', color: '#b07cff' },
+  { id: 'thorns', name: 'Thorns', desc: 'Every blow returns', color: '#ff9b4a' },
+  { id: 'blood', name: 'Blood', desc: 'Pay in blood', color: '#e0566e' },
 ];
 
 // ---------------------------------------------------------------------------
@@ -127,14 +127,14 @@ export interface RunUpgradeDef {
 }
 
 export const RUN_UPGRADES: RunUpgradeDef[] = [
-  { id: 'aura', name: 'Dread Aura', desc: 'Damage per second to every hero in Near, Mid and Far.', baseCost: 8, costGrowth: 1.15, build: 'aura' },
-  { id: 'thorns', name: 'Thorns', desc: 'Every hit you take strikes the attacker back, whatever its range.', baseCost: 8, costGrowth: 1.15, build: 'thorns' },
-  { id: 'lash', name: 'Blood Lash', desc: 'Every 2 s a blood lash strikes the weakest hero for a share of your maximum life. Costs 3% of your life.', baseCost: 8, costGrowth: 1.15, build: 'blood' },
-  { id: 'vitality', name: 'Vitality', desc: 'More maximum life.', baseCost: 8, costGrowth: 1.15 },
-  { id: 'hide', name: 'Hide', desc: 'Reduces damage taken.', baseCost: 15, costGrowth: 1.2, maxLevel: 40 },
-  { id: 'regen', name: 'Regeneration', desc: 'Life regained per second.', baseCost: 10, costGrowth: 1.16 },
-  { id: 'bloodPact', name: 'Blood Pact', desc: 'Each slain hero heals you.', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
-  { id: 'shockwave', name: 'Shockwave', desc: 'Every 10 hits taken, a wave strikes all heroes in Near and Mid.', baseCost: 60, costGrowth: 1.18 },
+  { id: 'aura', name: 'Dread Aura', desc: 'Dread seeps into every hero near you.', baseCost: 8, costGrowth: 1.15, build: 'aura' },
+  { id: 'thorns', name: 'Thorns', desc: 'Whoever strikes you bleeds for it.', baseCost: 8, costGrowth: 1.15, build: 'thorns' },
+  { id: 'lash', name: 'Blood Lash', desc: 'A lash of your own blood finds the weakest.', baseCost: 8, costGrowth: 1.15, build: 'blood' },
+  { id: 'vitality', name: 'Vitality', desc: 'A deeper well of life.', baseCost: 8, costGrowth: 1.15 },
+  { id: 'hide', name: 'Hide', desc: 'Blows glance off your armor.', baseCost: 15, costGrowth: 1.2, maxLevel: 40 },
+  { id: 'regen', name: 'Regeneration', desc: 'Your wounds close on their own.', baseCost: 10, costGrowth: 1.16 },
+  { id: 'bloodPact', name: 'Blood Pact', desc: 'Every fallen hero feeds you.', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
+  { id: 'shockwave', name: 'Shockwave', desc: 'Enough blows, and the floor answers.', baseCost: 60, costGrowth: 1.18 },
 ];
 
 export const SHOCKWAVE_HITS = 10;
@@ -178,16 +178,16 @@ export interface PrestigeDef {
 }
 
 export const PRESTIGE_UPGRADES: PrestigeDef[] = [
-  { id: 'blackHeart', name: 'Black Heart', desc: '+25% maximum life and regeneration per level.', baseCost: 2, costGrowth: 1.5 },
-  { id: 'malice', name: 'Malice', desc: '+15% damage of every source per level.', baseCost: 3, costGrowth: 1.5 },
-  { id: 'gloom', name: 'Gloom', desc: '+40% aura damage per level.', baseCost: 2, costGrowth: 1.5 },
-  { id: 'barbs', name: 'Barbs', desc: '+40% Thorns damage per level.', baseCost: 2, costGrowth: 1.5 },
-  { id: 'sanguine', name: 'Sanguine', desc: '+40% Blood Lash damage per level.', baseCost: 2, costGrowth: 1.5 },
-  { id: 'tremor', name: 'Tremor', desc: '+40% Shockwave damage per level.', baseCost: 2, costGrowth: 1.5 },
-  { id: 'tithe', name: 'Tithe', desc: '+20% gold per level.', baseCost: 3, costGrowth: 1.6 },
-  { id: 'avarice', name: 'Avarice', desc: 'Powers cost 5% less per level.', baseCost: 4, costGrowth: 1.8, maxLevel: 10 },
-  { id: 'dreadHarvest', name: 'Dread Harvest', desc: '+10% Dread from every fall per level.', baseCost: 5, costGrowth: 1.7 },
-  { id: 'headStart', name: 'Head Start', desc: 'Each level starts runs 5 waves later, with gold to match.', baseCost: 6, costGrowth: 2.2, maxLevel: 10 },
+  { id: 'blackHeart', name: 'Black Heart', desc: 'A heart that refuses to stop.', baseCost: 2, costGrowth: 1.5 },
+  { id: 'malice', name: 'Malice', desc: 'All your powers cut deeper.', baseCost: 3, costGrowth: 1.5 },
+  { id: 'gloom', name: 'Gloom', desc: 'Your aura grows heavier.', baseCost: 2, costGrowth: 1.5 },
+  { id: 'barbs', name: 'Barbs', desc: 'Your thorns grow longer.', baseCost: 2, costGrowth: 1.5 },
+  { id: 'sanguine', name: 'Sanguine', desc: 'Your blood runs hotter.', baseCost: 2, costGrowth: 1.5 },
+  { id: 'tremor', name: 'Tremor', desc: 'Your shockwave shakes harder.', baseCost: 2, costGrowth: 1.5 },
+  { id: 'tithe', name: 'Tithe', desc: 'Heroes carry more gold.', baseCost: 3, costGrowth: 1.6 },
+  { id: 'avarice', name: 'Avarice', desc: 'Your powers come cheaper.', baseCost: 4, costGrowth: 1.8, maxLevel: 10 },
+  { id: 'dreadHarvest', name: 'Dread Harvest', desc: 'Every fall leaves more Dread.', baseCost: 5, costGrowth: 1.7 },
+  { id: 'headStart', name: 'Head Start', desc: 'Rise later in the siege, gold in hand.', baseCost: 6, costGrowth: 2.2, maxLevel: 10 },
 ];
 
 export function prestigeCost(def: PrestigeDef, level: number): number {
@@ -233,6 +233,8 @@ export interface PactDef {
   id: PactId;
   name: string;
   desc: string;
+  /** The rule in plain numbers, shown small under the description. */
+  effect: string;
   branch: BuildId;
   /** Tier in the branch: 1 = start pact, 5 = capstone. */
   tier: number;
@@ -253,28 +255,28 @@ const BLOOD3: PactId[] = ['frenzy', 'transfusion'];
 
 /** Listed branch by branch, each from start pact to capstone. */
 export const PACTS: PactDef[] = [
-  { id: 'pactAura', name: 'Dread Aura', desc: 'Start pact. Unlocks Dread Aura: steady damage in Near, Mid and Far.', branch: 'aura', tier: 1, cost: 1, icon: 'aura' },
-  { id: 'withering', name: 'Withering', desc: 'Heroes inside your aura deal 25% less damage.', branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1 },
-  { id: 'grasp', name: 'Grasp', desc: 'Heroes inside your aura attack 30% slower.', branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1 },
-  { id: 'longShadow', name: 'Long Shadow', desc: 'Your aura deals 60% more damage in Mid and Far.', branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1, icon: 'radius' },
-  { id: 'doom', name: 'Doom', desc: 'Aura damage on a hero grows by 25% for every second it stays inside, up to triple.', branch: 'aura', tier: 3, requires: AURA2, cost: 2 },
-  { id: 'despair', name: 'Despair', desc: 'Heroes below 30% life take double aura damage.', branch: 'aura', tier: 3, requires: AURA2, cost: 2, icon: 'wrath' },
-  { id: 'innerSanctum', name: 'Inner Sanctum', desc: 'Your aura deals double damage in Near.', branch: 'aura', tier: 3, requires: AURA2, cost: 2 },
-  { id: 'blackSun', name: 'Black Sun', desc: 'Every 8 s your aura pulses and deals 3 s of its damage at once.', branch: 'aura', tier: 5, requires: AURA3, cost: 3 },
+  { id: 'pactAura', name: 'Dread Aura', desc: 'Dread seeps from you into every range.', effect: 'Unlocks Dread Aura', branch: 'aura', tier: 1, cost: 1, icon: 'aura' },
+  { id: 'withering', name: 'Withering', desc: 'Heroes in your aura lose their strength.', effect: '−25% hero damage in the aura', branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1 },
+  { id: 'grasp', name: 'Grasp', desc: 'Your aura weighs on every swing.', effect: 'Heroes in the aura attack 30% slower', branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1 },
+  { id: 'longShadow', name: 'Long Shadow', desc: 'Your shadow stretches across the hall.', effect: '+60% aura damage in Mid and Far', branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1, icon: 'radius' },
+  { id: 'doom', name: 'Doom', desc: 'The longer they stay, the worse it gets.', effect: '+25% aura damage per second inside, up to ×3', branch: 'aura', tier: 3, requires: AURA2, cost: 2 },
+  { id: 'despair', name: 'Despair', desc: 'The wounded break first.', effect: '×2 aura damage below 30% life', branch: 'aura', tier: 3, requires: AURA2, cost: 2, icon: 'wrath' },
+  { id: 'innerSanctum', name: 'Inner Sanctum', desc: 'Nothing survives close to you.', effect: '×2 aura damage in Near', branch: 'aura', tier: 3, requires: AURA2, cost: 2 },
+  { id: 'blackSun', name: 'Black Sun', desc: 'Now and then, your aura erupts.', effect: 'Every 8 s: 3 s of aura damage at once', branch: 'aura', tier: 5, requires: AURA3, cost: 3 },
 
-  { id: 'pactThorns', name: 'Thorns', desc: 'Start pact. Unlocks Thorns: every hit you take strikes the attacker back.', branch: 'thorns', tier: 1, cost: 1, icon: 'thorns' },
-  { id: 'splinter', name: 'Splinter', desc: 'Every thorn strike also hits the next hero for half.', branch: 'thorns', tier: 2, requires: ['pactThorns'], cost: 1 },
-  { id: 'thornBurst', name: 'Thorn Burst', desc: 'Heroes slain by thorns burst into spikes that hit heroes nearby.', branch: 'thorns', tier: 2, requires: ['pactThorns'], cost: 1, icon: 'corpseBurst' },
-  { id: 'spikedHide', name: 'Spiked Hide', desc: 'Damage blocked by Hide is thrown back as well, tripled.', branch: 'thorns', tier: 3, requires: THORNS2, cost: 2 },
-  { id: 'retaliation', name: 'Retaliation', desc: 'Every 5th hit you take is thrown back three times as hard.', branch: 'thorns', tier: 3, requires: THORNS2, cost: 2 },
-  { id: 'ironMaiden', name: 'Iron Maiden', desc: 'Below 50% life your thorns deal triple damage.', branch: 'thorns', tier: 5, requires: THORNS3, cost: 3 },
+  { id: 'pactThorns', name: 'Thorns', desc: 'Every blow comes back to its owner.', effect: 'Unlocks Thorns', branch: 'thorns', tier: 1, cost: 1, icon: 'thorns' },
+  { id: 'splinter', name: 'Splinter', desc: 'Your thorns shatter onto the next hero.', effect: 'Each strike also hits the nearest hero for 50%', branch: 'thorns', tier: 2, requires: ['pactThorns'], cost: 1 },
+  { id: 'thornBurst', name: 'Thorn Burst', desc: 'Those your thorns kill burst into spikes.', effect: 'Spikes hit nearby heroes for 15% of the slain hero\'s life', branch: 'thorns', tier: 2, requires: ['pactThorns'], cost: 1, icon: 'corpseBurst' },
+  { id: 'spikedHide', name: 'Spiked Hide', desc: 'Your armor bites back.', effect: 'Blocked damage is thrown back ×3', branch: 'thorns', tier: 3, requires: THORNS2, cost: 2 },
+  { id: 'retaliation', name: 'Retaliation', desc: 'Now and then, you answer in full.', effect: 'Every 5th hit is thrown back ×3', branch: 'thorns', tier: 3, requires: THORNS2, cost: 2 },
+  { id: 'ironMaiden', name: 'Iron Maiden', desc: 'Wounded, you become a trap.', effect: '×3 thorns below 50% life', branch: 'thorns', tier: 5, requires: THORNS3, cost: 3 },
 
-  { id: 'pactBlood', name: 'Blood Lash', desc: 'Start pact. Unlocks Blood Lash: a lash that strikes the weakest hero, paid with your life.', branch: 'blood', tier: 1, cost: 1, icon: 'lash' },
-  { id: 'chain', name: 'Chain', desc: 'When a lash kills, the damage left over strikes the next weakest hero.', branch: 'blood', tier: 2, requires: ['pactBlood'], cost: 1 },
-  { id: 'execute', name: 'Execute', desc: 'A lash kills any hero below 15% life outright.', branch: 'blood', tier: 2, requires: ['pactBlood'], cost: 1 },
-  { id: 'frenzy', name: 'Frenzy', desc: 'The lower your life, the faster you lash: up to 2.5 times as often.', branch: 'blood', tier: 3, requires: BLOOD2, cost: 2 },
-  { id: 'transfusion', name: 'Transfusion', desc: 'A lash that kills gives back twice the life it cost.', branch: 'blood', tier: 3, requires: BLOOD2, cost: 2 },
-  { id: 'bloodMoon', name: 'Blood Moon', desc: 'Healing beyond your maximum life becomes a shield, up to half your life.', branch: 'blood', tier: 5, requires: BLOOD3, cost: 3 },
+  { id: 'pactBlood', name: 'Blood Lash', desc: 'Your blood becomes a weapon.', effect: 'Unlocks Blood Lash', branch: 'blood', tier: 1, cost: 1, icon: 'lash' },
+  { id: 'chain', name: 'Chain', desc: 'A kill does not stop the lash.', effect: 'Leftover damage jumps to the next weakest hero', branch: 'blood', tier: 2, requires: ['pactBlood'], cost: 1 },
+  { id: 'execute', name: 'Execute', desc: 'The broken are finished at once.', effect: 'Heroes below 15% life die to a lash', branch: 'blood', tier: 2, requires: ['pactBlood'], cost: 1 },
+  { id: 'frenzy', name: 'Frenzy', desc: 'The closer to death, the faster you strike.', effect: 'Up to ×2.5 lash speed at low life', branch: 'blood', tier: 3, requires: BLOOD2, cost: 2 },
+  { id: 'transfusion', name: 'Transfusion', desc: 'Every kill pays you back.', effect: 'A killing lash returns twice its cost', branch: 'blood', tier: 3, requires: BLOOD2, cost: 2 },
+  { id: 'bloodMoon', name: 'Blood Moon', desc: 'Too much life hardens into a shield.', effect: 'Overheal becomes a shield, up to 50% of your life', branch: 'blood', tier: 5, requires: BLOOD3, cost: 3 },
 ];
 
 export const START_PACTS: Record<BuildId, PactId> = { aura: 'pactAura', thorns: 'pactThorns', blood: 'pactBlood' };

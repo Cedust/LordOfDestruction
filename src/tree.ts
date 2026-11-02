@@ -82,7 +82,7 @@ export class SkillTree {
     this.detail.className = 'node-detail';
     this.detail.innerHTML = `
       <div class="detail-badge"></div>
-      <div class="info"><span class="name"><span class="detail-name"></span> <span class="lvl"></span></span><span class="desc"></span><span class="req"></span></div>`;
+      <div class="info"><span class="name"><span class="detail-name"></span> <span class="lvl"></span></span><span class="desc"></span><span class="stat"></span><span class="req"></span></div>`;
     this.buy = document.createElement('button');
     this.buy.className = 'buy';
     this.buy.addEventListener('click', () => {
@@ -131,6 +131,7 @@ export class SkillTree {
     this.detail.querySelector('.detail-name')!.textContent = def.name;
     this.detail.querySelector('.lvl')!.textContent = owned ? 'Owned' : '';
     this.detail.querySelector('.desc')!.textContent = def.desc;
+    this.detail.querySelector('.stat')!.textContent = def.effect;
     const names = (def.requires ?? []).map((r) => BY_ID.get(r)!.name);
     this.detail.querySelector('.req')!.textContent = locked ? `Requires ${names.join(' or ')}` : '';
     this.buy.textContent = owned ? 'Owned' : sigilText(def.cost);
