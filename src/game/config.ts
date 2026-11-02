@@ -9,15 +9,15 @@ export interface RangeDef {
   dist: number;
   /** Outer edge of the range; the aura covers everything up to this edge. */
   edge: number;
-  /** Fixed spots, as angles around the lord. */
+  /** Fixed spots as lanes from the top (0) to the bottom (1) of the floor. */
   slots: number[];
 }
 
 /** Three fixed ranges. Order matters: index 0 is closest to the lord. */
 export const RANGES: RangeDef[] = [
-  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [-0.24, 0.53, 1.3, 2.07] },
-  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [0.09, 0.83, 1.57] },
-  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [0.04, 0.48, 0.92] },
+  { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [0.125, 0.375, 0.625, 0.875] },
+  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [0.17, 0.5, 0.83] },
+  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [0.17, 0.5, 0.83] },
 ];
 
 /** Heroes without a free spot wait this far behind their range. */
@@ -74,6 +74,19 @@ export const LORD_Y = 190;
 export const DEPTH = 0.5;
 /** Where the floor of the throne room begins; floor markings are not drawn above it. */
 export const FLOOR_Y = 166;
+/**
+ * Ranges are vertical strips on the floor, from left to right, starting in front of the
+ * dais stairs: a hero's distance is how far right of FIELD_X it stands, its lane how far
+ * down between FIELD_TOP and FIELD_BOTTOM.
+ */
+export const FIELD_X = 158;
+export const FIELD_TOP = 176;
+export const FIELD_BOTTOM = 282;
+
+export function fieldPos(dist: number, lane: number): { x: number; y: number } {
+  const l = Math.min(1, Math.max(0, lane));
+  return { x: FIELD_X + dist, y: FIELD_TOP + l * (FIELD_BOTTOM - FIELD_TOP) };
+}
 /** Height of the Lord's chest above LORD_Y, where projectiles hit and numbers pop. */
 export const LORD_CHEST = 55;
 export const SPAWN_DIST = 330;

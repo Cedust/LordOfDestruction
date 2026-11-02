@@ -4,7 +4,6 @@ import {
   CORPSE_BURST_SHARE,
   HEROES,
   LORD_X,
-  DEPTH,
   LORD_Y,
   LORD_CHEST,
   PRESTIGE_UPGRADES,
@@ -28,6 +27,7 @@ import {
 } from './config';
 import { computeStats, type LordStats } from './stats';
 import { emptyRunLevels, type RunState, type SaveData } from './state';
+import { fieldPos } from './config';
 
 export interface Hero {
   id: number;
@@ -63,7 +63,7 @@ export interface RunSummary {
 }
 
 export function heroPos(h: Hero): { x: number; y: number } {
-  return { x: LORD_X + Math.cos(h.angle) * h.dist, y: LORD_Y + Math.sin(h.angle) * h.dist * DEPTH };
+  return fieldPos(h.dist, h.angle);
 }
 
 export class Game {
@@ -238,7 +238,7 @@ export class Game {
     kinds.forEach((kind, i) => {
       const def = HEROES[kind];
       const hpMult = Math.pow(SCALE.hp, wave - 1);
-      const angle = 0.45 + (this.rng() - 0.5) * 1.1;
+      const angle = 0.1 + this.rng() * 0.8; // lane, see fieldPos
       this.heroes.push({
         id: this.nextId++,
         kind,
