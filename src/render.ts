@@ -1,4 +1,4 @@
-import { DEPTH, FIELD_X, FLOOR_Y, HEROES, fieldPos, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W } from './game/config';
+import { DEPTH, FLOOR_Y, HEROES, fieldPos, fieldX, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W } from './game/config';
 import { heroPos, type Game, type Hero } from './game/game';
 import { assetUrl } from './assets';
 
@@ -124,23 +124,28 @@ export class Renderer {
     }
   }
 
-  /** Vertical strip of the floor between two distances (see fieldPos). */
+  /** Strip of the floor between two distances, following the floor perspective (see fieldX). */
   private stripPath(d0: number, d1: number): void {
-    this.ctx.beginPath();
-    this.ctx.rect(FIELD_X + d0, FLOOR_Y, d1 - d0, WORLD_H - FLOOR_Y);
+    const ctx = this.ctx;
+    ctx.beginPath();
+    ctx.moveTo(fieldX(d0, FLOOR_Y), FLOOR_Y);
+    ctx.lineTo(fieldX(d1, FLOOR_Y), FLOOR_Y);
+    ctx.lineTo(fieldX(d1, WORLD_H), WORLD_H);
+    ctx.lineTo(fieldX(d0, WORLD_H), WORLD_H);
+    ctx.closePath();
   }
 
-  /** Straight vertical line across the floor at a distance (see fieldPos). */
+  /** Border line across the floor at a distance, following the floor perspective. */
   private vline(d: number): void {
     this.ctx.beginPath();
-    this.ctx.moveTo(FIELD_X + d, FLOOR_Y);
-    this.ctx.lineTo(FIELD_X + d, WORLD_H);
+    this.ctx.moveTo(fieldX(d, FLOOR_Y), FLOOR_Y);
+    this.ctx.lineTo(fieldX(d, WORLD_H), WORLD_H);
     this.ctx.stroke();
   }
 
   /**
-   * Ranges are painted onto the floor as vertical strips from left to right, starting in
-   * front of the dais stairs: alternating soft bands for Near, Mid and Far, a faint rune
+   * Ranges are painted onto the floor as strips from left to right, starting in front of
+   * the dais stairs and following the perspective of the floor tiles: alternating soft bands for Near, Mid and Far, a faint rune
    * circle on every fixed spot, and the range names along the bottom.
    */
   private drawRanges(game: Game): void {
@@ -182,8 +187,8 @@ export class Renderer {
     RANGES.forEach((range, i) => {
       const covered = game.stats.auraDps[i] > 0;
       const mid = (inner + range.edge) / 2;
-      const x = FIELD_X + mid;
       const y = WORLD_H - 9;
+      const x = fieldX(mid, y);
       const w = ctx.measureText(range.name.toUpperCase()).width + 10;
       ctx.fillStyle = 'rgba(16,10,26,0.65)';
       ctx.beginPath();
@@ -204,13 +209,17 @@ export class Renderer {
     const tint = '150,80,255';
     ctx.save();
     this.clipFloor('without');
-    // The aura fills the strips it reaches and fades out at its far edge.
-    const g = ctx.createLinearGradient(FIELD_X, 0, FIELD_X + r * pulse, 0);
-    g.addColorStop(0, `rgba(${tint},0.30)`);
-    g.addColorStop(0.8, `rgba(${tint},0.14)`);
-    g.addColorStop(1, `rgba(${tint},0)`);
-    ctx.fillStyle = g;
-    ctx.fillRect(FIELD_X, FLOOR_Y, r * pulse, WORLD_H - FLOOR_Y);
+    // The aura fills the strips it reaches and fades out towards its far edge, drawn as
+    // thin slices so the fade follows the floor perspective.
+    const reach = r * pulse;
+    const slices = 16;
+    for (let i = 0; i < slices; i++) {
+      const k = i / slices;
+      const alpha = k < 0.8 ? 0.3 - (0.16 * k) / 0.8 : 0.14 * (1 - (k - 0.8) / 0.2);
+      ctx.fillStyle = `rgba(${tint},${alpha.toFixed(3)})`;
+      this.stripPath(reach * k, reach * (k + 1 / slices) + 0.3);
+      ctx.fill();
+    }
     ctx.restore();
   }
 

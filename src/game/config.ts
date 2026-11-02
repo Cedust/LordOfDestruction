@@ -75,18 +75,32 @@ export const DEPTH = 0.5;
 /** Where the floor of the throne room begins; floor markings are not drawn above it. */
 export const FLOOR_Y = 166;
 /**
- * Ranges are vertical strips on the floor, from left to right, starting in front of the
- * dais stairs: a hero's distance is how far right of FIELD_X it stands, its lane how far
- * down between FIELD_TOP and FIELD_BOTTOM.
+ * Ranges are strips on the floor, from left to right, starting in front of the dais
+ * stairs. Their borders follow the perspective of the floor tiles in throne-room.png:
+ * straight lines that meet in a vanishing point (FIELD_VP_X, FIELD_VP_Y) above the hall.
+ * A hero's distance is measured along the row FIELD_REF_Y (FIELD_X + dist * FIELD_SCALE there); its lane
+ * is how far down it stands between FIELD_TOP and FIELD_BOTTOM.
  */
-export const FIELD_X = 158;
+export const FIELD_X = 114;
 export const FIELD_TOP = 176;
 export const FIELD_BOTTOM = 282;
+export const FIELD_REF_Y = 282;
+/** Stretches the strips so Far ends near the right edge of the screen. */
+export const FIELD_SCALE = 1.2;
+export const FIELD_VP_X = 225;
+export const FIELD_VP_Y = 2;
+
+/** World x of the line `dist` from the field's left border, at height y. */
+export function fieldX(dist: number, y: number): number {
+  return FIELD_VP_X + (FIELD_X + dist * FIELD_SCALE - FIELD_VP_X) * ((y - FIELD_VP_Y) / (FIELD_REF_Y - FIELD_VP_Y));
+}
 
 export function fieldPos(dist: number, lane: number): { x: number; y: number } {
   const l = Math.min(1, Math.max(0, lane));
-  return { x: FIELD_X + dist, y: FIELD_TOP + l * (FIELD_BOTTOM - FIELD_TOP) };
+  const y = FIELD_TOP + l * (FIELD_BOTTOM - FIELD_TOP);
+  return { x: fieldX(dist, y), y };
 }
+
 /** Height of the Lord's chest above LORD_Y, where projectiles hit and numbers pop. */
 export const LORD_CHEST = 55;
 export const SPAWN_DIST = 330;
