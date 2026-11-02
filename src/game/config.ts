@@ -81,7 +81,7 @@ export const FLOOR_Y = 166;
  * A hero's distance is measured along the row FIELD_REF_Y (FIELD_X + dist * FIELD_SCALE there); its lane
  * is how far down it stands between FIELD_TOP and FIELD_BOTTOM.
  */
-export const FIELD_X = 114;
+export const FIELD_X = 128;
 export const FIELD_TOP = 176;
 export const FIELD_BOTTOM = 282;
 export const FIELD_REF_Y = 282;
