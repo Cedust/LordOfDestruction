@@ -261,14 +261,14 @@ export class UI {
       $('#fallen-wave').textContent = String(sum.wave);
       $('#fallen-level').textContent =
         sum.levels > 0
-          ? `Level ${g.level()} · +${sum.levels} Level${sum.levels > 1 ? 's' : ''} This Run (+${fmt(sum.dread)} ☠)`
+          ? `Level ${g.level()} · +${sum.levels} Level${sum.levels > 1 ? 's' : ''} This Run`
           : `Level ${g.level()}`;
       $('#fallen-sigils').textContent = sum.sigils > 0 ? `+${sum.sigils} ${SIGIL} Sigil${sum.sigils > 1 ? 's' : ''}` : '';
       $('#fallen-runs').textContent = `Run ${g.save.runs}`;
       $('#fallen-best').textContent = sum.newBest ? 'A New Record!' : `Best: Wave ${sum.bestWave}`;
       $('#fallen-total').textContent = fmt(g.save.dread);
     }
-    const dreadHint = `Level ${lvl.level} · Next Level Gives +${g.nextLevelDread()} ☠ Dread`;
+    const dreadHint = `Level ${lvl.level} · Every Level Gives +${g.nextLevelDread()} ☠ Dread`;
     $('#dread-preview').textContent = g.canSpend() ? dreadHint : `${dreadHint} · Spend It After You Prestige`;
     $('#dread-preview').classList.toggle('locked-hint', !g.canSpend());
   }
