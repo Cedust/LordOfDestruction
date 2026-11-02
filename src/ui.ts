@@ -18,21 +18,21 @@ function iconHtml(id: string, name: string): string {
 function statText(id: RunUpgradeId, s: LordStats): string {
   switch (id) {
     case 'vitality':
-      return `${fmt(s.maxHp)} life`;
+      return `${fmt(s.maxHp)} Life`;
     case 'hide':
-      return `${Math.round(s.armor * 100)}% blocked`;
+      return `${Math.round(s.armor * 100)}% Blocked`;
     case 'regen':
       return `${fmt(s.regen)}/s`;
     case 'aura':
-      return `${fmt(s.auraDps[1])} dmg/s`;
+      return `${fmt(s.auraDps[1])} Dmg/s`;
     case 'thorns':
-      return `${Math.round(s.thorns * 100)}% of each hit`;
+      return `${Math.round(s.thorns * 100)}% of Each Hit`;
     case 'lash':
-      return `${fmt(s.maxHp * s.lash)} dmg per lash`;
+      return `${fmt(s.maxHp * s.lash)} Dmg per Lash`;
     case 'shockwave':
-      return s.shockwaveDamage > 0 ? `${fmt(s.shockwaveDamage)} dmg every ${SHOCKWAVE_HITS} hits` : 'none';
+      return s.shockwaveDamage > 0 ? `${fmt(s.shockwaveDamage)} Dmg Every ${SHOCKWAVE_HITS} Hits` : 'None';
     case 'bloodPact':
-      return s.bloodPact > 0 ? `${Math.round(s.bloodPact * 100)}% per kill` : 'none';
+      return s.bloodPact > 0 ? `${Math.round(s.bloodPact * 100)}% per Kill` : 'None';
   }
 }
 
@@ -41,25 +41,25 @@ function dreadText(id: PrestigeId, lvl: number): string {
   const pct = (n: number) => `+${Math.round(n * 100)}%`;
   switch (id) {
     case 'blackHeart':
-      return `${pct(0.25 * lvl)} life and regeneration`;
+      return `${pct(0.25 * lvl)} Life and Regeneration`;
     case 'malice':
-      return `${pct(0.15 * lvl)} all damage`;
+      return `${pct(0.15 * lvl)} All Damage`;
     case 'gloom':
-      return `${pct(0.4 * lvl)} aura damage`;
+      return `${pct(0.4 * lvl)} Aura Damage`;
     case 'barbs':
-      return `${pct(0.4 * lvl)} thorns damage`;
+      return `${pct(0.4 * lvl)} Thorns Damage`;
     case 'sanguine':
-      return `${pct(0.4 * lvl)} lash damage`;
+      return `${pct(0.4 * lvl)} Lash Damage`;
     case 'tremor':
-      return `${pct(0.4 * lvl)} shockwave damage`;
+      return `${pct(0.4 * lvl)} Shockwave Damage`;
     case 'tithe':
-      return `${pct(0.2 * lvl)} gold`;
+      return `${pct(0.2 * lvl)} Gold`;
     case 'avarice':
-      return `−${Math.round(5 * lvl)}% power cost`;
+      return `−${Math.round(5 * lvl)}% Power Cost`;
     case 'dreadHarvest':
       return `${pct(0.1 * lvl)} Dread`;
     case 'headStart':
-      return `start at wave ${1 + 5 * lvl}`;
+      return `Start at Wave ${1 + 5 * lvl}`;
   }
 }
 
@@ -177,11 +177,11 @@ export class UI {
     $('#hp-fill').style.width = `${hpPct}%`;
     $('#hp-text').textContent = `${fmt(Math.max(0, g.run.lordHp))} / ${fmt(s.maxHp)}`;
     const status = $('#status');
-    if (g.phase === 'pause') status.textContent = `Wave ${g.run.wave} approaches…`;
+    if (g.phase === 'pause') status.textContent = `Wave ${g.run.wave} Approaches…`;
     else if (g.phase === 'fighting') {
       const champ = g.heroes.some((h) => h.kind === 'champion');
-      status.textContent = champ ? `A ${HEROES.champion.name} leads the charge!` : `${g.heroes.length} heroes remain`;
-    } else status.textContent = 'You have fallen.';
+      status.textContent = champ ? `A ${HEROES.champion.name} Leads the Charge!` : `${g.heroes.length} Heroes Remain`;
+    } else status.textContent = 'You Have Fallen.';
 
     for (const def of RUN_UPGRADES) {
       const btn = this.runButtons.get(def.id)!;
@@ -192,7 +192,7 @@ export class UI {
       const cost = g.runUpgradeCost(def.id);
       const next = computeStats({ ...g.run.levels, [def.id]: level + 1 }, g.save.prestige, g.save.pacts);
       btn.querySelector('.lvl')!.textContent = `Lv ${g.runUpgradeLevel(def.id)}`;
-      btn.querySelector('.stat')!.textContent = maxed ? statText(def.id, s) + ' (max)' : `${statText(def.id, s)} → ${statText(def.id, next)}`;
+      btn.querySelector('.stat')!.textContent = maxed ? statText(def.id, s) + ' (Max)' : `${statText(def.id, s)} → ${statText(def.id, next)}`;
       btn.querySelector('.cost')!.textContent = maxed ? 'MAX' : `${fmt(cost)}g`;
       btn.disabled = maxed || g.run.gold < cost || g.phase === 'fallen';
     }
@@ -203,7 +203,7 @@ export class UI {
       const maxed = g.isPrestigeMaxed(id);
       const cost = g.prestigeCost(id);
       btn.querySelector('.lvl')!.textContent = `Lv ${level}`;
-      btn.querySelector('.stat')!.textContent = maxed ? dreadText(id, level) + ' (max)' : `${dreadText(id, level)} → ${dreadText(id, level + 1)}`;
+      btn.querySelector('.stat')!.textContent = maxed ? dreadText(id, level) + ' (Max)' : `${dreadText(id, level)} → ${dreadText(id, level + 1)}`;
       btn.querySelector('.cost')!.textContent = maxed ? 'MAX' : `${fmt(cost)} ☠`;
       btn.disabled = maxed || g.save.dread < cost;
     });
@@ -212,10 +212,10 @@ export class UI {
     const spent = g.sigilsSpent();
     document.querySelectorAll<HTMLButtonElement>('.reset-pacts').forEach((b) => {
       b.disabled = spent === 0 || g.phase !== 'fallen';
-      b.textContent = spent > 0 ? `Reset pacts (+${spent} ${SIGIL})` : 'Reset pacts';
+      b.textContent = spent > 0 ? `Reset Pacts (+${spent} ${SIGIL})` : 'Reset Pacts';
     });
     const nextRecord = (Math.floor(g.save.bestWave / SIGIL_WAVES) + 1) * SIGIL_WAVES;
-    const sigilHint = `${g.save.sigils} ${SIGIL} Sigils · next at wave ${nextRecord}`;
+    const sigilHint = `${g.save.sigils} ${SIGIL} Sigils · Next at Wave ${nextRecord}`;
     $('#pacts-preview').textContent = sigilHint;
     $('#fallen-sigil-hint').textContent = sigilHint;
 
@@ -228,11 +228,11 @@ export class UI {
       $('#fallen-wave').textContent = String(sum.wave);
       $('#fallen-dread-gain').textContent = fmt(sum.dread);
       $('#fallen-sigils').textContent = sum.sigils > 0 ? `+${sum.sigils} ${SIGIL} Sigil${sum.sigils > 1 ? 's' : ''}` : '';
-      $('#fallen-bonus').textContent = sum.dreadBonus > 0 ? `incl. +${fmt(sum.dreadBonus)} from Dread Harvest` : '';
+      $('#fallen-bonus').textContent = sum.dreadBonus > 0 ? `Incl. +${fmt(sum.dreadBonus)} from Dread Harvest` : '';
       $('#fallen-runs').textContent = `Fall ${g.save.runs}`;
-      $('#fallen-best').textContent = sum.newBest ? 'A new record!' : `Best: wave ${sum.bestWave}`;
+      $('#fallen-best').textContent = sum.newBest ? 'A New Record!' : `Best: Wave ${sum.bestWave}`;
       $('#fallen-total').textContent = fmt(g.save.dread);
     }
-    $('#dread-preview').textContent = `Falling now: +${fmt(g.dreadForFall(g.run.wave))} ☠ Dread`;
+    $('#dread-preview').textContent = `Falling Now: +${fmt(g.dreadForFall(g.run.wave))} ☠ Dread`;
   }
 }

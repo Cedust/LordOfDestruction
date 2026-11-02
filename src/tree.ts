@@ -9,7 +9,7 @@ export function sigilText(n: number): string {
 }
 
 const BY_ID = new Map(PACTS.map((d) => [d.id, d]));
-const TIER_NAMES: Record<number, string> = { 1: 'Start pact', 2: 'Tier 2', 3: 'Tier 3', 5: 'Capstone' };
+const TIER_NAMES: Record<number, string> = { 1: 'Start Pact', 2: 'Tier 2', 3: 'Tier 3', 5: 'Capstone' };
 
 /** Badge for a tree node: the upgrade icon, or a lettered stand-in until the art exists. */
 function badgeHtml(def: PactDef): string {

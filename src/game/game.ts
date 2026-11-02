@@ -593,7 +593,7 @@ export class Game {
     if (this.stats.bloodPact > 0) this.heal(this.stats.maxHp * this.stats.bloodPact);
     if (h.kind === 'champion') {
       this.heal(this.stats.maxHp);
-      this.effects.push({ type: 'text', x: LORD_X + 20, y: LORD_Y - LORD_CHEST - 50, text: 'Champion slain!', color: '#ffd166', t: 0, ttl: 1.8 });
+      this.effects.push({ type: 'text', x: LORD_X + 20, y: LORD_Y - LORD_CHEST - 50, text: 'Champion Slain!', color: '#ffd166', t: 0, ttl: 1.8 });
     }
     if (this.pact('thornBurst') && h.lastHit === 'thorns') {
       this.effects.push({ type: 'ring', x: p.x, y: p.y, r: THORN_BURST_RADIUS, color: '#ff9b4a', t: 0, ttl: 0.45 });
