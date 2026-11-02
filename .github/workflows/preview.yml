@@ -10,8 +10,10 @@ permissions:
   contents: write
   pull-requests: write
 
+# One group per PR: a newer push to the same PR may replace a waiting preview,
+# but a preview never replaces the main deploy (see deploy.yml).
 concurrency:
-  group: gh-pages
+  group: gh-pages-preview-${{ github.event.pull_request.number }}
   cancel-in-progress: false
 
 jobs:
