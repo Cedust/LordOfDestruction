@@ -1,33 +1,39 @@
 import {
   CHAMPION_AURA_REDUCTION,
   CHAMPION_EVERY,
-  CORPSE_BURST_SHARE,
+  DOOM_MAX,
+  DOOM_PER_SECOND,
+  MARTYRDOM_SHARE,
+  MARTYRDOM_THRESHOLD,
+  SECOND_WIND_LIFE,
   HEROES,
   LORD_X,
   DEPTH,
   LORD_Y,
   LORD_CHEST,
+  PACTS,
   PRESTIGE_UPGRADES,
   RUN_UPGRADES,
   SCALE,
   QUEUE_GAP,
   RANGES,
-  SHOCKWAVE_HITS,
   SHOCKWAVE_REACH,
   rangeIndex,
   SPAWN_DIST,
   WAVE_PAUSE,
   dreadForWave,
+  sigilsForRecord,
   heroCountForWave,
   prestigeCost,
   runUpgradeCost,
   type HeroKind,
+  type PactId,
   type PrestigeId,
   type RangeId,
   type RunUpgradeId,
 } from './config';
 import { computeStats, type LordStats } from './stats';
-import { emptyRunLevels, type RunState, type SaveData } from './state';
+import { emptyPacts, emptyRunLevels, type RunState, type SaveData } from './state';
 
 export interface Hero {
   id: number;
@@ -45,6 +51,8 @@ export interface Hero {
   anim: number;
   /** Index of the spot the hero holds in its range, or -1 while waiting for one. */
   slot: number;
+  /** Seconds spent inside the aura (for Doom). */
+  auraTime: number;
 }
 
 export type Effect =
@@ -58,6 +66,10 @@ export type Phase = 'pause' | 'fighting' | 'fallen';
 export interface RunSummary {
   wave: number;
   dread: number;
+  /** Part of `dread` that came from Bounty. */
+  dreadBonus: number;
+  /** Sigils earned for a new record. */
+  sigils: number;
   bestWave: number;
   newBest: boolean;
 }
@@ -104,7 +116,7 @@ export class Game {
 
   refreshStats(): void {
     const prevMax = this.stats?.maxHp;
-    this.stats = computeStats(this.run.levels, this.save.prestige);
+    this.stats = computeStats(this.run.levels, this.save.prestige, this.save.pacts);
     if (prevMax !== undefined && this.stats.maxHp > prevMax) {
       // Gaining max life also grants that life.
       this.run.lordHp += this.stats.maxHp - prevMax;
@@ -122,7 +134,9 @@ export class Game {
 
   isRunUpgradeMaxed(id: RunUpgradeId): boolean {
     const def = RUN_UPGRADES.find((u) => u.id === id)!;
-    return def.maxLevel !== undefined && this.run.levels[id] >= def.maxLevel;
+    // Creeping Dread already grants one step of Aura Reach.
+    const level = this.run.levels[id] + (id === 'radius' ? this.stats.auraReachBonus : 0);
+    return def.maxLevel !== undefined && level >= def.maxLevel;
   }
 
   buyRunUpgrade(id: RunUpgradeId): boolean {
@@ -152,15 +166,57 @@ export class Game {
     if (this.save.dread < cost) return false;
     this.save.dread -= cost;
     this.save.prestige[id]++;
+    if (this.phase !== 'fallen') this.refreshStats();
     this.onPersist();
     return true;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Dark Pacts (skill tree, bought with Sigils)
+
+  /** The pact's parent in the tree is not owned yet. */
+  isPactLocked(id: PactId): boolean {
+    const def = PACTS.find((u) => u.id === id)!;
+    return def.requires !== undefined && this.save.pacts[def.requires] < 1;
+  }
+
+  isPactMaxed(id: PactId): boolean {
+    return this.save.pacts[id] >= PACTS.find((u) => u.id === id)!.maxLevel;
+  }
+
+  pactCost(id: PactId): number {
+    return PACTS.find((u) => u.id === id)!.cost;
+  }
+
+  buyPact(id: PactId): boolean {
+    if (this.isPactMaxed(id) || this.isPactLocked(id)) return false;
+    const cost = this.pactCost(id);
+    if (this.save.sigils < cost) return false;
+    this.save.sigils -= cost;
+    this.save.pacts[id]++;
+    if (this.phase !== 'fallen') this.refreshStats();
+    this.onPersist();
+    return true;
+  }
+
+  /** Sigils spent on pacts so far. */
+  sigilsSpent(): number {
+    return PACTS.reduce((sum, def) => sum + def.cost * this.save.pacts[def.id], 0);
+  }
+
+  /** Give back every Sigil and clear the tree, so it can be chosen anew. */
+  resetPacts(): void {
+    this.save.sigils += this.sigilsSpent();
+    this.save.pacts = emptyPacts();
+    if (this.phase !== 'fallen') this.refreshStats();
+    this.onPersist();
   }
 
   /** Start a new run after falling. */
   rise(): void {
     this.run = this.freshRun();
     this.save.run = this.run;
-    this.stats = computeStats(this.run.levels, this.save.prestige);
+    this.stats = computeStats(this.run.levels, this.save.prestige, this.save.pacts);
     this.run.lordHp = this.stats.maxHp;
     this.heroes = [];
     this.effects = [];
@@ -198,6 +254,13 @@ export class Game {
     this.applyAura(dt);
     this.removeDead();
 
+    if (this.run.lordHp <= 0 && (this.run.secondWinds ?? 0) < this.stats.secondWinds) {
+      this.run.secondWinds = (this.run.secondWinds ?? 0) + 1;
+      this.run.lordHp = this.stats.maxHp * SECOND_WIND_LIFE;
+      this.effects.push({ type: 'ring', x: LORD_X, y: LORD_Y, r: 70, color: '#e0566e', t: 0, ttl: 0.7 });
+      this.effects.push({ type: 'text', x: LORD_X + 20, y: LORD_Y - LORD_CHEST - 50, text: 'Second Wind!', color: '#ff8fa0', t: 0, ttl: 1.8 });
+      this.onPersist();
+    }
     if (this.run.lordHp <= 0) {
       this.fall();
       return;
@@ -252,6 +315,7 @@ export class Game {
         hurt: 99,
         anim: this.rng() * 10,
         slot: -1,
+        auraTime: 0,
       });
     });
     this.phase = 'fighting';
@@ -295,7 +359,8 @@ export class Game {
 
   private heroHitsLord(h: Hero): void {
     const def = HEROES[h.kind];
-    const taken = h.damage * (1 - this.stats.armor);
+    const withered = this.inAura(h) ? 1 - this.stats.withering : 1;
+    const taken = h.damage * withered * (1 - this.stats.armor);
     this.run.lordHp -= taken;
     this.lordHurt = 0;
     this.run.hitsTaken++;
@@ -310,11 +375,27 @@ export class Game {
       this.damageHero(h, reflected, '#c78bff');
       this.effects.push({ type: 'thorn', x: p.x, y: p.y, t: 0, ttl: 0.35 });
     }
-    if (this.stats.shockwaveDamage > 0 && this.run.hitsTaken % SHOCKWAVE_HITS === 0) {
+    if (this.stats.shockwaveDamage > 0 && this.run.hitsTaken % this.stats.shockwaveHits === 0) {
       const edge = RANGES[SHOCKWAVE_REACH].edge;
       this.effects.push({ type: 'ring', x: LORD_X, y: LORD_Y, r: edge, color: '#b06bff', t: 0, ttl: 0.6 });
       for (const other of this.heroes) if (other.dist <= edge) this.damageHero(other, this.stats.shockwaveDamage, '#d7b0ff');
     }
+    if (
+      this.stats.martyrdom &&
+      this.run.martyrdomWave !== this.run.wave &&
+      this.run.lordHp > 0 &&
+      this.run.lordHp < this.stats.maxHp * MARTYRDOM_THRESHOLD
+    ) {
+      this.run.martyrdomWave = this.run.wave;
+      const blast = this.stats.maxHp * MARTYRDOM_SHARE;
+      this.effects.push({ type: 'ring', x: LORD_X, y: LORD_Y, r: RANGES[RANGES.length - 1].edge, color: '#ff9b4a', t: 0, ttl: 0.8 });
+      this.effects.push({ type: 'text', x: LORD_X + 20, y: LORD_Y - LORD_CHEST - 50, text: 'Martyrdom!', color: '#ffb27a', t: 0, ttl: 1.6 });
+      for (const other of this.heroes) this.damageHero(other, blast, '#ffb27a');
+    }
+  }
+
+  inAura(h: Hero): boolean {
+    return h.dist <= RANGES[this.stats.auraReach].edge;
   }
 
   private auraMultiplier(): number {
@@ -324,9 +405,11 @@ export class Game {
   private applyAura(dt: number): void {
     const dps = this.stats.auraDps * this.auraMultiplier();
     for (const h of this.heroes) {
-      if (h.dist > RANGES[this.stats.auraReach].edge) continue;
+      if (!this.inAura(h)) continue;
+      h.auraTime += dt;
       const reduction = h.kind === 'champion' ? CHAMPION_AURA_REDUCTION : 1;
-      this.damageHero(h, dps * dt * reduction, null);
+      const doom = this.stats.doom ? Math.min(DOOM_MAX, 1 + DOOM_PER_SECOND * h.auraTime) : 1;
+      this.damageHero(h, dps * dt * reduction * doom, null);
     }
   }
 
@@ -363,11 +446,11 @@ export class Game {
       this.run.lordHp = this.stats.maxHp;
       this.effects.push({ type: 'text', x: LORD_X + 20, y: LORD_Y - LORD_CHEST - 50, text: 'Champion slain!', color: '#ffd166', t: 0, ttl: 1.8 });
     }
-    if (this.stats.corpseBurst) {
+    if (this.stats.corpseBurst > 0) {
       this.effects.push({ type: 'ring', x: p.x, y: p.y, r: 60, color: '#ff9b4a', t: 0, ttl: 0.45 });
       for (const o of this.heroes) {
         const q = heroPos(o);
-        if (Math.hypot(q.x - p.x, q.y - p.y) <= 60) this.damageHero(o, h.maxHp * CORPSE_BURST_SHARE, '#ffb27a');
+        if (Math.hypot(q.x - p.x, q.y - p.y) <= 60) this.damageHero(o, h.maxHp * this.stats.corpseBurst, '#ffb27a');
       }
     }
   }
@@ -376,14 +459,22 @@ export class Game {
     this.phase = 'fallen';
     this.run.lordHp = 0;
     const wave = this.run.wave;
-    const dread = dreadForWave(wave);
+    const base = dreadForWave(wave);
+    const dread = this.dreadForFall(wave);
     const newBest = wave > this.save.bestWave;
+    const sigils = sigilsForRecord(this.save.bestWave, wave);
     this.save.bestWave = Math.max(this.save.bestWave, wave);
     this.save.dread += dread;
+    this.save.sigils += sigils;
     this.save.runs++;
     this.save.run = null;
-    this.lastSummary = { wave, dread, bestWave: this.save.bestWave, newBest };
+    this.lastSummary = { wave, dread, dreadBonus: dread - base, sigils, bestWave: this.save.bestWave, newBest };
     this.onPersist();
+  }
+
+  /** Dread earned when falling at this wave, with Bounty. */
+  dreadForFall(wave: number): number {
+    return Math.floor(dreadForWave(wave) * this.stats.dreadMult);
   }
 
   /** Snapshot of the run for saving: resumes at the start of the current wave. */

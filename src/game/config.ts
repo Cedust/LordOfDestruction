@@ -127,9 +127,11 @@ export function runUpgradeCost(def: RunUpgradeDef, level: number): number {
 }
 
 // ---------------------------------------------------------------------------
-// Prestige upgrades (bought with Dread, permanent)
+// Prestige. Falling ends the run and pays two currencies:
+// - Dread, by the wave reached, buys levelled permanent upgrades.
+// - Sigils, one for every 10 waves of a new record, buy the "Dark Pacts" skill tree.
 
-export type PrestigeId = 'blackHeart' | 'malice' | 'tithe' | 'wrath' | 'corpseBurst' | 'headStart';
+export type PrestigeId = 'malice' | 'barbs' | 'blackHeart' | 'tithe' | 'headStart';
 
 export interface PrestigeDef {
   id: PrestigeId;
@@ -141,11 +143,10 @@ export interface PrestigeDef {
 }
 
 export const PRESTIGE_UPGRADES: PrestigeDef[] = [
-  { id: 'blackHeart', name: 'Black Heart', desc: '+25% maximum life and regeneration per level.', baseCost: 2, costGrowth: 1.5 },
   { id: 'malice', name: 'Malice', desc: '+25% damage of all powers per level.', baseCost: 2, costGrowth: 1.5 },
+  { id: 'barbs', name: 'Barbs', desc: '+25% Thorns damage per level.', baseCost: 2, costGrowth: 1.5 },
+  { id: 'blackHeart', name: 'Black Heart', desc: '+25% maximum life and regeneration per level.', baseCost: 2, costGrowth: 1.5 },
   { id: 'tithe', name: 'Tithe', desc: '+20% gold per level.', baseCost: 3, costGrowth: 1.6 },
-  { id: 'wrath', name: 'Wrath', desc: 'Below 50% life your aura deals double damage.', baseCost: 8, costGrowth: 1, maxLevel: 1 },
-  { id: 'corpseBurst', name: 'Corpse Burst', desc: 'Slain heroes explode and hurt heroes nearby.', baseCost: 12, costGrowth: 1, maxLevel: 1 },
   { id: 'headStart', name: 'Head Start', desc: 'Each level starts runs 5 waves later, with gold to match.', baseCost: 6, costGrowth: 2.2, maxLevel: 10 },
 ];
 
@@ -156,3 +157,81 @@ export function prestigeCost(def: PrestigeDef, level: number): number {
 export function dreadForWave(bestWave: number): number {
   return Math.floor(Math.pow(bestWave / 4, 1.6));
 }
+
+/** One Sigil for every 10 waves of a new record. */
+export const SIGIL_WAVES = 10;
+
+export function sigilsForRecord(oldBest: number, newBest: number): number {
+  return Math.max(0, Math.floor(newBest / SIGIL_WAVES) - Math.floor(oldBest / SIGIL_WAVES));
+}
+
+export type BranchId = 'dread' | 'spite' | 'blood';
+
+export interface BranchDef {
+  id: BranchId;
+  name: string;
+  desc: string;
+  color: string;
+}
+
+export const BRANCHES: BranchDef[] = [
+  { id: 'dread', name: 'Dread', desc: 'Your aura', color: '#b07cff' },
+  { id: 'spite', name: 'Spite', desc: 'Thorns, triggers', color: '#ff9b4a' },
+  { id: 'blood', name: 'Blood', desc: 'Survival, spoils', color: '#e0566e' },
+];
+
+export type PactId =
+  | 'wrath'
+  | 'creepingDread'
+  | 'withering'
+  | 'doom'
+  | 'corpseBurst'
+  | 'echo'
+  | 'vengeance'
+  | 'martyrdom'
+  | 'bloodPrice'
+  | 'secondWind'
+  | 'bounty'
+  | 'undying';
+
+export interface PactDef {
+  id: PactId;
+  name: string;
+  desc: string;
+  branch: BranchId;
+  /** Pact that must be owned (level 1+) before this one can be taken. */
+  requires?: PactId;
+  /** Sigils per level. */
+  cost: number;
+  maxLevel: number;
+}
+
+/** Listed branch by branch, each from root to capstone. */
+export const PACTS: PactDef[] = [
+  // Dread: the aura
+  { id: 'wrath', name: 'Wrath', desc: 'Below 50% life your aura deals double damage.', branch: 'dread', cost: 1, maxLevel: 1 },
+  { id: 'creepingDread', name: 'Creeping Dread', desc: 'Your aura reaches one range farther from the start of every run.', branch: 'dread', requires: 'wrath', cost: 2, maxLevel: 1 },
+  { id: 'withering', name: 'Withering', desc: 'Heroes inside your aura deal 6% less damage per level.', branch: 'dread', requires: 'creepingDread', cost: 1, maxLevel: 5 },
+  { id: 'doom', name: 'Doom', desc: 'Aura damage on a hero grows by 25% for every second it stays inside, up to triple.', branch: 'dread', requires: 'withering', cost: 3, maxLevel: 1 },
+  // Spite: thorns and triggers
+  { id: 'corpseBurst', name: 'Corpse Burst', desc: 'Slain heroes explode and hurt heroes nearby.', branch: 'spite', cost: 1, maxLevel: 1 },
+  { id: 'echo', name: 'Echo', desc: 'Shockwave strikes every 7 hits instead of every 10.', branch: 'spite', requires: 'corpseBurst', cost: 2, maxLevel: 1 },
+  { id: 'vengeance', name: 'Vengeance', desc: 'Corpse Burst deals +5% of the slain hero\'s life per level.', branch: 'spite', requires: 'echo', cost: 1, maxLevel: 5 },
+  { id: 'martyrdom', name: 'Martyrdom', desc: 'Once per wave, dropping below 25% life unleashes a blast on every hero worth half your maximum life.', branch: 'spite', requires: 'vengeance', cost: 3, maxLevel: 1 },
+  // Blood: survival and spoils
+  { id: 'bloodPrice', name: 'Blood Price', desc: 'Blood Pact heals twice as much.', branch: 'blood', cost: 1, maxLevel: 1 },
+  { id: 'secondWind', name: 'Second Wind', desc: 'Once per run, a deadly blow leaves you at 30% life instead.', branch: 'blood', requires: 'bloodPrice', cost: 2, maxLevel: 1 },
+  { id: 'bounty', name: 'Bounty', desc: '+10% Dread from every fall per level.', branch: 'blood', requires: 'secondWind', cost: 1, maxLevel: 5 },
+  { id: 'undying', name: 'Undying', desc: 'Second Wind can save you twice per run.', branch: 'blood', requires: 'bounty', cost: 3, maxLevel: 1 },
+];
+
+/** Tuning numbers for the pacts. */
+export const WITHERING_PER_LEVEL = 0.06;
+export const DOOM_PER_SECOND = 0.25;
+export const DOOM_MAX = 3;
+export const ECHO_HITS = 7;
+export const VENGEANCE_PER_LEVEL = 0.05;
+export const MARTYRDOM_THRESHOLD = 0.25;
+export const MARTYRDOM_SHARE = 0.5;
+export const SECOND_WIND_LIFE = 0.3;
+export const BOUNTY_PER_LEVEL = 0.1;
