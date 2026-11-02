@@ -8,8 +8,8 @@
     <link rel="icon" href="icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="icon.svg" />
     <title>Lord of Destruction</title>
-    <script type="module" crossorigin src="./assets/index-C3IelSy9.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-D_x6u5X6.css">
+    <script type="module" crossorigin src="./assets/index-Dq1cVHfd.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BmUi7-JE.css">
   </head>
   <body>
     <main id="app">
@@ -27,9 +27,19 @@
         <div id="status" class="status"></div>
       </section>
 
-      <div class="hp-bar" aria-label="Your life">
-        <div id="hp-fill" class="hp-fill"></div>
-        <span id="hp-text" class="hp-text"></span>
+      <div class="bars-row">
+        <div id="level-box" class="level-box" aria-label="Your level"><span class="label">Level</span><span id="level-num">1</span></div>
+        <div class="bars">
+          <div class="hp-bar" aria-label="Your life">
+            <div id="hp-fill" class="hp-fill"></div>
+            <span id="hp-text" class="hp-text"></span>
+          </div>
+          <div id="level-bar" class="level-bar" aria-label="Your level">
+            <div id="level-fill" class="level-fill"></div>
+            <span id="level-text" class="level-text"></span>
+          </div>
+        </div>
+        <button id="prestige" class="prestige-btn">Prestige</button>
       </div>
 
       <nav class="tabs">
@@ -41,11 +51,9 @@
       <section class="lists">
         <div id="powers-list" class="list"></div>
         <div id="dread-list" class="list" hidden>
-          <p class="hint" id="dread-preview"></p>
           <div id="dread-upgrades" class="list compact"></div>
         </div>
         <div id="pacts-list" class="list" hidden>
-          <p class="hint" id="pacts-preview"></p>
           <div id="pacts-tree"></div>
         </div>
       </section>
@@ -60,12 +68,12 @@
 
       <div id="fallen" class="overlay" hidden>
         <div class="panel">
-          <h1>You Have Fallen</h1>
+          <h1 id="fallen-title">You Have Fallen</h1>
           <p id="fallen-runs" class="sub"></p>
           <p class="big">Wave <span id="fallen-wave">0</span></p>
           <p id="fallen-best" class="sub"></p>
-          <p class="gain">+<span id="fallen-dread-gain">0</span> ☠ Dread <span class="sub">(Total <span id="fallen-total">0</span>)</span></p>
-          <p id="fallen-bonus" class="sub"></p>
+          <p id="fallen-level" class="level-gain"></p>
+          <p class="gain"><span id="fallen-total">0</span> ☠ Dread to Spend</p>
           <p id="fallen-sigils" class="gain sigil"></p>
           <div class="segs">
             <button class="seg" data-view="dread">Dread Upgrades</button>
@@ -79,7 +87,7 @@
           </div>
           <div class="fallen-footer">
             <div id="fallen-detail"></div>
-            <button id="rise" class="rise">Rise Again</button>
+            <button id="rise" class="rise">Start Next Run</button>
           </div>
         </div>
       </div>
