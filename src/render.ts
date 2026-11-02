@@ -1,4 +1,4 @@
-import { DEPTH, FIELD_ANGLE_MAX, FIELD_ANGLE_MIN, FLOOR_Y, HEROES, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W } from './game/config';
+import { DEPTH, FLOOR_Y, HEROES, RANGES, rangeIndex, LORD_X, LORD_Y, WORLD_H, WORLD_W } from './game/config';
 import { heroPos, type Game, type Hero } from './game/game';
 import { assetUrl } from './assets';
 
@@ -9,6 +9,8 @@ import { assetUrl } from './assets';
 const BG_SCALE = 0.32;
 const BG_SHIFT_X = 0;
 const LORD_FEET_DY = 0;
+/** Left border of the drawn field (world x), a little behind the Lord. */
+const FIELD_LEFT = LORD_X - 40;
 /** Outline of the raised dais in throne-room.png pixels (top surface plus steps). */
 const DAIS_PX: [number, number][] = [[0, 495], [598, 495], [600, 540], [487, 752], [0, 752]];
 
@@ -111,14 +113,19 @@ export class Renderer {
     ctx.clip('evenodd');
   }
 
-  /** Annular sector of the battlefield fan between two radii, squashed onto the floor. */
+  /** Ring of the battlefield between two radii, squashed onto the floor (clip to the field first). */
   private fanPath(r0: number, r1: number): void {
     const ctx = this.ctx;
     ctx.beginPath();
-    ctx.ellipse(LORD_X, LORD_Y, r1, r1 * DEPTH, 0, FIELD_ANGLE_MIN, FIELD_ANGLE_MAX);
-    if (r0 > 0) ctx.ellipse(LORD_X, LORD_Y, r0, r0 * DEPTH, 0, FIELD_ANGLE_MAX, FIELD_ANGLE_MIN, true);
-    else ctx.lineTo(LORD_X, LORD_Y);
-    ctx.closePath();
+    ctx.ellipse(LORD_X, LORD_Y, r1, r1 * DEPTH, 0, 0, Math.PI * 2);
+    if (r0 > 0) ctx.ellipse(LORD_X, LORD_Y, r0, r0 * DEPTH, 0, Math.PI * 2, 0, true);
+  }
+
+  /** The field starts at a vertical line FIELD_LEFT, a little behind the Lord. */
+  private clipField(): void {
+    this.ctx.beginPath();
+    this.ctx.rect(FIELD_LEFT, 0, WORLD_W - FIELD_LEFT, WORLD_H);
+    this.ctx.clip();
   }
 
   /**
@@ -133,6 +140,7 @@ export class Renderer {
       // Near includes the dais the Lord stands on; Mid and Far stay on the open floor.
       ctx.save();
       this.clipFloor(i > 0);
+      this.clipField();
       this.fanPath(inner, range.edge);
       ctx.fillStyle = i % 2 === 0 ? 'rgba(10,6,18,0.20)' : 'rgba(10,6,18,0.06)';
       ctx.fill();
@@ -141,7 +149,7 @@ export class Renderer {
       ctx.lineWidth = 1.2;
       ctx.setLineDash(covered ? [] : [3, 5]);
       ctx.beginPath();
-      ctx.ellipse(LORD_X, LORD_Y, range.edge, range.edge * DEPTH, 0, FIELD_ANGLE_MIN, FIELD_ANGLE_MAX);
+      ctx.ellipse(LORD_X, LORD_Y, range.edge, range.edge * DEPTH, 0, 0, Math.PI * 2);
       ctx.stroke();
       ctx.setLineDash([]);
       // Fixed spots.
@@ -157,13 +165,16 @@ export class Renderer {
       ctx.restore();
       inner = range.edge;
     });
-    // The field's left border: a straight vertical line down from the Lord's feet.
+    // The field's left border: a straight vertical line behind the Lord.
+    ctx.save();
+    this.clipFloor();
     ctx.strokeStyle = 'rgba(200,150,255,0.35)';
     ctx.lineWidth = 1.2;
     ctx.beginPath();
-    ctx.moveTo(LORD_X, LORD_Y);
-    ctx.lineTo(LORD_X, LORD_Y + RANGES[RANGES.length - 1].edge * DEPTH);
+    ctx.moveTo(FIELD_LEFT, LORD_Y);
+    ctx.lineTo(FIELD_LEFT, WORLD_H);
     ctx.stroke();
+    ctx.restore();
 
     // Range names in small pills along the lower edge of the fan, in the middle of each band.
     ctx.save();
@@ -174,8 +185,8 @@ export class Renderer {
     RANGES.forEach((range, i) => {
       const covered = i <= game.stats.auraReach;
       const mid = (inner + range.edge) / 2;
-      const x = LORD_X + Math.cos(FIELD_ANGLE_MAX) * mid + 20;
-      const y = Math.min(WORLD_H - 9, LORD_Y + Math.sin(FIELD_ANGLE_MAX) * mid * DEPTH);
+      const x = FIELD_LEFT + 24;
+      const y = Math.min(WORLD_H - 9, LORD_Y + mid * DEPTH);
       const w = ctx.measureText(range.name.toUpperCase()).width + 10;
       ctx.fillStyle = 'rgba(16,10,26,0.65)';
       ctx.beginPath();
@@ -196,10 +207,8 @@ export class Renderer {
     const tint = wrath ? '255,90,60' : '150,80,255';
     ctx.save();
     this.clipFloor();
-    // The aura ends on a vertical line straight down from the Lord, like the range fan.
-    ctx.beginPath();
-    ctx.rect(LORD_X, 0, WORLD_W - LORD_X, WORLD_H);
-    ctx.clip();
+    // The aura ends on the same vertical line as the field.
+    this.clipField();
     // The gradient is drawn in a squashed space so it stays round on the floor.
     ctx.translate(LORD_X, LORD_Y);
     ctx.scale(1, DEPTH);
