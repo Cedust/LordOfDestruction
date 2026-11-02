@@ -4,7 +4,7 @@ name: Aura Pact Icons Sheet
 category: icons
 type: icon_sheet
 batch: 06-aura-pact-icons
-status: review
+status: approved
 revision: 1
 output: assets/icons/sheets/aura-pact-icons.png
 format: png

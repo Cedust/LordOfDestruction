@@ -2602,7 +2602,7 @@
       "prompt": "prompts/icons/sheet_aura_pact_icons.md",
       "output": "assets/icons/sheets/aura-pact-icons.png",
       "batch": "06-aura-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -2616,6 +2616,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -2677,7 +2683,7 @@
       "prompt": "prompts/icons/icon_withering.md",
       "output": "assets/icons/withering.png",
       "batch": "06-aura-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -2691,6 +2697,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -2765,7 +2777,7 @@
       "prompt": "prompts/icons/icon_grasp.md",
       "output": "assets/icons/grasp.png",
       "batch": "06-aura-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -2779,6 +2791,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -2853,7 +2871,7 @@
       "prompt": "prompts/icons/icon_long_shadow.md",
       "output": "assets/icons/longShadow.png",
       "batch": "06-aura-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -2867,6 +2885,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -2941,7 +2965,7 @@
       "prompt": "prompts/icons/icon_doom.md",
       "output": "assets/icons/doom.png",
       "batch": "06-aura-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -2955,6 +2979,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3029,7 +3059,7 @@
       "prompt": "prompts/icons/icon_despair.md",
       "output": "assets/icons/despair.png",
       "batch": "06-aura-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3043,6 +3073,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3117,7 +3153,7 @@
       "prompt": "prompts/icons/icon_inner_sanctum.md",
       "output": "assets/icons/innerSanctum.png",
       "batch": "06-aura-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3131,6 +3167,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3205,7 +3247,7 @@
       "prompt": "prompts/icons/icon_black_sun.md",
       "output": "assets/icons/blackSun.png",
       "batch": "06-aura-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3219,6 +3261,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3293,7 +3341,7 @@
       "prompt": "prompts/icons/icon_gloom.md",
       "output": "assets/icons/gloom.png",
       "batch": "06-aura-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3307,6 +3355,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3381,7 +3435,7 @@
       "prompt": "prompts/icons/sheet_thorn_pact_icons.md",
       "output": "assets/icons/sheets/thorn-pact-icons.png",
       "batch": "07-thorn-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3395,6 +3449,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3456,7 +3516,7 @@
       "prompt": "prompts/icons/icon_splinter.md",
       "output": "assets/icons/splinter.png",
       "batch": "07-thorn-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3470,6 +3530,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3544,7 +3610,7 @@
       "prompt": "prompts/icons/icon_thorn_burst.md",
       "output": "assets/icons/thornBurst.png",
       "batch": "07-thorn-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3558,6 +3624,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3632,7 +3704,7 @@
       "prompt": "prompts/icons/icon_spiked_hide.md",
       "output": "assets/icons/spikedHide.png",
       "batch": "07-thorn-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3646,6 +3718,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3720,7 +3798,7 @@
       "prompt": "prompts/icons/icon_retaliation.md",
       "output": "assets/icons/retaliation.png",
       "batch": "07-thorn-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3734,6 +3812,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3808,7 +3892,7 @@
       "prompt": "prompts/icons/icon_iron_maiden.md",
       "output": "assets/icons/ironMaiden.png",
       "batch": "07-thorn-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3822,6 +3906,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3896,7 +3986,7 @@
       "prompt": "prompts/icons/icon_barbs.md",
       "output": "assets/icons/barbs.png",
       "batch": "07-thorn-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3910,6 +4000,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -3984,7 +4080,7 @@
       "prompt": "prompts/icons/sheet_blood_pact_icons.md",
       "output": "assets/icons/sheets/blood-pact-icons.png",
       "batch": "08-blood-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -3998,6 +4094,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -4059,7 +4161,7 @@
       "prompt": "prompts/icons/icon_chain.md",
       "output": "assets/icons/chain.png",
       "batch": "08-blood-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -4073,6 +4175,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -4147,7 +4255,7 @@
       "prompt": "prompts/icons/icon_execute.md",
       "output": "assets/icons/execute.png",
       "batch": "08-blood-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -4161,6 +4269,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -4235,7 +4349,7 @@
       "prompt": "prompts/icons/icon_frenzy.md",
       "output": "assets/icons/frenzy.png",
       "batch": "08-blood-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -4249,6 +4363,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -4323,7 +4443,7 @@
       "prompt": "prompts/icons/icon_transfusion.md",
       "output": "assets/icons/transfusion.png",
       "batch": "08-blood-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -4337,6 +4457,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -4411,7 +4537,7 @@
       "prompt": "prompts/icons/icon_blood_moon.md",
       "output": "assets/icons/bloodMoon.png",
       "batch": "08-blood-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -4425,6 +4551,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -4499,7 +4631,7 @@
       "prompt": "prompts/icons/icon_sanguine.md",
       "output": "assets/icons/sanguine.png",
       "batch": "08-blood-pact-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -4513,6 +4645,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -4587,7 +4725,7 @@
       "prompt": "prompts/icons/sheet_extra_icons.md",
       "output": "assets/icons/sheets/extra-icons.png",
       "batch": "09-extra-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -4601,6 +4739,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -4662,7 +4806,7 @@
       "prompt": "prompts/icons/icon_lash.md",
       "output": "assets/icons/lash.png",
       "batch": "09-extra-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -4676,6 +4820,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -4750,7 +4900,7 @@
       "prompt": "prompts/icons/icon_tremor.md",
       "output": "assets/icons/tremor.png",
       "batch": "09-extra-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -4764,6 +4914,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -4838,7 +4994,7 @@
       "prompt": "prompts/icons/icon_avarice.md",
       "output": "assets/icons/avarice.png",
       "batch": "09-extra-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -4852,6 +5008,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [
@@ -4926,7 +5088,7 @@
       "prompt": "prompts/icons/icon_dread_harvest.md",
       "output": "assets/icons/dreadHarvest.png",
       "batch": "09-extra-icons",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -4940,6 +5102,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-02",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Merge'"
         }
       ],
       "generations": [

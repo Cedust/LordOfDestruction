@@ -4,7 +4,7 @@ name: Transfusion Icon
 category: icons
 type: game_icon
 batch: 08-blood-pact-icons
-status: review
+status: approved
 revision: 1
 output: assets/icons/transfusion.png
 format: png

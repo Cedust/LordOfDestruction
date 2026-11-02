@@ -4,7 +4,7 @@ name: Spiked Hide Icon
 category: icons
 type: game_icon
 batch: 07-thorn-pact-icons
-status: review
+status: approved
 revision: 1
 output: assets/icons/spikedHide.png
 format: png

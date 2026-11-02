@@ -4,7 +4,7 @@ name: Doom Icon
 category: icons
 type: game_icon
 batch: 06-aura-pact-icons
-status: review
+status: approved
 revision: 1
 output: assets/icons/doom.png
 format: png

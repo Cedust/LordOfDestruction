@@ -4,7 +4,7 @@ name: Avarice Icon
 category: icons
 type: game_icon
 batch: 09-extra-icons
-status: review
+status: approved
 revision: 1
 output: assets/icons/avarice.png
 format: png
