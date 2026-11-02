@@ -76,23 +76,23 @@ export const DEPTH = 0.5;
 export const FLOOR_Y = 166;
 /**
  * Ranges are strips on the floor, from left to right, starting in front of the dais
- * stairs. Their borders are parallel to the slanted side of the stairs in
- * throne-room.png (FIELD_SLANT: world x per unit of y). A hero's distance is measured
- * along the row FIELD_REF_Y (FIELD_X + dist * FIELD_SCALE there); its lane is how far
- * down it stands between FIELD_TOP and FIELD_BOTTOM.
+ * stairs. Their borders follow the perspective of the floor tiles in throne-room.png:
+ * straight lines that meet in a vanishing point (FIELD_VP_X, FIELD_VP_Y) above the hall.
+ * A hero's distance is measured along the row FIELD_REF_Y (FIELD_X + dist * FIELD_SCALE there); its lane
+ * is how far down it stands between FIELD_TOP and FIELD_BOTTOM.
  */
-export const FIELD_X = 102;
+export const FIELD_X = 114;
 export const FIELD_TOP = 176;
 export const FIELD_BOTTOM = 282;
 export const FIELD_REF_Y = 282;
 /** Stretches the strips so Far ends near the right edge of the screen. */
-export const FIELD_SCALE = 1.1;
-/** Slant of the stairs' side edge in the background (measured: -95 px over 160 px). */
-export const FIELD_SLANT = -0.594;
+export const FIELD_SCALE = 1.2;
+export const FIELD_VP_X = 225;
+export const FIELD_VP_Y = 2;
 
-/** World x of the border line `dist` from the field's left border, at height y. */
+/** World x of the line `dist` from the field's left border, at height y. */
 export function fieldX(dist: number, y: number): number {
-  return FIELD_X + dist * FIELD_SCALE + (y - FIELD_REF_Y) * FIELD_SLANT;
+  return FIELD_VP_X + (FIELD_X + dist * FIELD_SCALE - FIELD_VP_X) * ((y - FIELD_VP_Y) / (FIELD_REF_Y - FIELD_VP_Y));
 }
 
 export function fieldPos(dist: number, lane: number): { x: number; y: number } {

@@ -124,7 +124,7 @@ export class Renderer {
     }
   }
 
-  /** Strip of the floor between two distances, slanted like the dais stairs (see fieldX). */
+  /** Strip of the floor between two distances, following the floor perspective (see fieldX). */
   private stripPath(d0: number, d1: number): void {
     const ctx = this.ctx;
     ctx.beginPath();
@@ -135,7 +135,7 @@ export class Renderer {
     ctx.closePath();
   }
 
-  /** Border line across the floor at a distance, slanted like the dais stairs. */
+  /** Border line across the floor at a distance, following the floor perspective. */
   private vline(d: number): void {
     this.ctx.beginPath();
     this.ctx.moveTo(fieldX(d, FLOOR_Y), FLOOR_Y);
@@ -145,7 +145,7 @@ export class Renderer {
 
   /**
    * Ranges are painted onto the floor as strips from left to right, starting in front of
-   * the dais stairs and slanted like their side edge: alternating soft bands for Near, Mid and Far, a faint rune
+   * the dais stairs and following the perspective of the floor tiles: alternating soft bands for Near, Mid and Far, a faint rune
    * circle on every fixed spot, and the range names along the bottom.
    */
   private drawRanges(game: Game): void {
@@ -210,7 +210,7 @@ export class Renderer {
     ctx.save();
     this.clipFloor('without');
     // The aura fills the strips it reaches and fades out towards its far edge, drawn as
-    // thin slanted slices so the fade follows the strips.
+    // thin slices so the fade follows the floor perspective.
     const reach = r * pulse;
     const slices = 16;
     for (let i = 0; i < slices; i++) {
