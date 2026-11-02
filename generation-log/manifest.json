@@ -2596,6 +2596,482 @@
           }
         }
       ]
+    },
+    {
+      "asset_id": "sheet_aura_pact_icons",
+      "prompt": "prompts/icons/sheet_aura_pact_icons.md",
+      "output": "assets/icons/sheets/aura-pact-icons.png",
+      "batch": "06-aura-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created: one sheet for the new icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_withering",
+      "prompt": "prompts/icons/icon_withering.md",
+      "output": "assets/icons/withering.png",
+      "batch": "06-aura-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_aura_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_grasp",
+      "prompt": "prompts/icons/icon_grasp.md",
+      "output": "assets/icons/grasp.png",
+      "batch": "06-aura-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_aura_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_long_shadow",
+      "prompt": "prompts/icons/icon_long_shadow.md",
+      "output": "assets/icons/longShadow.png",
+      "batch": "06-aura-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_aura_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_doom",
+      "prompt": "prompts/icons/icon_doom.md",
+      "output": "assets/icons/doom.png",
+      "batch": "06-aura-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_aura_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_despair",
+      "prompt": "prompts/icons/icon_despair.md",
+      "output": "assets/icons/despair.png",
+      "batch": "06-aura-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_aura_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_inner_sanctum",
+      "prompt": "prompts/icons/icon_inner_sanctum.md",
+      "output": "assets/icons/innerSanctum.png",
+      "batch": "06-aura-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_aura_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_black_sun",
+      "prompt": "prompts/icons/icon_black_sun.md",
+      "output": "assets/icons/blackSun.png",
+      "batch": "06-aura-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_aura_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_gloom",
+      "prompt": "prompts/icons/icon_gloom.md",
+      "output": "assets/icons/gloom.png",
+      "batch": "06-aura-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_aura_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "sheet_thorn_pact_icons",
+      "prompt": "prompts/icons/sheet_thorn_pact_icons.md",
+      "output": "assets/icons/sheets/thorn-pact-icons.png",
+      "batch": "07-thorn-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created: one sheet for the new icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_splinter",
+      "prompt": "prompts/icons/icon_splinter.md",
+      "output": "assets/icons/splinter.png",
+      "batch": "07-thorn-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_thorn_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_thorn_burst",
+      "prompt": "prompts/icons/icon_thorn_burst.md",
+      "output": "assets/icons/thornBurst.png",
+      "batch": "07-thorn-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_thorn_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_spiked_hide",
+      "prompt": "prompts/icons/icon_spiked_hide.md",
+      "output": "assets/icons/spikedHide.png",
+      "batch": "07-thorn-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_thorn_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_retaliation",
+      "prompt": "prompts/icons/icon_retaliation.md",
+      "output": "assets/icons/retaliation.png",
+      "batch": "07-thorn-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_thorn_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_iron_maiden",
+      "prompt": "prompts/icons/icon_iron_maiden.md",
+      "output": "assets/icons/ironMaiden.png",
+      "batch": "07-thorn-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_thorn_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_barbs",
+      "prompt": "prompts/icons/icon_barbs.md",
+      "output": "assets/icons/barbs.png",
+      "batch": "07-thorn-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_thorn_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "sheet_blood_pact_icons",
+      "prompt": "prompts/icons/sheet_blood_pact_icons.md",
+      "output": "assets/icons/sheets/blood-pact-icons.png",
+      "batch": "08-blood-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created: one sheet for the new icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_chain",
+      "prompt": "prompts/icons/icon_chain.md",
+      "output": "assets/icons/chain.png",
+      "batch": "08-blood-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_blood_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_execute",
+      "prompt": "prompts/icons/icon_execute.md",
+      "output": "assets/icons/execute.png",
+      "batch": "08-blood-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_blood_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_frenzy",
+      "prompt": "prompts/icons/icon_frenzy.md",
+      "output": "assets/icons/frenzy.png",
+      "batch": "08-blood-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_blood_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_transfusion",
+      "prompt": "prompts/icons/icon_transfusion.md",
+      "output": "assets/icons/transfusion.png",
+      "batch": "08-blood-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_blood_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_blood_moon",
+      "prompt": "prompts/icons/icon_blood_moon.md",
+      "output": "assets/icons/bloodMoon.png",
+      "batch": "08-blood-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_blood_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_sanguine",
+      "prompt": "prompts/icons/icon_sanguine.md",
+      "output": "assets/icons/sanguine.png",
+      "batch": "08-blood-pact-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_blood_pact_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "sheet_extra_icons",
+      "prompt": "prompts/icons/sheet_extra_icons.md",
+      "output": "assets/icons/sheets/extra-icons.png",
+      "batch": "09-extra-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created: one sheet for the new icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_lash",
+      "prompt": "prompts/icons/icon_lash.md",
+      "output": "assets/icons/lash.png",
+      "batch": "09-extra-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_extra_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_tremor",
+      "prompt": "prompts/icons/icon_tremor.md",
+      "output": "assets/icons/tremor.png",
+      "batch": "09-extra-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_extra_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_avarice",
+      "prompt": "prompts/icons/icon_avarice.md",
+      "output": "assets/icons/avarice.png",
+      "batch": "09-extra-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_extra_icons"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_dread_harvest",
+      "prompt": "prompts/icons/icon_dread_harvest.md",
+      "output": "assets/icons/dreadHarvest.png",
+      "batch": "09-extra-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-02",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_extra_icons"
+        }
+      ],
+      "generations": []
     }
   ]
 }

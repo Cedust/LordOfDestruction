@@ -8,12 +8,17 @@ export function sigilText(n: number): string {
   return `${n} ${SIGIL}`;
 }
 
+/** The pact's own icon, or its stand-in icon until that exists. */
+export function pactIconUrl(def: PactDef): string | undefined {
+  return assetUrl(`icons/${def.id}`) ?? (def.icon ? assetUrl(`icons/${def.icon}`) : undefined);
+}
+
 const BY_ID = new Map(PACTS.map((d) => [d.id, d]));
 const TIER_NAMES: Record<number, string> = { 1: 'Start Pact', 2: 'Tier 2', 3: 'Tier 3', 5: 'Capstone' };
 
-/** Badge for a tree node: the upgrade icon, or a lettered stand-in until the art exists. */
+/** Badge for a tree node: its own icon, else the stand-in icon, else a letter until the art exists. */
 function badgeHtml(def: PactDef): string {
-  const url = assetUrl(`icons/${def.icon ?? def.id}`);
+  const url = pactIconUrl(def);
   if (url) return `<img class="node-icon" alt="" src="${url}">`;
   return `<span class="node-icon placeholder">${def.name[0]}</span>`;
 }

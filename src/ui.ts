@@ -2,7 +2,7 @@ import { BUILDS, HEROES, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SHOCKWAVE_HITS,
 import { fmt, type Game } from './game/game';
 import { computeStats, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
-import { SIGIL, SkillTree } from './tree';
+import { SIGIL, SkillTree, pactIconUrl } from './tree';
 
 type Tab = 'powers' | 'dread' | 'pacts';
 
@@ -10,7 +10,10 @@ const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as
 
 /** Upgrade icon from assets/icons/<id>.png. */
 function iconHtml(id: string, name: string): string {
-  const url = assetUrl(`icons/${id}`);
+  return iconTag(assetUrl(`icons/${id}`), name);
+}
+
+function iconTag(url: string | undefined, name: string): string {
   return url ? `<img class="icon" alt="" src="${url}">` : `<span class="icon placeholder">${name[0]}</span>`;
 }
 
@@ -137,7 +140,7 @@ export class UI {
       btn.className = 'choice';
       btn.style.setProperty('--branch', build.color);
       btn.innerHTML = `
-        ${iconHtml(pact.icon ?? pact.id, pact.name)}
+        ${iconTag(pactIconUrl(pact), pact.name)}
         <span class="info"><span class="name">${build.name}</span><span class="tag">${build.desc}</span><span class="desc">${pact.desc}</span></span>`;
       btn.addEventListener('click', () => {
         if (this.game.chooseBuild(build.id)) this.update();
