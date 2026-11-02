@@ -16,8 +16,8 @@ export interface RangeDef {
 /** Three fixed ranges. Order matters: index 0 is closest to the lord. */
 export const RANGES: RangeDef[] = [
   { id: 'near', name: 'Near', dist: 62, edge: 96, slots: [0.125, 0.375, 0.625, 0.875] },
-  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [0.17, 0.5, 0.83] },
-  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [0.17, 0.5, 0.83] },
+  { id: 'mid', name: 'Mid', dist: 132, edge: 166, slots: [0.25, 0.5, 0.75] },
+  { id: 'far', name: 'Far', dist: 202, edge: 236, slots: [0.25, 0.5, 0.75] },
 ];
 
 /** Heroes without a free spot wait this far behind their range. */
@@ -95,10 +95,25 @@ export function fieldX(dist: number, y: number): number {
   return FIELD_VP_X + (FIELD_X + dist * FIELD_SCALE - FIELD_VP_X) * ((y - FIELD_VP_Y) / (FIELD_REF_Y - FIELD_VP_Y));
 }
 
+/**
+ * Where a distance is drawn: each range's standing distance lands in the middle of its
+ * strip, so the spots line up; in between it is interpolated, outside the field unchanged.
+ */
+function drawnDist(dist: number): number {
+  let inner = 0;
+  for (const r of RANGES) {
+    const mid = (inner + r.edge) / 2;
+    if (dist <= r.dist) return inner + ((dist - inner) / (r.dist - inner)) * (mid - inner);
+    if (dist <= r.edge) return mid + ((dist - r.dist) / (r.edge - r.dist)) * (r.edge - mid);
+    inner = r.edge;
+  }
+  return dist;
+}
+
 export function fieldPos(dist: number, lane: number): { x: number; y: number } {
   const l = Math.min(1, Math.max(0, lane));
   const y = FIELD_TOP + l * (FIELD_BOTTOM - FIELD_TOP);
-  return { x: fieldX(dist, y), y };
+  return { x: fieldX(drawnDist(dist), y), y };
 }
 
 /** Height of the Lord's chest above LORD_Y, where projectiles hit and numbers pop. */
