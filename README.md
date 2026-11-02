@@ -3,6 +3,8 @@
 An idle auto-battler for desktop and mobile browsers. You are the Lord of Destruction: you never strike yourself.
 Waves of heroes storm your throne room and break against your dark powers. When you fall, you rise again stronger.
 
+Every game starts with one Sigil for a **start pact** that picks a build: **Aura** (steady damage in Near, Mid and Far), **Thorns** (every hit you take strikes back) or **Blood** (Blood Lash executes the weakest hero, paid with your life). Falling ends the run and pays two currencies: **Dread** (by the wave reached) buys permanent upgrades that only raise numbers, and **Sigils** (one for every 10 waves of a new record) buy pacts in the **Dark Pacts** skill tree, which change the rules of a build. The tree can be reset between runs for a full refund.
+
 - Offline single player, no offline progression (a hidden tab simply pauses)
 - Installable as a PWA, saves in the browser (localStorage)
 
@@ -19,12 +21,13 @@ npm run sim       # headless balance simulation (bot plays several runs)
 
 | Path | Purpose |
 | --- | --- |
-| `src/game/config.ts` | All balance numbers: heroes, scaling, upgrades, Dread formula |
+| `src/game/config.ts` | All balance numbers: heroes, scaling, upgrades, Dread and Sigil formulas, the pact tree |
 | `src/game/stats.ts` | Lord stats from run and prestige levels |
 | `src/game/game.ts` | Simulation: waves, combat, powers, falling and rising |
 | `src/game/state.ts` | Save format and localStorage |
 | `src/render.ts` | Canvas drawing of the game art |
 | `src/ui.ts` | HTML interface: top bar, upgrade lists, fallen screen |
+| `src/tree.ts` | Dark Pacts skill tree view |
 | `scripts/sim.ts` | Balance simulation |
 
 ## Art

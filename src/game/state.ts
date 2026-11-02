@@ -1,7 +1,8 @@
-import { PRESTIGE_UPGRADES, RUN_UPGRADES, type PrestigeId, type RunUpgradeId } from './config';
+import { PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_WAVES, START_SIGILS, type PactId, type PrestigeId, type RunUpgradeId } from './config';
 
 export type RunLevels = Record<RunUpgradeId, number>;
 export type PrestigeLevels = Record<PrestigeId, number>;
+export type PactLevels = Record<PactId, number>;
 
 export interface RunState {
   wave: number;
@@ -9,6 +10,8 @@ export interface RunState {
   levels: RunLevels;
   lordHp: number;
   hitsTaken: number;
+  /** Blood Moon shield. */
+  shield?: number;
 }
 
 export interface SaveData {
@@ -17,6 +20,10 @@ export interface SaveData {
   bestWave: number;
   runs: number;
   prestige: PrestigeLevels;
+  sigils: number;
+  pacts: PactLevels;
+  /** Version of the pact tree the save was made with. */
+  treeVersion?: number;
   /** The run in progress, resumed at the start of its current wave. */
   run: RunState | null;
   speed: number;
@@ -30,8 +37,24 @@ export function emptyPrestige(): PrestigeLevels {
   return Object.fromEntries(PRESTIGE_UPGRADES.map((u) => [u.id, 0])) as PrestigeLevels;
 }
 
+export function emptyPacts(): PactLevels {
+  return Object.fromEntries(PACTS.map((u) => [u.id, 0])) as PactLevels;
+}
+
 export function newSave(): SaveData {
-  return { version: 1, dread: 0, bestWave: 0, runs: 0, prestige: emptyPrestige(), run: null, speed: 1 };
+  return { version: 1, dread: 0, bestWave: 0, runs: 0, prestige: emptyPrestige(), sigils: START_SIGILS, pacts: emptyPacts(), treeVersion: TREE_VERSION, run: null, speed: 1 };
+}
+
+/** Bumped whenever the pact tree changes; older trees are refunded in Sigils. */
+export const TREE_VERSION = 2;
+
+/** Dread that saves from before the skill tree spent on what are now pacts. */
+const OLD_DREAD_UNLOCKS: Record<string, number> = { wrath: 8, corpseBurst: 12 };
+
+function pick<T extends Record<string, number>>(base: T, from: Record<string, number> | undefined): T {
+  const out = { ...base };
+  for (const k of Object.keys(base)) if (typeof from?.[k] === 'number') (out as Record<string, number>)[k] = from[k];
+  return out;
 }
 
 const KEY = 'lod-save-v1';
@@ -42,10 +65,23 @@ export function loadSave(): SaveData {
     if (!raw) return newSave();
     const data = JSON.parse(raw) as SaveData;
     const base = newSave();
+    const oldPrestige = (data.prestige ?? {}) as Record<string, number>;
+    if (data.pacts === undefined) {
+      // Save from before the skill tree: refund the old Dread unlocks.
+      for (const [id, cost] of Object.entries(OLD_DREAD_UNLOCKS)) data.dread += (oldPrestige[id] ?? 0) * cost;
+    }
+    if (data.treeVersion !== TREE_VERSION) {
+      // Older or no tree: start the new tree fresh with every Sigil the record has earned.
+      data.pacts = emptyPacts();
+      data.sigils = START_SIGILS + Math.floor((data.bestWave ?? 0) / SIGIL_WAVES);
+      data.treeVersion = TREE_VERSION;
+      data.run = null;
+    }
     return {
       ...base,
       ...data,
-      prestige: { ...base.prestige, ...data.prestige },
+      prestige: pick(base.prestige, oldPrestige),
+      pacts: pick(base.pacts, data.pacts),
       run: data.run ? { ...data.run, levels: { ...emptyRunLevels(), ...data.run.levels } } : null,
     };
   } catch {
