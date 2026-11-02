@@ -208,7 +208,7 @@ export class UI {
     prestige.disabled = !g.canPrestige();
     if (prestige.disabled) this.prestigeArmed = false;
     prestige.classList.toggle('confirm', this.prestigeArmed);
-    prestige.textContent = this.prestigeArmed ? 'Confirm?' : 'Prestige';
+    prestige.textContent = this.prestigeArmed ? 'Confirm' : 'Prestige';
     const status = $('#status');
     if (g.phase === 'pause') status.textContent = `Wave ${g.run.wave} Approaches…`;
     else if (g.phase === 'fighting') {
