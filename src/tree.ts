@@ -122,7 +122,7 @@ export class SkillTree {
       const locked = g.isPactLocked(def.id);
       btn.classList.toggle('owned', owned);
       btn.classList.toggle('locked', locked);
-      btn.classList.toggle('ready', !locked && !owned && g.save.sigils >= g.pactCost(def.id));
+      btn.classList.toggle('ready', !locked && !owned && g.canSpend() && g.save.sigils >= g.pactCost(def.id));
       btn.classList.toggle('selected', def.id === this.selected);
       btn.querySelector('.node-lvl')!.textContent = owned ? 'Owned' : locked ? 'Locked' : sigilText(def.cost);
     }
@@ -140,6 +140,6 @@ export class SkillTree {
     const names = (def.requires ?? []).map((r) => BY_ID.get(r)!.name);
     this.detail.querySelector('.req')!.textContent = locked ? `Requires ${names.join(' or ')}` : '';
     this.buy.textContent = owned ? 'Owned' : sigilText(def.cost);
-    this.buy.disabled = owned || locked || g.save.sigils < def.cost;
+    this.buy.disabled = owned || locked || g.save.sigils < def.cost || !g.canSpend();
   }
 }

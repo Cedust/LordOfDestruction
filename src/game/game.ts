@@ -36,7 +36,9 @@ import {
   TRANSFUSION_MULT,
   WAVE_PAUSE,
   WITHERING,
-  dreadForWave,
+  dreadForLevel,
+  levelForXp,
+  xpForKill,
   heroCountForWave,
   prestigeCost,
   rangeIndex,
@@ -87,9 +89,11 @@ export type Phase = 'pause' | 'fighting' | 'fallen';
 
 export interface RunSummary {
   wave: number;
+  /** True when the player chose to prestige; false when the Lord fell. */
+  manual: boolean;
+  /** Levels and Dread points gained during the run. */
+  levels: number;
   dread: number;
-  /** Part of `dread` that came from Dread Harvest. */
-  dreadBonus: number;
   /** Sigils earned for a new record. */
   sigils: number;
   bestWave: number;
@@ -118,6 +122,9 @@ export class Game {
   lastSummary: RunSummary | null = null;
   /** Gold earned during the current wave; not saved, so a reload replays the wave fairly. */
   private waveGold = 0;
+  /** Experience and Dread from levels earned during the current wave; left out of saves like `waveGold`. */
+  private waveXp = 0;
+  private waveDread = 0;
   private nextId = 1;
   private lashTimer = LASH_INTERVAL;
   private sunTimer = BLACK_SUN_EVERY;
@@ -139,7 +146,7 @@ export class Game {
     const startWave = 1 + 5 * head;
     let gold = 0;
     for (let w = 1; w < startWave; w++) gold += heroCountForWave(w) * 7 * Math.pow(SCALE.gold, w - 1) * 0.7;
-    const run: RunState = { wave: startWave, gold: Math.floor(gold), levels: emptyRunLevels(), lordHp: 0, hitsTaken: 0 };
+    const run: RunState = { wave: startWave, gold: Math.floor(gold), levels: emptyRunLevels(), lordHp: 0, hitsTaken: 0, startLevel: this.level(), dreadGained: 0 };
     return run;
   }
 
@@ -208,8 +215,13 @@ export class Game {
     return def.maxLevel !== undefined && this.save.prestige[id] >= def.maxLevel;
   }
 
+  /** Dread and Sigils can only be spent between runs, after a prestige or a fall. */
+  canSpend(): boolean {
+    return this.phase === 'fallen';
+  }
+
   buyPrestige(id: PrestigeId): boolean {
-    if (this.isPrestigeMaxed(id)) return false;
+    if (!this.canSpend() || this.isPrestigeMaxed(id)) return false;
     const cost = this.prestigeCost(id);
     if (this.save.dread < cost) return false;
     this.save.dread -= cost;
@@ -237,6 +249,11 @@ export class Game {
   }
 
   buyPact(id: PactId): boolean {
+    if (!this.canSpend()) return false;
+    return this.takePact(id);
+  }
+
+  private takePact(id: PactId): boolean {
     if (this.isPactMaxed(id) || this.isPactLocked(id)) return false;
     const cost = this.pactCost(id);
     if (this.save.sigils < cost) return false;
@@ -249,8 +266,9 @@ export class Game {
 
   /** Choose the build for the very first run: buys that branch's start pact. */
   chooseBuild(build: BuildId): boolean {
+    if (this.hasBuild() || this.phase === 'fighting') return false;
     const id = PACTS.find((p) => p.branch === build && p.tier === 1)!.id;
-    return this.buyPact(id);
+    return this.takePact(id);
   }
 
   /** Sigils spent on pacts so far. */
@@ -275,6 +293,8 @@ export class Game {
     this.heroes = [];
     this.effects = [];
     this.waveGold = 0;
+    this.waveXp = 0;
+    this.waveDread = 0;
     this.phase = 'pause';
     this.pauseTimer = 2.5;
     this.lastSummary = null;
@@ -313,12 +333,14 @@ export class Game {
     this.removeDead();
 
     if (this.run.lordHp <= 0) {
-      this.fall();
+      this.endRun(false);
       return;
     }
     if (this.heroes.length === 0) {
       this.run.wave++;
       this.waveGold = 0;
+      this.waveXp = 0;
+      this.waveDread = 0;
       this.phase = 'pause';
       this.pauseTimer = WAVE_PAUSE;
       this.onPersist();
@@ -591,6 +613,7 @@ export class Game {
     const p = heroPos(h);
     this.effects.push({ type: 'text', x: p.x, y: p.y - 10, text: '+' + fmt(gold) + 'g', color: '#ffd166', t: 0, ttl: 1.1 });
     if (this.stats.bloodPact > 0) this.heal(this.stats.maxHp * this.stats.bloodPact);
+    this.gainXp(xpForKill(this.run.wave, h.kind === 'champion') * this.stats.xpMult);
     if (h.kind === 'champion') {
       this.heal(this.stats.maxHp);
       this.effects.push({ type: 'text', x: LORD_X + 20, y: LORD_Y - LORD_CHEST - 50, text: 'Champion Slain!', color: '#ffd166', t: 0, ttl: 1.8 });
@@ -604,32 +627,84 @@ export class Game {
     }
   }
 
-  private fall(): void {
+  // ---------------------------------------------------------------------------
+  // Lord level
+
+  /** The Lord's level, from all experience ever earned. */
+  level(): number {
+    return levelForXp(this.save.xp).level;
+  }
+
+  /** Experience into the current level and needed for the next one. */
+  levelProgress(): { level: number; into: number; need: number } {
+    return levelForXp(this.save.xp);
+  }
+
+  /** Dread points the next level will give. */
+  nextLevelDread(): number {
+    return dreadForLevel(this.level() + 1);
+  }
+
+  private gainXp(amount: number): void {
+    const before = this.level();
+    this.save.xp += amount;
+    this.waveXp += amount;
+    const after = this.level();
+    for (let l = before + 1; l <= after; l++) {
+      const dread = dreadForLevel(l);
+      this.save.dread += dread;
+      this.waveDread += dread;
+      this.run.dreadGained = (this.run.dreadGained ?? 0) + dread;
+    }
+    if (after > before) {
+      this.effects.push({ type: 'text', x: LORD_X, y: LORD_Y - LORD_CHEST - 70, text: `Level ${after}!`, color: '#c78bff', t: 0, ttl: 2 });
+      this.levelUpTime = this.time;
+    }
+  }
+
+  /** Time of the last level up, for the level bar flash. */
+  levelUpTime = -99;
+
+  // ---------------------------------------------------------------------------
+  // Ending a run
+
+  /** The player may prestige at any time during a run once a build is chosen. */
+  canPrestige(): boolean {
+    return this.phase !== 'fallen' && this.hasBuild();
+  }
+
+  /** End the run by choice: keep everything earned and go spend it. */
+  prestige(): void {
+    if (this.canPrestige()) this.endRun(true);
+  }
+
+  private endRun(manual: boolean): void {
     this.phase = 'fallen';
-    this.run.lordHp = 0;
+    if (!manual) this.run.lordHp = 0;
+    else this.heroes = [];
+    this.waveXp = 0;
+    this.waveDread = 0;
     const wave = this.run.wave;
-    const base = dreadForWave(wave);
-    const dread = this.dreadForFall(wave);
     const newBest = wave > this.save.bestWave;
     const sigils = sigilsForRecord(this.save.bestWave, wave);
     this.save.bestWave = Math.max(this.save.bestWave, wave);
-    this.save.dread += dread;
     this.save.sigils += sigils;
     this.save.runs++;
     this.save.run = null;
-    this.lastSummary = { wave, dread, dreadBonus: dread - base, sigils, bestWave: this.save.bestWave, newBest };
+    const levels = this.level() - (this.run.startLevel ?? this.level());
+    this.lastSummary = { wave, manual, levels, dread: this.run.dreadGained ?? 0, sigils, bestWave: this.save.bestWave, newBest };
     this.onPersist();
   }
 
-  /** Dread earned when falling at this wave, with Dread Harvest. */
-  dreadForFall(wave: number): number {
-    return Math.floor(dreadForWave(wave) * this.stats.dreadMult);
+  /** The save to write: like the run, it rewinds to the start of the current wave. */
+  snapshotSave(): SaveData {
+    return { ...this.save, xp: this.save.xp - this.waveXp, dread: this.save.dread - this.waveDread, run: this.snapshotRun() };
   }
 
   /** Snapshot of the run for saving: resumes at the start of the current wave. */
   snapshotRun(): RunState | null {
     if (this.phase === 'fallen') return null;
-    return { ...this.run, gold: this.savedGold(), levels: { ...this.run.levels } };
+    return { ...this.run, gold: this.savedGold(), levels: { ...this.run.levels }, dreadGained: (this.run.dreadGained ?? 0) - this.waveDread };
   }
 }
 

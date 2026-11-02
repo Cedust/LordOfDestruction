@@ -18,7 +18,7 @@ export interface LordStats {
   /** Share of max HP healed per kill. */
   bloodPact: number;
   goldMult: number;
-  dreadMult: number;
+  xpMult: number;
   /** Multiplier on the gold price of powers. */
   costMult: number;
   builds: Record<BuildId, boolean>;
@@ -60,7 +60,7 @@ export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevel
       run.shockwave > 0 ? 12 * grow(run.shockwave, 0.5, 1.08) * malice * (1 + 0.4 * p.tremor) : 0,
     bloodPact: 0.02 * run.bloodPact,
     goldMult: 1 + 0.2 * p.tithe,
-    dreadMult: 1 + DREAD_HARVEST_PER_LEVEL * p.dreadHarvest,
+    xpMult: 1 + DREAD_HARVEST_PER_LEVEL * p.dreadHarvest,
     costMult: 1 - AVARICE_PER_LEVEL * p.avarice,
     builds,
   };

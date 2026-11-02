@@ -12,11 +12,17 @@ export interface RunState {
   hitsTaken: number;
   /** Blood Moon shield. */
   shield?: number;
+  /** Lord level when the run began, and Dread points gained since, for the run summary. */
+  startLevel?: number;
+  dreadGained?: number;
 }
 
 export interface SaveData {
   version: 1;
+  /** Unspent Dread points, earned by levelling up. */
   dread: number;
+  /** Total experience ever earned. The Lord's level comes from it and is never lost. */
+  xp: number;
   bestWave: number;
   runs: number;
   prestige: PrestigeLevels;
@@ -27,6 +33,8 @@ export interface SaveData {
   /** The run in progress, resumed at the start of its current wave. */
   run: RunState | null;
   speed: number;
+  /** Show the life and level bars in percent instead of numbers. */
+  barPercent?: boolean;
 }
 
 export function emptyRunLevels(): RunLevels {
@@ -42,7 +50,7 @@ export function emptyPacts(): PactLevels {
 }
 
 export function newSave(): SaveData {
-  return { version: 1, dread: 0, bestWave: 0, runs: 0, prestige: emptyPrestige(), sigils: START_SIGILS, pacts: emptyPacts(), treeVersion: TREE_VERSION, run: null, speed: 1 };
+  return { version: 1, dread: 0, xp: 0, bestWave: 0, runs: 0, prestige: emptyPrestige(), sigils: START_SIGILS, pacts: emptyPacts(), treeVersion: TREE_VERSION, run: null, speed: 1 };
 }
 
 /** Bumped whenever the pact tree changes; older trees are refunded in Sigils. */

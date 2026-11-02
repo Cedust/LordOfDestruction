@@ -8,7 +8,7 @@ const save = loadSave();
 const game = new Game(save);
 
 function persist(): void {
-  writeSave({ ...game.save, run: game.snapshotRun() });
+  writeSave(game.snapshotSave());
 }
 game.onPersist = persist;
 

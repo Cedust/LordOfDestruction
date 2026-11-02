@@ -197,8 +197,10 @@ export function runUpgradeCost(def: RunUpgradeDef, level: number): number {
 }
 
 // ---------------------------------------------------------------------------
-// Prestige. Falling ends the run and pays two currencies:
-// - Dread, by the wave reached, buys levelled permanent upgrades (numbers only).
+// Prestige. Slain heroes give experience, which raises the Lord's level for good.
+// Every level gives Dread points. A run ends by falling or by choosing to prestige;
+// only then can Dread and Sigils be spent:
+// - Dread buys levelled permanent upgrades (numbers only).
 // - Sigils, one at the start and one for every 10 waves of a new record, buy the
 //   "Dark Pacts" skill tree, which changes the rules of a build.
 
@@ -218,30 +220,54 @@ export interface PrestigeDef {
   id: PrestigeId;
   name: string;
   desc: string;
+  /** Dread for the first level; each further level adds `costStep` (rounded down). */
   baseCost: number;
-  costGrowth: number;
+  costStep: number;
   maxLevel?: number;
 }
 
 export const PRESTIGE_UPGRADES: PrestigeDef[] = [
-  { id: 'blackHeart', name: 'Black Heart', desc: 'You Start Every Run with More Life and Heal Faster.', baseCost: 2, costGrowth: 1.5 },
-  { id: 'malice', name: 'Malice', desc: 'All Your Damage Gets Stronger.', baseCost: 3, costGrowth: 1.5 },
-  { id: 'gloom', name: 'Gloom', desc: 'Your Aura Deals More Damage.', baseCost: 2, costGrowth: 1.5 },
-  { id: 'barbs', name: 'Barbs', desc: 'Your Thorns Deal More Damage.', baseCost: 2, costGrowth: 1.5 },
-  { id: 'sanguine', name: 'Sanguine', desc: 'Your Blood Lash Deals More Damage.', baseCost: 2, costGrowth: 1.5 },
-  { id: 'tremor', name: 'Tremor', desc: 'Your Shockwave Deals More Damage.', baseCost: 2, costGrowth: 1.5 },
-  { id: 'tithe', name: 'Tithe', desc: 'Heroes Drop More Gold.', baseCost: 3, costGrowth: 1.6 },
-  { id: 'avarice', name: 'Avarice', desc: 'Powers Cost Less Gold.', baseCost: 4, costGrowth: 1.8, maxLevel: 10 },
-  { id: 'dreadHarvest', name: 'Dread Harvest', desc: 'You Gain More Dread Each Time You Fall.', baseCost: 5, costGrowth: 1.7 },
-  { id: 'headStart', name: 'Head Start', desc: 'New Runs Skip the First Waves and Start with Gold.', baseCost: 6, costGrowth: 2.2, maxLevel: 10 },
+  { id: 'blackHeart', name: 'Black Heart', desc: 'You Start Every Run with More Life and Heal Faster.', baseCost: 1, costStep: 0.5 },
+  { id: 'malice', name: 'Malice', desc: 'All Your Damage Gets Stronger.', baseCost: 2, costStep: 0.5 },
+  { id: 'gloom', name: 'Gloom', desc: 'Your Aura Deals More Damage.', baseCost: 1, costStep: 0.5 },
+  { id: 'barbs', name: 'Barbs', desc: 'Your Thorns Deal More Damage.', baseCost: 1, costStep: 0.5 },
+  { id: 'sanguine', name: 'Sanguine', desc: 'Your Blood Lash Deals More Damage.', baseCost: 1, costStep: 0.5 },
+  { id: 'tremor', name: 'Tremor', desc: 'Your Shockwave Deals More Damage.', baseCost: 1, costStep: 0.5 },
+  { id: 'tithe', name: 'Tithe', desc: 'Heroes Drop More Gold.', baseCost: 2, costStep: 0.5 },
+  { id: 'avarice', name: 'Avarice', desc: 'Powers Cost Less Gold.', baseCost: 2, costStep: 0.5, maxLevel: 10 },
+  { id: 'dreadHarvest', name: 'Dread Harvest', desc: 'You Gain Experience Faster and Level Up Sooner.', baseCost: 3, costStep: 1 },
+  { id: 'headStart', name: 'Head Start', desc: 'New Runs Skip the First Waves and Start with Gold.', baseCost: 3, costStep: 1, maxLevel: 10 },
 ];
 
+/** Dread costs rise by a fixed amount per level, since every Lord level gives one point. */
 export function prestigeCost(def: PrestigeDef, level: number): number {
-  return Math.ceil(def.baseCost * Math.pow(def.costGrowth, level));
+  return def.baseCost + Math.floor(def.costStep * level);
 }
 
-export function dreadForWave(bestWave: number): number {
-  return Math.floor(Math.pow(bestWave / 4, 1.6));
+/** Experience a slain hero gives in this wave. A Champion gives much more. */
+export function xpForKill(wave: number, champion: boolean): number {
+  return (1 + Math.floor(wave / 5)) * (champion ? 10 : 1);
+}
+
+/** Experience needed to go from `level` to the next one. */
+export function xpToNext(level: number): number {
+  return Math.round(10 * Math.pow(level, 0.7));
+}
+
+/** Dread points gained when reaching a level: always one. */
+export function dreadForLevel(_level: number): number {
+  return 1;
+}
+
+/** Level reached with this much experience in total (starting at level 1). */
+export function levelForXp(xp: number): { level: number; into: number; need: number } {
+  let level = 1;
+  let left = xp;
+  while (left >= xpToNext(level)) {
+    left -= xpToNext(level);
+    level++;
+  }
+  return { level, into: left, need: xpToNext(level) };
 }
 
 /** One Sigil for every 10 waves of a new record. */
