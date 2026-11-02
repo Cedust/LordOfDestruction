@@ -134,7 +134,7 @@ export const RUN_UPGRADES: RunUpgradeDef[] = [
   { id: 'hide', name: 'Hide', desc: 'Every hit against you hurts a little less.', baseCost: 15, costGrowth: 1.2, maxLevel: 40 },
   { id: 'regen', name: 'Regeneration', desc: 'You slowly heal over time.', baseCost: 10, costGrowth: 1.16 },
   { id: 'bloodPact', name: 'Blood Pact', desc: 'You heal a little whenever a hero dies.', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
-  { id: 'shockwave', name: 'Shockwave', desc: 'After enough hits, you strike back at the heroes close to you.', baseCost: 60, costGrowth: 1.18 },
+  { id: 'shockwave', name: 'Shockwave', desc: 'Every few hits you take, a shockwave hurts all heroes close to you.', baseCost: 60, costGrowth: 1.18 },
 ];
 
 export const SHOCKWAVE_HITS = 10;

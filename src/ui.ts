@@ -1,4 +1,4 @@
-import { BUILDS, HEROES, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
+import { BUILDS, HEROES, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SHOCKWAVE_HITS, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
 import { fmt, type Game } from './game/game';
 import { computeStats, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
@@ -30,7 +30,7 @@ function statText(id: RunUpgradeId, s: LordStats): string {
     case 'lash':
       return `${fmt(s.maxHp * s.lash)} dmg per lash`;
     case 'shockwave':
-      return s.shockwaveDamage > 0 ? `${fmt(s.shockwaveDamage)} dmg` : 'locked';
+      return s.shockwaveDamage > 0 ? `${fmt(s.shockwaveDamage)} dmg every ${SHOCKWAVE_HITS} hits` : 'none';
     case 'bloodPact':
       return s.bloodPact > 0 ? `${Math.round(s.bloodPact * 100)}% per kill` : 'none';
   }
