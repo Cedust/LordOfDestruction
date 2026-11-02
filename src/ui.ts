@@ -255,8 +255,6 @@ export class UI {
     });
     const nextRecord = (Math.floor(g.save.bestWave / SIGIL_WAVES) + 1) * SIGIL_WAVES;
     const sigilHint = `${g.save.sigils} ${SIGIL} Sigils · Next at Wave ${nextRecord}`;
-    $('#pacts-preview').textContent = g.canSpend() ? sigilHint : `${sigilHint} · Spend Them After You Prestige`;
-    $('#pacts-preview').classList.toggle('locked-hint', !g.canSpend());
     $('#fallen-sigil-hint').textContent = sigilHint;
 
     $('#choose').hidden = !(g.phase === 'pause' && !g.hasBuild());
@@ -276,8 +274,5 @@ export class UI {
       $('#fallen-best').textContent = sum.newBest ? 'A New Record!' : `Best: Wave ${sum.bestWave}`;
       $('#fallen-total').textContent = fmt(g.save.dread);
     }
-    const dreadHint = `Level ${lvl.level} · Every Level Gives +${g.nextLevelDread()} ☠ Dread`;
-    $('#dread-preview').textContent = g.canSpend() ? dreadHint : `${dreadHint} · Spend It After You Prestige`;
-    $('#dread-preview').classList.toggle('locked-hint', !g.canSpend());
   }
 }
