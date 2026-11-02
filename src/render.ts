@@ -147,7 +147,7 @@ export class Renderer {
     const ctx = this.ctx;
     let inner = 0;
     RANGES.forEach((range, i) => {
-      const covered = i <= game.stats.auraReach;
+      const covered = game.stats.auraDps[i] > 0;
       ctx.save();
       this.clipFloor('without');
       this.stripPath(inner, range.edge);
@@ -180,7 +180,7 @@ export class Renderer {
     ctx.textBaseline = 'middle';
     inner = 0;
     RANGES.forEach((range, i) => {
-      const covered = i <= game.stats.auraReach;
+      const covered = game.stats.auraDps[i] > 0;
       const mid = (inner + range.edge) / 2;
       const x = FIELD_X + mid;
       const y = WORLD_H - 9;
@@ -198,10 +198,10 @@ export class Renderer {
 
   private drawAura(game: Game): void {
     const ctx = this.ctx;
+    if (game.stats.auraReach < 0) return;
     const r = RANGES[game.stats.auraReach].edge;
     const pulse = 1 + Math.sin(game.time * 3) * 0.03;
-    const wrath = game.stats.wrath && game.run.lordHp < game.stats.maxHp * 0.5;
-    const tint = wrath ? '255,90,60' : '150,80,255';
+    const tint = '150,80,255';
     ctx.save();
     this.clipFloor('without');
     // The aura fills the strips it reaches and fades out at its far edge.

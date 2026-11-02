@@ -1,61 +1,149 @@
-import { HEROES, RANGES, PRESTIGE_UPGRADES, RUN_UPGRADES, dreadForWave, type PrestigeId, type RunUpgradeId } from './game/config';
+import { BUILDS, HEROES, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SHOCKWAVE_HITS, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
 import { fmt, type Game } from './game/game';
 import { computeStats, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
+import { SIGIL, SkillTree } from './tree';
+
+type Tab = 'powers' | 'dread' | 'pacts';
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as T;
 
 /** Upgrade icon from assets/icons/<id>.png. */
-function iconHtml(id: string): string {
+function iconHtml(id: string, name: string): string {
   const url = assetUrl(`icons/${id}`);
-  return url ? `<img class="icon" alt="" src="${url}">` : '<span class="icon"></span>';
+  return url ? `<img class="icon" alt="" src="${url}">` : `<span class="icon placeholder">${name[0]}</span>`;
 }
 
 /** Human-readable value of the stat an upgrade improves. */
 function statText(id: RunUpgradeId, s: LordStats): string {
   switch (id) {
     case 'vitality':
-      return `${fmt(s.maxHp)} life`;
+      return `${fmt(s.maxHp)} Life`;
     case 'hide':
-      return `${Math.round(s.armor * 100)}% blocked`;
+      return `${Math.round(s.armor * 100)}% Blocked`;
     case 'regen':
       return `${fmt(s.regen)}/s`;
     case 'aura':
-      return `${fmt(s.auraDps)} dmg/s`;
-    case 'radius':
-      return `reaches ${RANGES[s.auraReach].name}`;
+      return `${fmt(s.auraDps[1])} Dmg/s`;
     case 'thorns':
-      return `${Math.round(s.thorns * 100)}% reflected`;
+      return `${Math.round(s.thorns * 100)}% of Each Hit`;
+    case 'lash':
+      return `${fmt(s.maxHp * s.lash)} Dmg per Lash`;
     case 'shockwave':
-      return s.shockwaveDamage > 0 ? `${fmt(s.shockwaveDamage)} dmg` : 'locked';
+      return s.shockwaveDamage > 0 ? `${fmt(s.shockwaveDamage)} Dmg Every ${SHOCKWAVE_HITS} Hits` : 'None';
     case 'bloodPact':
-      return s.bloodPact > 0 ? `${Math.round(s.bloodPact * 100)}% per kill` : 'none';
+      return s.bloodPact > 0 ? `${Math.round(s.bloodPact * 100)}% per Kill` : 'None';
+  }
+}
+
+/** What a Dread upgrade gives at a level, in plain numbers. */
+function dreadText(id: PrestigeId, lvl: number): string {
+  const pct = (n: number) => `+${Math.round(n * 100)}%`;
+  switch (id) {
+    case 'blackHeart':
+      return `${pct(0.25 * lvl)} Life and Regeneration`;
+    case 'malice':
+      return `${pct(0.15 * lvl)} All Damage`;
+    case 'gloom':
+      return `${pct(0.4 * lvl)} Aura Damage`;
+    case 'barbs':
+      return `${pct(0.4 * lvl)} Thorns Damage`;
+    case 'sanguine':
+      return `${pct(0.4 * lvl)} Lash Damage`;
+    case 'tremor':
+      return `${pct(0.4 * lvl)} Shockwave Damage`;
+    case 'tithe':
+      return `${pct(0.2 * lvl)} Gold`;
+    case 'avarice':
+      return `−${Math.round(5 * lvl)}% Power Cost`;
+    case 'dreadHarvest':
+      return `${pct(0.1 * lvl)} Dread`;
+    case 'headStart':
+      return `Start at Wave ${1 + 5 * lvl}`;
   }
 }
 
 export class UI {
   private runButtons = new Map<RunUpgradeId, HTMLButtonElement>();
-  private prestigeButtons = new Map<PrestigeId, HTMLButtonElement>();
+  private trees: SkillTree[] = [];
 
   constructor(private game: Game, private onSpeed: () => void) {
     this.buildRunList();
-    this.buildPrestigeList($('#dread-list'));
-    this.buildPrestigeList($('#fallen-dread-list'));
+    this.buildPrestigeList($('#dread-upgrades'));
+    this.buildPrestigeList($('#fallen-dread'));
+    this.trees = [
+      new SkillTree(game, $('#pacts-tree'), $('#pacts-tree'), () => this.update()),
+      new SkillTree(game, $('#fallen-tree'), $('#fallen-detail'), () => this.update()),
+    ];
     document.querySelectorAll<HTMLButtonElement>('.tab').forEach((b) =>
-      b.addEventListener('click', () => this.setTab(b.dataset.tab as 'powers' | 'dread')),
+      b.addEventListener('click', () => this.setTab(b.dataset.tab as Tab)),
+    );
+    document.querySelectorAll<HTMLButtonElement>('.seg').forEach((b) =>
+      b.addEventListener('click', () => this.setFallenView(b.dataset.view as 'dread' | 'pacts')),
+    );
+    document.querySelectorAll<HTMLButtonElement>('.reset-pacts').forEach((b) =>
+      b.addEventListener('click', () => {
+        this.game.resetPacts();
+        this.update();
+      }),
     );
     $('#speed').addEventListener('click', () => this.onSpeed());
+    this.buildChooser();
     $('#rise').addEventListener('click', () => {
       this.game.rise();
       this.update();
     });
+    this.setFallenView('dread');
     this.setTab('powers');
   }
 
-  private setTab(tab: 'powers' | 'dread'): void {
+  private setTab(tab: Tab): void {
     document.querySelectorAll<HTMLButtonElement>('.tab').forEach((b) => b.classList.toggle('active', b.dataset.tab === tab));
     $('#powers-list').hidden = tab !== 'powers';
     $('#dread-list').hidden = tab !== 'dread';
+    $('#pacts-list').hidden = tab !== 'pacts';
+  }
+
+  /** The fallen screen shows either the Dread upgrades or the pact tree. */
+  private setFallenView(view: 'dread' | 'pacts'): void {
+    document.querySelectorAll<HTMLButtonElement>('.seg').forEach((b) => b.classList.toggle('active', b.dataset.view === view));
+    $('#fallen-dread').hidden = view !== 'dread';
+    $('#fallen-pacts').hidden = view !== 'pacts';
+    $('#fallen-detail').hidden = view !== 'pacts';
+  }
+
+  private buildPrestigeList(list: HTMLElement): void {
+    for (const def of PRESTIGE_UPGRADES) {
+      const btn = document.createElement('button');
+      btn.className = 'upgrade dread';
+      btn.dataset.id = def.id;
+      btn.innerHTML = `
+        ${iconHtml(def.id, def.name)}
+        <span class="info"><span class="name">${def.name} <span class="lvl"></span></span><span class="desc">${def.desc}</span><span class="stat"></span></span>
+        <span class="cost"></span>`;
+      btn.addEventListener('click', () => {
+        if (this.game.buyPrestige(def.id)) this.update();
+      });
+      list.appendChild(btn);
+    }
+  }
+
+  /** Start pact picker, shown while no build is owned (first game, or after a reset). */
+  private buildChooser(): void {
+    const list = $('#choose-list');
+    for (const build of BUILDS) {
+      const pact = PACTS.find((p) => p.branch === build.id && p.tier === 1)!;
+      const btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.style.setProperty('--branch', build.color);
+      btn.innerHTML = `
+        ${iconHtml(pact.icon ?? pact.id, pact.name)}
+        <span class="info"><span class="name">${build.name}</span><span class="tag">${build.desc}</span><span class="desc">${pact.desc}</span></span>`;
+      btn.addEventListener('click', () => {
+        if (this.game.chooseBuild(build.id)) this.update();
+      });
+      list.appendChild(btn);
+    }
   }
 
   private buildRunList(): void {
@@ -64,7 +152,7 @@ export class UI {
       const btn = document.createElement('button');
       btn.className = 'upgrade';
       btn.innerHTML = `
-        ${iconHtml(def.id)}
+        ${iconHtml(def.id, def.name)}
         <span class="info"><span class="name">${def.name} <span class="lvl"></span></span><span class="desc">${def.desc}</span><span class="stat"></span></span>
         <span class="cost"></span>`;
       btn.addEventListener('click', () => {
@@ -75,26 +163,6 @@ export class UI {
     }
   }
 
-  private buildPrestigeList(list: HTMLElement): void {
-    for (const def of PRESTIGE_UPGRADES) {
-      const btn = document.createElement('button');
-      btn.className = 'upgrade dread';
-      btn.dataset.id = def.id;
-      btn.innerHTML = `
-        ${iconHtml(def.id)}
-        <span class="info"><span class="name">${def.name} <span class="lvl"></span></span><span class="desc">${def.desc}</span></span>
-        <span class="cost"></span>`;
-      btn.addEventListener('click', () => {
-        if (this.game.buyPrestige(def.id)) {
-          if (this.game.phase !== 'fallen') this.game.refreshStats();
-          this.update();
-        }
-      });
-      list.appendChild(btn);
-      if (list.id === 'dread-list') this.prestigeButtons.set(def.id, btn);
-    }
-  }
-
   update(): void {
     const g = this.game;
     const s = g.stats;
@@ -102,26 +170,29 @@ export class UI {
     $('#gold').textContent = fmt(Math.floor(g.run.gold));
     $('#dread').textContent = fmt(g.save.dread);
     $('#best').textContent = String(g.save.bestWave);
+    $('#sigils').textContent = String(g.save.sigils);
     $('#speed').textContent = `${g.save.speed}×`;
 
     const hpPct = Math.max(0, g.run.lordHp / s.maxHp) * 100;
     $('#hp-fill').style.width = `${hpPct}%`;
     $('#hp-text').textContent = `${fmt(Math.max(0, g.run.lordHp))} / ${fmt(s.maxHp)}`;
     const status = $('#status');
-    if (g.phase === 'pause') status.textContent = `Wave ${g.run.wave} approaches…`;
+    if (g.phase === 'pause') status.textContent = `Wave ${g.run.wave} Approaches…`;
     else if (g.phase === 'fighting') {
       const champ = g.heroes.some((h) => h.kind === 'champion');
-      status.textContent = champ ? `A ${HEROES.champion.name} leads the charge!` : `${g.heroes.length} heroes remain`;
-    } else status.textContent = 'You have fallen.';
+      status.textContent = champ ? `A ${HEROES.champion.name} Leads the Charge!` : `${g.heroes.length} Heroes Remain`;
+    } else status.textContent = 'You Have Fallen.';
 
     for (const def of RUN_UPGRADES) {
       const btn = this.runButtons.get(def.id)!;
+      btn.hidden = !g.isRunUpgradeAvailable(def.id);
+      if (btn.hidden) continue;
       const level = g.run.levels[def.id];
       const maxed = g.isRunUpgradeMaxed(def.id);
       const cost = g.runUpgradeCost(def.id);
-      const next = computeStats({ ...g.run.levels, [def.id]: level + 1 }, g.save.prestige);
-      btn.querySelector('.lvl')!.textContent = `Lv ${level}`;
-      btn.querySelector('.stat')!.textContent = maxed ? statText(def.id, s) + ' (max)' : `${statText(def.id, s)} → ${statText(def.id, next)}`;
+      const next = computeStats({ ...g.run.levels, [def.id]: level + 1 }, g.save.prestige, g.save.pacts);
+      btn.querySelector('.lvl')!.textContent = `Lv ${g.runUpgradeLevel(def.id)}`;
+      btn.querySelector('.stat')!.textContent = maxed ? statText(def.id, s) + ' (Max)' : `${statText(def.id, s)} → ${statText(def.id, next)}`;
       btn.querySelector('.cost')!.textContent = maxed ? 'MAX' : `${fmt(cost)}g`;
       btn.disabled = maxed || g.run.gold < cost || g.phase === 'fallen';
     }
@@ -131,20 +202,37 @@ export class UI {
       const level = g.save.prestige[id];
       const maxed = g.isPrestigeMaxed(id);
       const cost = g.prestigeCost(id);
-      btn.querySelector('.lvl')!.textContent = maxed && level === 1 ? 'Unlocked' : `Lv ${level}`;
+      btn.querySelector('.lvl')!.textContent = `Lv ${level}`;
+      btn.querySelector('.stat')!.textContent = maxed ? dreadText(id, level) + ' (Max)' : `${dreadText(id, level)} → ${dreadText(id, level + 1)}`;
       btn.querySelector('.cost')!.textContent = maxed ? 'MAX' : `${fmt(cost)} ☠`;
       btn.disabled = maxed || g.save.dread < cost;
     });
+
+    for (const tree of this.trees) tree.update();
+    const spent = g.sigilsSpent();
+    document.querySelectorAll<HTMLButtonElement>('.reset-pacts').forEach((b) => {
+      b.disabled = spent === 0 || g.phase !== 'fallen';
+      b.textContent = spent > 0 ? `Reset Pacts (+${spent} ${SIGIL})` : 'Reset Pacts';
+    });
+    const nextRecord = (Math.floor(g.save.bestWave / SIGIL_WAVES) + 1) * SIGIL_WAVES;
+    const sigilHint = `${g.save.sigils} ${SIGIL} Sigils · Next at Wave ${nextRecord}`;
+    $('#pacts-preview').textContent = sigilHint;
+    $('#fallen-sigil-hint').textContent = sigilHint;
+
+    $('#choose').hidden = !(g.phase === 'pause' && !g.hasBuild());
 
     const overlay = $('#fallen');
     overlay.hidden = g.phase !== 'fallen';
     if (g.phase === 'fallen' && g.lastSummary) {
       const sum = g.lastSummary;
       $('#fallen-wave').textContent = String(sum.wave);
-      $('#fallen-dread').textContent = fmt(sum.dread);
-      $('#fallen-best').textContent = sum.newBest ? 'A new record!' : `Best: wave ${sum.bestWave}`;
+      $('#fallen-dread-gain').textContent = fmt(sum.dread);
+      $('#fallen-sigils').textContent = sum.sigils > 0 ? `+${sum.sigils} ${SIGIL} Sigil${sum.sigils > 1 ? 's' : ''}` : '';
+      $('#fallen-bonus').textContent = sum.dreadBonus > 0 ? `Incl. +${fmt(sum.dreadBonus)} from Dread Harvest` : '';
+      $('#fallen-runs').textContent = `Fall ${g.save.runs}`;
+      $('#fallen-best').textContent = sum.newBest ? 'A New Record!' : `Best: Wave ${sum.bestWave}`;
       $('#fallen-total').textContent = fmt(g.save.dread);
     }
-    $('#dread-preview').textContent = `If you fall at this wave: +${fmt(dreadForWave(g.run.wave))} ☠ Dread`;
+    $('#dread-preview').textContent = `Falling Now: +${fmt(g.dreadForFall(g.run.wave))} ☠ Dread`;
   }
 }
