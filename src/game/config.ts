@@ -75,7 +75,7 @@ export const DEPTH = 0.5;
 /** Where the floor of the throne room begins; floor markings are not drawn above it. */
 export const FLOOR_Y = 166;
 /** Heroes fight in a fan that opens to the right and down across the floor (radians). */
-export const FIELD_ANGLE_MIN = -0.25;
+export const FIELD_ANGLE_MIN = -Math.PI / 2;
 export const FIELD_ANGLE_MAX = Math.PI / 2;
 /** Height of the Lord's chest above LORD_Y, where projectiles hit and numbers pop. */
 export const LORD_CHEST = 55;

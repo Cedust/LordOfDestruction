@@ -157,6 +157,13 @@ export class Renderer {
       ctx.restore();
       inner = range.edge;
     });
+    // The field's left border: a straight vertical line down from the Lord's feet.
+    ctx.strokeStyle = 'rgba(200,150,255,0.35)';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(LORD_X, LORD_Y);
+    ctx.lineTo(LORD_X, LORD_Y + RANGES[RANGES.length - 1].edge * DEPTH);
+    ctx.stroke();
 
     // Range names in small pills along the lower edge of the fan, in the middle of each band.
     ctx.save();
@@ -167,7 +174,7 @@ export class Renderer {
     RANGES.forEach((range, i) => {
       const covered = i <= game.stats.auraReach;
       const mid = (inner + range.edge) / 2;
-      const x = LORD_X + Math.cos(FIELD_ANGLE_MAX) * mid + 14;
+      const x = LORD_X + Math.cos(FIELD_ANGLE_MAX) * mid + 20;
       const y = Math.min(WORLD_H - 9, LORD_Y + Math.sin(FIELD_ANGLE_MAX) * mid * DEPTH);
       const w = ctx.measureText(range.name.toUpperCase()).width + 10;
       ctx.fillStyle = 'rgba(16,10,26,0.65)';
@@ -207,6 +214,26 @@ export class Renderer {
     ctx.restore();
   }
 
+  private tints = new Map<string, HTMLCanvasElement>();
+
+  /** A sprite with a flash colour laid over its own pixels only (not over the background). */
+  private tinted(img: HTMLImageElement, color: string): HTMLCanvasElement {
+    const key = img.src + color;
+    let c = this.tints.get(key);
+    if (!c) {
+      c = document.createElement('canvas');
+      c.width = img.width;
+      c.height = img.height;
+      const t = c.getContext('2d')!;
+      t.drawImage(img, 0, 0);
+      t.globalCompositeOperation = 'source-atop';
+      t.fillStyle = color;
+      t.fillRect(0, 0, c.width, c.height);
+      this.tints.set(key, c);
+    }
+    return c;
+  }
+
   private drawLord(game: Game): void {
     const ctx = this.ctx;
     const hurt = game.lordHurt < 0.12;
@@ -218,12 +245,7 @@ export class Renderer {
       const h = 150;
       const w = (img.width / img.height) * h;
       const top = LORD_Y + LORD_FEET_DY - h;
-      ctx.drawImage(img, LORD_X - w / 2, top, w, h);
-      if (hurt) {
-        ctx.globalCompositeOperation = 'source-atop';
-        ctx.fillStyle = 'rgba(255,60,60,0.35)';
-        ctx.fillRect(LORD_X - w / 2, top, w, h);
-      }
+      ctx.drawImage(hurt ? this.tinted(img, 'rgba(255,60,60,0.35)') : img, LORD_X - w / 2, top, w, h);
     }
     ctx.restore();
   }
@@ -249,13 +271,8 @@ export class Renderer {
 
     if (img) {
       const size = r * 3.4;
-      ctx.drawImage(img, x - size / 2, y + r - size, size, size);
-    }
-    if (h.hurt < 0.12) {
-      ctx.fillStyle = 'rgba(255,255,255,0.45)';
-      ctx.beginPath();
-      ctx.arc(x, y, r, 0, Math.PI * 2);
-      ctx.fill();
+      const sprite = h.hurt < 0.12 ? this.tinted(img, 'rgba(255,255,255,0.45)') : img;
+      ctx.drawImage(sprite, x - size / 2, y + r - size, size, size);
     }
 
     // Health bar
