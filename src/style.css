@@ -313,3 +313,6 @@ span.cur[data-cur='settings'] { background: none; color: var(--muted); font-size
   .detail .st, .detail .stat { font-size: 11px; }
   .lord { padding: 6px 10px; }
 }
+/* Empty gear slot: silhouette of a piece that fits there. */
+.dslot .gear-icon.ghost { filter: grayscale(1) brightness(.5); opacity: .45; }
+.gear-icon.outline { opacity: .5; }

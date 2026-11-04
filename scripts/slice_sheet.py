@@ -31,7 +31,12 @@ def prompt_for(asset_id: str) -> Path:
 
 
 def _main_run(sums: list[int]) -> tuple[int, int] | None:
-    """Longest-mass run of non-empty lines: drops stray bits a neighbour cell pokes in."""
+    """Span of all substantial runs of non-empty lines.
+
+    Keeps every run with at least 10% of the biggest run's mass, so a shape made of
+    separate parts (a pair of boots, two pauldrons) stays whole, while stray bits a
+    neighbour cell pokes in are dropped.
+    """
     runs, start = [], None
     for i, v in enumerate(sums + [0]):
         if v and start is None:
@@ -39,7 +44,11 @@ def _main_run(sums: list[int]) -> tuple[int, int] | None:
         elif not v and start is not None:
             runs.append((start, i))
             start = None
-    return max(runs, key=lambda r: sum(sums[r[0]:r[1]])) if runs else None
+    if not runs:
+        return None
+    mass = [sum(sums[a:b]) for a, b in runs]
+    keep = [r for r, m in zip(runs, mass) if m >= 0.1 * max(mass)]
+    return (keep[0][0], keep[-1][1])
 
 
 def item_bbox(alpha: Image.Image) -> tuple[int, int, int, int] | None:

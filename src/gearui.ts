@@ -13,6 +13,26 @@ function setColor(item: ItemDef): string {
   return BUILDS.find((b) => b.id === item.set)?.color ?? 'var(--muted)';
 }
 
+/** A plain piece per slot whose shape stands in for an empty slot. */
+const PLACEHOLDER: Record<SlotId, string> = {
+  helm: 'ironVisor', shoulders: 'boneMantle', chest: 'blackPlate', belt: 'gildedGirdle', boots: 'ironTreads', cloak: 'crimsonCloak',
+  gloves: 'ironcladFists', sword: 'ironGreatsword', amulet: 'goldLocket', ring1: 'ironBand', ring2: 'onyxRing', charm: 'luckyCoin',
+};
+
+/** Empty slot: its outline icon (assets/ui/slots/), else a dimmed piece that fits there, else the slot's name. */
+function slotPlaceholder(id: SlotId, name: string): string {
+  const outline = assetUrl(`ui/slots/${id === 'ring1' || id === 'ring2' ? 'ring' : id}`);
+  if (outline) return `<img class="gear-icon outline" alt="${name}" src="${outline}">`;
+  const url = assetUrl(`equipment/${PLACEHOLDER[id]}`);
+  return url ? `<img class="gear-icon ghost" alt="${name}" src="${url}">` : name;
+}
+
+/** Icon for a piece not forged yet: the outline bundle, else a question mark. */
+function unknownIcon(): string {
+  const url = assetUrl('ui/slots/unknown');
+  return url ? `<img class="gear-icon outline" alt="" src="${url}">` : itemIcon(undefined, '?');
+}
+
 /**
  * Where each slot sits on the doll (row / column / row end / column end), laid out like
  * the body: shoulders, helm and amulet on top; gloves, chest and cloak; the rings; belt
@@ -83,7 +103,7 @@ export class GearPanel {
       btn.classList.toggle('selected', slot.id === this.selected);
       btn.classList.toggle('empty', !worn);
       btn.style.setProperty('--set', worn?.set ? setColor(worn) : 'var(--line)');
-      btn.innerHTML = worn ? `${itemIcon(worn, '')}<span class="lv">${gear.owned[worn.id]}</span>` : slot.name;
+      btn.innerHTML = worn ? `${itemIcon(worn, '')}<span class="lv">${gear.owned[worn.id]}</span>` : slotPlaceholder(slot.id, slot.name);
     }
 
     const slot = SLOTS.find((s) => s.id === this.selected)!;
@@ -102,7 +122,7 @@ export class GearPanel {
       const bonus = `+${fmt(Math.round(BONUS_PER_LEVEL[item.bonus] * Math.max(1, level) * 100))}% ${BONUS_NAMES[item.bonus]}`;
       row.innerHTML = level
         ? `${itemIcon(item, '')}<span class="dt"><span class="cn">${item.name}</span><span class="cl">${bonus} · Lv ${level}</span></span><span class="tag ${worn ? '' : 'wear'}">${worn ? 'Worn' : 'Wear'}</span>`
-        : `${itemIcon(undefined, '?')}<span class="dt"><span class="cn">Unknown</span><span class="cl">Not Forged Yet</span></span>`;
+        : `${unknownIcon()}<span class="dt"><span class="cn">Unknown</span><span class="cl">Not Forged Yet</span></span>`;
       row.addEventListener('click', () => {
         if (this.game.equip(item.id)) this.onChange();
       });
