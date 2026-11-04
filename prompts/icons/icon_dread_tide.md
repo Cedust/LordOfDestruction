@@ -4,7 +4,7 @@ name: Dread Tide Icon
 category: icons
 type: game_icon
 batch: 10-tier4-pact-icons-a
-status: review
+status: approved
 revision: 1
 output: assets/icons/dreadTide.png
 format: png

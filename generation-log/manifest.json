@@ -5182,7 +5182,7 @@
       "prompt": "prompts/icons/sheet_tier4_pact_icons_a.md",
       "output": "assets/icons/sheets/tier4-pact-icons-a.png",
       "batch": "10-tier4-pact-icons-a",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5196,6 +5196,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5226,7 +5232,7 @@
       "prompt": "prompts/icons/icon_soul_harvest.md",
       "output": "assets/icons/soulHarvest.png",
       "batch": "10-tier4-pact-icons-a",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5240,6 +5246,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5270,7 +5282,7 @@
       "prompt": "prompts/icons/icon_dread_tide.md",
       "output": "assets/icons/dreadTide.png",
       "batch": "10-tier4-pact-icons-a",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5284,6 +5296,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5314,7 +5332,7 @@
       "prompt": "prompts/icons/icon_creeping_dark.md",
       "output": "assets/icons/creepingDark.png",
       "batch": "10-tier4-pact-icons-a",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5328,6 +5346,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5358,7 +5382,7 @@
       "prompt": "prompts/icons/icon_unmaking.md",
       "output": "assets/icons/unmaking.png",
       "batch": "10-tier4-pact-icons-a",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5372,6 +5396,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5402,7 +5432,7 @@
       "prompt": "prompts/icons/icon_barbed_ground.md",
       "output": "assets/icons/barbedGround.png",
       "batch": "10-tier4-pact-icons-a",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5416,6 +5446,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5446,7 +5482,7 @@
       "prompt": "prompts/icons/icon_open_wounds.md",
       "output": "assets/icons/openWounds.png",
       "batch": "10-tier4-pact-icons-a",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5460,6 +5496,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5490,7 +5532,7 @@
       "prompt": "prompts/icons/icon_barbed_fury.md",
       "output": "assets/icons/barbedFury.png",
       "batch": "10-tier4-pact-icons-a",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5504,6 +5546,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5534,7 +5582,7 @@
       "prompt": "prompts/icons/icon_bramble_wall.md",
       "output": "assets/icons/brambleWall.png",
       "batch": "10-tier4-pact-icons-a",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5548,6 +5596,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5578,7 +5632,7 @@
       "prompt": "prompts/icons/sheet_tier4_pact_icons_b.md",
       "output": "assets/icons/sheets/tier4-pact-icons-b.png",
       "batch": "11-tier4-pact-icons-b",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5592,6 +5646,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5622,7 +5682,7 @@
       "prompt": "prompts/icons/icon_mirror_plate.md",
       "output": "assets/icons/mirrorPlate.png",
       "batch": "11-tier4-pact-icons-b",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5636,6 +5696,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5666,7 +5732,7 @@
       "prompt": "prompts/icons/icon_crown_of_thorns.md",
       "output": "assets/icons/crownOfThorns.png",
       "batch": "11-tier4-pact-icons-b",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5680,6 +5746,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5710,7 +5782,7 @@
       "prompt": "prompts/icons/icon_bloodletting.md",
       "output": "assets/icons/bloodletting.png",
       "batch": "11-tier4-pact-icons-b",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5724,6 +5796,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5754,7 +5832,7 @@
       "prompt": "prompts/icons/icon_thirst.md",
       "output": "assets/icons/thirst.png",
       "batch": "11-tier4-pact-icons-b",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5768,6 +5846,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5798,7 +5882,7 @@
       "prompt": "prompts/icons/icon_bloodlust.md",
       "output": "assets/icons/bloodlust.png",
       "batch": "11-tier4-pact-icons-b",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5812,6 +5896,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5842,7 +5932,7 @@
       "prompt": "prompts/icons/icon_twin_lash.md",
       "output": "assets/icons/twinLash.png",
       "batch": "11-tier4-pact-icons-b",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5856,6 +5946,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5886,7 +5982,7 @@
       "prompt": "prompts/icons/icon_crimson_tithe.md",
       "output": "assets/icons/crimsonTithe.png",
       "batch": "11-tier4-pact-icons-b",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5900,6 +5996,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [
@@ -5930,7 +6032,7 @@
       "prompt": "prompts/icons/icon_sanguine_avatar.md",
       "output": "assets/icons/sanguineAvatar.png",
       "batch": "11-tier4-pact-icons-b",
-      "status": "review",
+      "status": "approved",
       "revision": 1,
       "history": [
         {
@@ -5944,6 +6046,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "approved",
+          "by": "timo",
+          "note": "Timo: 'Freigegeben und mergen'"
         }
       ],
       "generations": [

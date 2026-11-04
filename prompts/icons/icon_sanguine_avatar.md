@@ -4,7 +4,7 @@ name: Sanguine Avatar Icon
 category: icons
 type: game_icon
 batch: 11-tier4-pact-icons-b
-status: review
+status: approved
 revision: 1
 output: assets/icons/sanguineAvatar.png
 format: png

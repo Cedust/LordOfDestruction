@@ -4,7 +4,7 @@ name: Tier 4 Pact Icons Sheet B
 category: icons
 type: icon_sheet
 batch: 11-tier4-pact-icons-b
-status: review
+status: approved
 revision: 1
 output: assets/icons/sheets/tier4-pact-icons-b.png
 format: png
