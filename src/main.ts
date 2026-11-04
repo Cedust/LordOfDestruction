@@ -1,22 +1,35 @@
 import './style.css';
 import { Game } from './game/game';
-import { loadSave, writeSave } from './game/state';
+import { clearSave, loadSave, writeSave } from './game/state';
 import { Renderer, loadImages } from './render';
 import { UI } from './ui';
 
 const save = loadSave();
 const game = new Game(save);
 
+/** Set once the player restarts the game, so nothing writes the old save back. */
+let wiped = false;
 function persist(): void {
+  if (wiped) return;
   writeSave(game.snapshotSave());
 }
 game.onPersist = persist;
 
 const renderer = new Renderer(document.querySelector<HTMLCanvasElement>('#battle')!);
-const ui = new UI(game, (speed) => {
-  game.save.speed = speed;
-  persist();
-});
+const ui = new UI(
+  game,
+  (speed) => {
+    game.save.speed = speed;
+    persist();
+  },
+  () => {
+    // Restart Game: erase the save and load a fresh page, without the "Leave site?" prompt.
+    wiped = true;
+    clearSave();
+    window.removeEventListener('beforeunload', onBeforeUnload);
+    location.reload();
+  },
+);
 
 // Fixed-step simulation. No offline progress: a hidden tab simply pauses.
 const STEP = 1 / 60;
@@ -58,11 +71,13 @@ document.addEventListener('visibilitychange', () => {
 window.addEventListener('pagehide', persist);
 // F5, Ctrl+R or closing the tab by accident: save first, then let the browser ask
 // "Leave site?" so the player can stay.
-window.addEventListener('beforeunload', (e) => {
+function onBeforeUnload(e: BeforeUnloadEvent): void {
+  if (wiped) return;
   persist();
   e.preventDefault();
   e.returnValue = '';
-});
+}
+window.addEventListener('beforeunload', onBeforeUnload);
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
