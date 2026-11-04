@@ -56,7 +56,7 @@ export function newSave(): SaveData {
 }
 
 /** Bumped whenever the pact tree changes; older trees are refunded in Sigils. */
-export const TREE_VERSION = 3;
+export const TREE_VERSION = 4;
 
 /** Dread that saves from before the skill tree spent on what are now pacts. */
 const OLD_DREAD_UNLOCKS: Record<string, number> = { wrath: 8, corpseBurst: 12 };

@@ -5176,6 +5176,312 @@
           }
         }
       ]
+    },
+    {
+      "asset_id": "sheet_tier4_pact_icons_a",
+      "prompt": "prompts/icons/sheet_tier4_pact_icons_a.md",
+      "output": "assets/icons/sheets/tier4-pact-icons-a.png",
+      "batch": "10-tier4-pact-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created: one sheet for the new tier 4 and capstone pacts"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_soul_harvest",
+      "prompt": "prompts/icons/icon_soul_harvest.md",
+      "output": "assets/icons/soulHarvest.png",
+      "batch": "10-tier4-pact-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_dread_tide",
+      "prompt": "prompts/icons/icon_dread_tide.md",
+      "output": "assets/icons/dreadTide.png",
+      "batch": "10-tier4-pact-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_creeping_dark",
+      "prompt": "prompts/icons/icon_creeping_dark.md",
+      "output": "assets/icons/creepingDark.png",
+      "batch": "10-tier4-pact-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_unmaking",
+      "prompt": "prompts/icons/icon_unmaking.md",
+      "output": "assets/icons/unmaking.png",
+      "batch": "10-tier4-pact-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_barbed_ground",
+      "prompt": "prompts/icons/icon_barbed_ground.md",
+      "output": "assets/icons/barbedGround.png",
+      "batch": "10-tier4-pact-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_open_wounds",
+      "prompt": "prompts/icons/icon_open_wounds.md",
+      "output": "assets/icons/openWounds.png",
+      "batch": "10-tier4-pact-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_barbed_fury",
+      "prompt": "prompts/icons/icon_barbed_fury.md",
+      "output": "assets/icons/barbedFury.png",
+      "batch": "10-tier4-pact-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_bramble_wall",
+      "prompt": "prompts/icons/icon_bramble_wall.md",
+      "output": "assets/icons/brambleWall.png",
+      "batch": "10-tier4-pact-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "sheet_tier4_pact_icons_b",
+      "prompt": "prompts/icons/sheet_tier4_pact_icons_b.md",
+      "output": "assets/icons/sheets/tier4-pact-icons-b.png",
+      "batch": "11-tier4-pact-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created: one sheet for the new tier 4 and capstone pacts"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_mirror_plate",
+      "prompt": "prompts/icons/icon_mirror_plate.md",
+      "output": "assets/icons/mirrorPlate.png",
+      "batch": "11-tier4-pact-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_crown_of_thorns",
+      "prompt": "prompts/icons/icon_crown_of_thorns.md",
+      "output": "assets/icons/crownOfThorns.png",
+      "batch": "11-tier4-pact-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_bloodletting",
+      "prompt": "prompts/icons/icon_bloodletting.md",
+      "output": "assets/icons/bloodletting.png",
+      "batch": "11-tier4-pact-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_thirst",
+      "prompt": "prompts/icons/icon_thirst.md",
+      "output": "assets/icons/thirst.png",
+      "batch": "11-tier4-pact-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_bloodlust",
+      "prompt": "prompts/icons/icon_bloodlust.md",
+      "output": "assets/icons/bloodlust.png",
+      "batch": "11-tier4-pact-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_twin_lash",
+      "prompt": "prompts/icons/icon_twin_lash.md",
+      "output": "assets/icons/twinLash.png",
+      "batch": "11-tier4-pact-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_crimson_tithe",
+      "prompt": "prompts/icons/icon_crimson_tithe.md",
+      "output": "assets/icons/crimsonTithe.png",
+      "batch": "11-tier4-pact-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "icon_sanguine_avatar",
+      "prompt": "prompts/icons/icon_sanguine_avatar.md",
+      "output": "assets/icons/sanguineAvatar.png",
+      "batch": "11-tier4-pact-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_tier4_pact_icons_b"
+        }
+      ],
+      "generations": []
     }
   ]
 }

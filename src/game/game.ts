@@ -8,6 +8,10 @@ import {
   IRON_MAIDEN_BELOW,
   LASH_COST,
   LASH_INTERVAL,
+  BLEED_SECONDS,
+  BRAMBLE_EVERY,
+  TIER_SIGILS,
+  TWIN_LASH_EVERY,
   SHOCKWAVE_INTERVAL,
   LORD_CHEST,
   LORD_X,
@@ -35,6 +39,7 @@ import {
   rangeIndex,
   runUpgradeCost,
   sigilsForRecord,
+  type BuildId,
   type HeroKind,
   type PactId,
   type PrestigeId,
@@ -67,6 +72,12 @@ export interface Hero {
   auraTime: number;
   /** What dealt the last damage, for on-kill effects. */
   lastHit: DamageSource;
+  /** Bleeding (Open Wounds, Bloodletting): damage per second, seconds left and who caused it. */
+  bleed: number;
+  bleedTime: number;
+  bleedSource: DamageSource;
+  /** Has already stepped on Barbed Ground. */
+  stepped: boolean;
 }
 
 export type DamageSource = 'aura' | 'thorns' | 'lash' | 'shockwave' | 'burst' | 'sun';
@@ -122,6 +133,10 @@ export class Game {
   private lashTimer = LASH_INTERVAL;
   private sunTimer = BLACK_SUN_EVERY;
   private shockTimer = SHOCKWAVE_INTERVAL;
+  private brambleTimer = BRAMBLE_EVERY;
+  private lashCount = 0;
+  /** Kills this wave for Soul Harvest, Barbed Fury and Bloodlust. */
+  private stacks = { aura: 0, thorns: 0, lash: 0 };
   private rng: () => number;
   /** Called whenever something worth persisting changed. */
   onPersist: () => void = () => {};
@@ -230,8 +245,21 @@ export class Game {
 
   /** None of the pacts this one needs is owned yet. */
   isPactLocked(id: PactId): boolean {
-    const def = PACTS.find((u) => u.id === id)!;
-    return def.requires !== undefined && !def.requires.some((r) => this.save.pacts[r] > 0);
+    const def = PACT_BY_ID.get(id)!;
+    if (def.tier === 1) return false;
+    return this.branchSpent(def.branch) < TIER_SIGILS[def.tier];
+  }
+
+  /** Sigils spent in a branch, counting its start pact as one; 0 without the start pact. */
+  branchSpent(branch: BuildId): number {
+    const start = PACTS.find((p) => p.branch === branch && p.tier === 1)!;
+    if (this.save.pacts[start.id] === 0) return 0;
+    let sum = 1;
+    for (const def of PACTS) {
+      if (def.branch !== branch || def.tier === 1) continue;
+      for (let l = 0; l < this.save.pacts[def.id]; l++) sum += pactLevelCost(def, l);
+    }
+    return sum;
   }
 
   isPactMaxed(id: PactId): boolean {
@@ -331,6 +359,8 @@ export class Game {
     this.applyAura(dt);
     this.blackSun(dt);
     this.shockwave(dt);
+    this.brambles(dt);
+    this.bleeding(dt);
     this.bloodLash(dt);
     this.removeDead();
 
@@ -406,9 +436,14 @@ export class Game {
         anim: this.rng() * 10,
         slot: -1,
         auraTime: 0,
+        bleed: 0,
+        bleedTime: 0,
+        bleedSource: 'thorns',
+        stepped: false,
         lastHit: 'aura',
       });
     });
+    this.stacks = { aura: 0, thorns: 0, lash: 0 };
     this.phase = 'fighting';
   }
 
@@ -426,8 +461,13 @@ export class Game {
         h.angle += (want - h.angle) * Math.min(1, dt * 3);
       }
       if (h.dist > target) {
-        h.dist = Math.max(target, h.dist - def.speed * dt);
+        const slow = this.inAura(h) ? 1 + this.pv('creepingDark') : 1;
+        h.dist = Math.max(target, h.dist - (def.speed / slow) * dt);
         continue;
+      }
+      if (!h.stepped && h.slot >= 0 && def.range === 'near') {
+        h.stepped = true;
+        if (this.pact('barbedGround') && this.stats.thorns > 0) this.damageHero(h, h.damage * this.stats.thorns * this.pv('barbedGround'), '#ff9b4a', 'thorns');
       }
       if (h.slot < 0) continue; // waiting for a free spot
       h.attackTimer -= dt;
@@ -478,8 +518,11 @@ export class Game {
     if (this.pact('spikedHide')) amount += blocked * this.pv('spikedHide') * this.stats.thorns;
     if (this.pact('retaliation') && this.run.hitsTaken % RETALIATION_EVERY === 0) amount *= this.pv('retaliation');
     if (this.pact('ironMaiden') && this.run.lordHp < this.stats.maxHp * IRON_MAIDEN_BELOW) amount *= this.pv('ironMaiden');
+    if (this.pact('mirrorPlate') && HEROES[h.kind].ranged) amount *= this.pv('mirrorPlate');
+    amount *= 1 + this.stacks.thorns * this.pv('barbedFury');
     const p = heroPos(h);
     this.damageHero(h, amount, '#ff9b4a', 'thorns');
+    if (this.pact('openWounds')) this.bleed(h, amount * this.pv('openWounds'), 'thorns');
     this.effects.push({ type: 'thorn', x: p.x, y: p.y, t: 0, ttl: 0.35 });
     if (this.pact('splinter')) {
       const next = this.nearestTo(h);
@@ -521,6 +564,9 @@ export class Game {
     if (h.kind === 'champion') dps *= CHAMPION_AURA_REDUCTION;
     if (this.pact('doom')) dps *= Math.min(this.pv('doom'), 1 + DOOM_PER_SECOND * h.auraTime);
     if (this.pact('despair') && h.hp < h.maxHp * DESPAIR_BELOW) dps *= this.pv('despair');
+    dps *= 1 + this.stacks.aura * this.pv('soulHarvest');
+    if (this.pact('dreadTide')) dps *= 1 + this.pv('dreadTide') * this.heroes.filter((o) => o.hp > 0 && heroRange(o) >= 0).length;
+    dps += h.maxHp * this.pv('unmaking');
     return dps;
   }
 
@@ -546,6 +592,38 @@ export class Game {
     for (const h of this.heroes) if (heroRange(h) >= 0) this.damageHero(h, this.stats.shockwave, '#d7b0ff', 'shockwave');
   }
 
+  /** Start or refresh bleeding on a hero; the stronger bleed wins. */
+  private bleed(h: Hero, dps: number, source: DamageSource): void {
+    if (h.hp <= 0) return;
+    if (h.bleedTime <= 0 || dps >= h.bleed) {
+      h.bleed = dps;
+      h.bleedSource = source;
+    }
+    h.bleedTime = BLEED_SECONDS;
+  }
+
+  private bleeding(dt: number): void {
+    for (const h of this.heroes) {
+      if (h.bleedTime <= 0) continue;
+      h.bleedTime -= dt;
+      this.damageHero(h, h.bleed * dt, null, h.bleedSource);
+    }
+  }
+
+  /** Bramble Wall: heroes right in front of the Lord hurt themselves every few seconds. */
+  private brambles(dt: number): void {
+    if (!this.pact('brambleWall') || this.stats.thorns <= 0) return;
+    this.brambleTimer -= dt;
+    if (this.brambleTimer > 0) return;
+    this.brambleTimer = BRAMBLE_EVERY;
+    for (const h of this.heroes) {
+      if (h.slot < 0 || HEROES[h.kind].range !== 'near' || heroRange(h) !== 0) continue;
+      this.damageHero(h, h.damage * this.stats.thorns * this.pv('brambleWall'), '#ff9b4a', 'thorns');
+      const p = heroPos(h);
+      this.effects.push({ type: 'thorn', x: p.x, y: p.y, t: 0, ttl: 0.35 });
+    }
+  }
+
   /** Black Sun: every few seconds the aura deals several seconds of damage at once. */
   private blackSun(dt: number): void {
     if (!this.pact('blackSun') || this.stats.auraReach < 0) return;
@@ -565,20 +643,40 @@ export class Game {
     const target = this.weakest();
     if (!target) return; // keep the lash ready until a hero is in reach
     this.lashTimer = LASH_INTERVAL;
-    const cost = this.run.lordHp * LASH_COST;
+    this.lashCount++;
+    const hpShare = this.run.lordHp / this.stats.maxHp;
+    const avatar = this.pact('sanguineAvatar') && hpShare < this.pv('sanguineAvatar');
+    let cost = avatar ? 0 : this.run.lordHp * LASH_COST;
+    if (this.pact('thirst')) cost *= 1 - this.pv('thirst') * hpShare;
     this.run.lordHp -= cost;
-    let damage = this.stats.maxHp * this.stats.lash;
+    const damage = this.stats.maxHp * this.stats.lash * (1 + this.stacks.lash * this.pv('bloodlust'));
+    if (avatar) {
+      for (const h of this.heroes) if (h.hp > 0 && heroRange(h) >= 0) this.lashStrike(h, damage, cost, false);
+    } else {
+      this.lashStrike(target, damage, cost, this.pact('chain'));
+    }
+    if (this.pact('twinLash') && this.lashCount % TWIN_LASH_EVERY === 0) {
+      const again = this.weakest();
+      if (again) this.lashStrike(again, damage * this.pv('twinLash'), 0, this.pact('chain'));
+    }
+  }
+
+  /** One lash on a hero; with Chain, leftover damage jumps on after a kill. */
+  private lashStrike(first: Hero, damage: number, cost: number, chain: boolean): void {
     let from = { x: LORD_X + 10, y: LORD_Y - LORD_CHEST };
-    let h: Hero | undefined = target;
+    let h: Hero | undefined = first;
     while (h && damage > 0) {
       const p = heroPos(h);
       this.effects.push({ type: 'arrow', x1: from.x, y1: from.y, x2: p.x, y2: p.y - 14, color: '#d8243f', t: 0, ttl: 0.3 });
       const execute = this.pact('execute') && h.hp < h.maxHp * this.pv('execute');
       const before = h.hp;
       this.damageHero(h, execute ? h.hp : damage, execute ? '#ff4060' : '#ff6b81', 'lash');
-      if (h.hp > 0) break;
+      if (h.hp > 0) {
+        if (this.pact('bloodletting')) this.bleed(h, damage * this.pv('bloodletting'), 'lash');
+        break;
+      }
       if (this.pact('transfusion')) this.heal(cost * this.pv('transfusion'));
-      if (!this.pact('chain')) break;
+      if (!chain) break;
       damage -= execute ? 0 : Math.min(damage, before);
       damage *= this.pv('chain');
       from = { x: p.x, y: p.y - 14 };
@@ -620,7 +718,11 @@ export class Game {
   }
 
   private onKill(h: Hero): void {
-    const gold = h.gold * this.stats.goldMult;
+    if (h.lastHit === 'aura' || h.lastHit === 'sun') this.stacks.aura++;
+    if (h.lastHit === 'thorns') this.stacks.thorns++;
+    if (h.lastHit === 'lash') this.stacks.lash++;
+    const tithe = h.lastHit === 'lash' ? 1 + this.pv('crimsonTithe') : 1;
+    const gold = h.gold * this.stats.goldMult * tithe;
     this.run.gold += gold;
     this.waveGold += gold;
     const p = heroPos(h);
@@ -630,6 +732,15 @@ export class Game {
     if (h.kind === 'champion') {
       this.heal(this.stats.maxHp);
       this.effects.push({ type: 'text', x: LORD_X + 20, y: LORD_Y - LORD_CHEST - 50, text: 'Champion Slain!', color: '#ffd166', t: 0, ttl: 1.8 });
+    }
+    if (this.pact('crownOfThorns') && h.lastHit === 'thorns') {
+      const others = this.heroes.filter((o) => o !== h && o.hp > 0 && heroRange(o) >= 0);
+      const o = others[Math.floor(this.rng() * others.length)];
+      if (o) {
+        const q = heroPos(o);
+        this.effects.push({ type: 'arrow', x1: p.x, y1: p.y - 10, x2: q.x, y2: q.y - 10, color: '#ff9b4a', t: 0, ttl: 0.25 });
+        this.damageHero(o, h.maxHp * this.pv('crownOfThorns'), '#ffb27a', 'thorns');
+      }
     }
     if (this.pact('thornBurst') && h.lastHit === 'thorns') {
       this.effects.push({ type: 'ring', x: p.x, y: p.y, r: THORN_BURST_RADIUS, color: '#ff9b4a', t: 0, ttl: 0.45 });

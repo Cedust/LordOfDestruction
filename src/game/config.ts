@@ -289,19 +289,35 @@ export type PactId =
   | 'doom'
   | 'despair'
   | 'innerSanctum'
+  | 'soulHarvest'
+  | 'dreadTide'
+  | 'creepingDark'
   | 'blackSun'
+  | 'unmaking'
   | 'pactThorns'
   | 'splinter'
   | 'thornBurst'
+  | 'barbedGround'
   | 'spikedHide'
   | 'retaliation'
+  | 'openWounds'
+  | 'barbedFury'
+  | 'brambleWall'
+  | 'mirrorPlate'
   | 'ironMaiden'
+  | 'crownOfThorns'
   | 'pactBlood'
   | 'chain'
   | 'execute'
+  | 'bloodletting'
   | 'frenzy'
   | 'transfusion'
-  | 'bloodMoon';
+  | 'thirst'
+  | 'bloodlust'
+  | 'twinLash'
+  | 'crimsonTithe'
+  | 'bloodMoon'
+  | 'sanguineAvatar';
 
 export interface PactDef {
   id: PactId;
@@ -310,10 +326,8 @@ export interface PactDef {
   /** The rule in plain numbers, shown small under the description; see `pactEffect`. */
   effect: string;
   branch: BuildId;
-  /** Tier in the branch: 1 = start pact, 5 = capstone. */
+  /** Tier in the branch: 1 = start pact, 5 = capstone. Tiers open with Sigils spent in the branch. */
   tier: number;
-  /** Owning any one of these unlocks the pact. */
-  requires?: PactId[];
   /** Sigils for the first level; each further level costs one more. */
   cost: number;
   /** The pact's number at each level ({p} shows it as a percent, {x} as a plain number). Start pacts have one level. */
@@ -322,42 +336,57 @@ export interface PactDef {
   icon?: string;
 }
 
-const AURA2: PactId[] = ['withering', 'grasp', 'longShadow'];
-const AURA3: PactId[] = ['doom', 'despair', 'innerSanctum'];
-const THORNS2: PactId[] = ['splinter', 'thornBurst'];
-const THORNS3: PactId[] = ['spikedHide', 'retaliation'];
-const BLOOD2: PactId[] = ['chain', 'execute'];
-const BLOOD3: PactId[] = ['frenzy', 'transfusion'];
+/** Sigils a branch needs spent on it before each tier opens. Tier 2 opens with the start pact. */
+export const TIER_SIGILS: Record<number, number> = { 2: 1, 3: 5, 4: 15, 5: 30 };
 
 /** Listed branch by branch, each from start pact to capstone. */
 export const PACTS: PactDef[] = [
   { id: 'pactAura', name: 'Dread Aura', desc: 'Every Hero in the Hall Takes Damage Over Time.', effect: 'Unlocks Dread Aura', branch: 'aura', tier: 1, cost: 1, icon: 'aura' },
-  { id: 'withering', name: 'Withering', desc: 'Heroes in Your Aura Hit You Softer.', effect: '−{p} Hero Damage in the Aura', values: [0.25, 0.35, 0.45], branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1 },
-  { id: 'grasp', name: 'Grasp', desc: 'Heroes in Your Aura Attack Less Often.', effect: 'Heroes in the Aura Attack {p} Slower', values: [0.3, 0.45, 0.6], branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1 },
-  { id: 'longShadow', name: 'Long Shadow', desc: 'Your Aura Hurts Heroes Far Away More.', effect: '+{p} Aura Damage on Distant Heroes', values: [0.6, 0.9, 1.2], branch: 'aura', tier: 2, requires: ['pactAura'], cost: 1, icon: 'radius' },
-  { id: 'doom', name: 'Doom', desc: 'The Longer a Hero Stays in Your Aura, the More It Hurts.', effect: '+25% Aura Damage per Second Inside, Up to ×{x}', values: [3, 4, 5], branch: 'aura', tier: 3, requires: AURA2, cost: 2 },
-  { id: 'despair', name: 'Despair', desc: 'Badly Hurt Heroes Take Extra Aura Damage.', effect: '×{x} Aura Damage Below 30% Life', values: [2, 2.5, 3], branch: 'aura', tier: 3, requires: AURA2, cost: 2, icon: 'wrath' },
-  { id: 'innerSanctum', name: 'Inner Sanctum', desc: 'Your Aura Hurts Heroes Right Next to You Much More.', effect: '×{x} Aura Damage on the Closest Heroes', values: [2, 2.5, 3], branch: 'aura', tier: 3, requires: AURA2, cost: 2 },
-  { id: 'blackSun', name: 'Black Sun', desc: 'Every Few Seconds Your Aura Bursts and Hits Everyone at Once.', effect: 'Every 8 s: {x} s of Aura Damage at Once', values: [3, 4, 5], branch: 'aura', tier: 5, requires: AURA3, cost: 3 },
+  { id: 'withering', name: 'Withering', desc: 'Heroes in Your Aura Hit You Softer.', effect: '−{p} Hero Damage in the Aura', values: [0.25, 0.35, 0.45], branch: 'aura', tier: 2, cost: 1 },
+  { id: 'grasp', name: 'Grasp', desc: 'Heroes in Your Aura Attack Less Often.', effect: 'Heroes in the Aura Attack {p} Slower', values: [0.3, 0.45, 0.6], branch: 'aura', tier: 2, cost: 1 },
+  { id: 'longShadow', name: 'Long Shadow', desc: 'Your Aura Hurts Heroes Far Away More.', effect: '+{p} Aura Damage on Distant Heroes', values: [0.6, 0.9, 1.2], branch: 'aura', tier: 2, cost: 1 },
+  { id: 'doom', name: 'Doom', desc: 'The Longer a Hero Stays in Your Aura, the More It Hurts.', effect: '+25% Aura Damage per Second Inside, Up to ×{x}', values: [3, 4, 5], branch: 'aura', tier: 3, cost: 2 },
+  { id: 'despair', name: 'Despair', desc: 'Badly Hurt Heroes Take Extra Aura Damage.', effect: '×{x} Aura Damage Below 30% Life', values: [2, 2.5, 3], branch: 'aura', tier: 3, cost: 2 },
+  { id: 'innerSanctum', name: 'Inner Sanctum', desc: 'Your Aura Hurts Heroes Right Next to You Much More.', effect: '×{x} Aura Damage on the Closest Heroes', values: [2, 2.5, 3], branch: 'aura', tier: 3, cost: 2 },
+  { id: 'soulHarvest', name: 'Soul Harvest', desc: 'Every Hero That Dies in Your Aura Makes It Stronger Until the Wave Ends.', effect: '+{p} Aura Damage per Kill This Wave', values: [0.05, 0.08, 0.12], branch: 'aura', tier: 4, cost: 3, icon: 'doom' },
+  { id: 'dreadTide', name: 'Dread Tide', desc: 'The More Heroes Fill the Hall, the Stronger Your Aura.', effect: '+{p} Aura Damage per Hero in the Hall', values: [0.05, 0.08, 0.12], branch: 'aura', tier: 4, cost: 3, icon: 'gloom' },
+  { id: 'creepingDark', name: 'Creeping Dark', desc: 'Heroes in Your Aura Walk Slower and Stay in It Longer.', effect: 'Heroes in the Aura Walk {p} Slower', values: [0.3, 0.45, 0.6], branch: 'aura', tier: 4, cost: 3, icon: 'grasp' },
+  { id: 'blackSun', name: 'Black Sun', desc: 'Every Few Seconds Your Aura Bursts and Hits Everyone at Once.', effect: 'Every 8 s: {x} s of Aura Damage at Once', values: [3, 4, 5], branch: 'aura', tier: 5, cost: 4 },
+  { id: 'unmaking', name: 'Unmaking', desc: 'Your Aura Also Eats Away at Every Hero\'s Life, Even the Strongest.', effect: '{p} of Each Hero\'s Life per Second', values: [0.01, 0.015, 0.02], branch: 'aura', tier: 5, cost: 4, icon: 'despair' },
 
   { id: 'pactThorns', name: 'Thorns', desc: 'Every Hero That Hits You Gets Hurt in Return.', effect: 'Unlocks Thorns', branch: 'thorns', tier: 1, cost: 1, icon: 'thorns' },
-  { id: 'splinter', name: 'Splinter', desc: 'Your Thorns Also Hurt the Hero Standing Next to the Attacker.', effect: 'Each Strike Also Hits the Nearest Hero for {p}', values: [0.5, 0.75, 1], branch: 'thorns', tier: 2, requires: ['pactThorns'], cost: 1 },
-  { id: 'thornBurst', name: 'Thorn Burst', desc: 'Heroes Killed by Your Thorns Explode and Hurt Those Around Them.', effect: "Spikes Hit Nearby Heroes for {p} of the Slain Hero's Life", values: [0.15, 0.2, 0.25], branch: 'thorns', tier: 2, requires: ['pactThorns'], cost: 1, icon: 'corpseBurst' },
-  { id: 'spikedHide', name: 'Spiked Hide', desc: 'The Better Your Armor, the Harder Your Thorns Hit.', effect: 'Blocked Damage Is Thrown Back ×{x}', values: [3, 4, 5], branch: 'thorns', tier: 3, requires: THORNS2, cost: 2 },
-  { id: 'retaliation', name: 'Retaliation', desc: 'Every Few Hits, Your Thorns Strike Back Much Harder.', effect: 'Every 5th Hit Is Thrown Back ×{x}', values: [3, 4, 5], branch: 'thorns', tier: 3, requires: THORNS2, cost: 2 },
-  { id: 'ironMaiden', name: 'Iron Maiden', desc: 'When You Are Badly Hurt, Your Thorns Hit Much Harder.', effect: '×{x} Thorns Below 50% Life', values: [3, 4, 5], branch: 'thorns', tier: 5, requires: THORNS3, cost: 3 },
+  { id: 'splinter', name: 'Splinter', desc: 'Your Thorns Also Hurt the Hero Standing Next to the Attacker.', effect: 'Each Strike Also Hits the Nearest Hero for {p}', values: [0.5, 0.75, 1], branch: 'thorns', tier: 2, cost: 1 },
+  { id: 'thornBurst', name: 'Thorn Burst', desc: 'Heroes Killed by Your Thorns Explode and Hurt Those Around Them.', effect: "Spikes Hit Nearby Heroes for {p} of the Slain Hero's Life", values: [0.15, 0.2, 0.25], branch: 'thorns', tier: 2, cost: 1 },
+  { id: 'barbedGround', name: 'Barbed Ground', desc: 'Heroes Who Step Up Close Tread on Your Thorns Once.', effect: 'Stepping Close Throws Back ×{x} of a Hit', values: [1, 1.5, 2], branch: 'thorns', tier: 2, cost: 1, icon: 'barbs' },
+  { id: 'spikedHide', name: 'Spiked Hide', desc: 'The Better Your Armor, the Harder Your Thorns Hit.', effect: 'Blocked Damage Is Thrown Back ×{x}', values: [3, 4, 5], branch: 'thorns', tier: 3, cost: 2 },
+  { id: 'retaliation', name: 'Retaliation', desc: 'Every Few Hits, Your Thorns Strike Back Much Harder.', effect: 'Every 5th Hit Is Thrown Back ×{x}', values: [3, 4, 5], branch: 'thorns', tier: 3, cost: 2 },
+  { id: 'openWounds', name: 'Open Wounds', desc: 'Heroes Hurt by Your Thorns Keep Bleeding for a While.', effect: '{p} of Each Strike per Second for 3 s', values: [0.2, 0.3, 0.4], branch: 'thorns', tier: 3, cost: 2, icon: 'splinter' },
+  { id: 'barbedFury', name: 'Barbed Fury', desc: 'Every Hero Your Thorns Kill Makes Them Stronger Until the Wave Ends.', effect: '+{p} Thorns per Kill This Wave', values: [0.05, 0.08, 0.12], branch: 'thorns', tier: 4, cost: 3, icon: 'retaliation' },
+  { id: 'brambleWall', name: 'Bramble Wall', desc: 'Heroes Right in Front of You Hurt Themselves Even Without Striking.', effect: 'Every 2 s: ×{x} of a Hit to the Closest Heroes', values: [0.5, 0.75, 1], branch: 'thorns', tier: 4, cost: 3, icon: 'spikedHide' },
+  { id: 'mirrorPlate', name: 'Mirror Plate', desc: 'Arrows and Spells Bounce Off You Even Harder.', effect: 'Ranged Hits Are Thrown Back ×{x}', values: [1.5, 2, 2.5], branch: 'thorns', tier: 4, cost: 3, icon: 'hide' },
+  { id: 'ironMaiden', name: 'Iron Maiden', desc: 'When You Are Badly Hurt, Your Thorns Hit Much Harder.', effect: '×{x} Thorns Below 50% Life', values: [3, 4, 5], branch: 'thorns', tier: 5, cost: 4 },
+  { id: 'crownOfThorns', name: 'Crown of Thorns', desc: 'Every Hero Your Thorns Kill Sends a Spike Into Another Hero.', effect: "A Spike Hits Another Hero for {p} of the Slain Hero's Life", values: [0.2, 0.3, 0.4], branch: 'thorns', tier: 5, cost: 4, icon: 'thornBurst' },
 
   { id: 'pactBlood', name: 'Blood Lash', desc: 'You Pay with Your Own Life to Strike Down the Weakest Hero.', effect: 'Unlocks Blood Lash', branch: 'blood', tier: 1, cost: 1, icon: 'lash' },
-  { id: 'chain', name: 'Chain', desc: 'When Your Lash Kills, It Jumps On to the Next Weakest Hero.', effect: '{p} of the Leftover Damage Jumps to the Next Weakest Hero', values: [1, 1.25, 1.5], branch: 'blood', tier: 2, requires: ['pactBlood'], cost: 1 },
-  { id: 'execute', name: 'Execute', desc: 'Your Lash Instantly Kills Heroes That Are Almost Dead.', effect: 'Heroes Below {p} Life Die to a Lash', values: [0.15, 0.2, 0.25], branch: 'blood', tier: 2, requires: ['pactBlood'], cost: 1 },
-  { id: 'frenzy', name: 'Frenzy', desc: 'The Lower Your Life, the Faster You Lash.', effect: 'Up to ×{x} Lash Speed at Low Life', values: [2.5, 3, 3.5], branch: 'blood', tier: 3, requires: BLOOD2, cost: 2 },
-  { id: 'transfusion', name: 'Transfusion', desc: 'When Your Lash Kills, You Get More Life Back than It Cost.', effect: 'A Killing Lash Returns ×{x} Its Cost', values: [2, 2.5, 3], branch: 'blood', tier: 3, requires: BLOOD2, cost: 2 },
-  { id: 'bloodMoon', name: 'Blood Moon', desc: 'Healing Beyond Your Full Life Turns into a Shield.', effect: 'Overheal Becomes a Shield, Up to {p} of Your Life', values: [0.5, 0.75, 1], branch: 'blood', tier: 5, requires: BLOOD3, cost: 3 },
+  { id: 'chain', name: 'Chain', desc: 'When Your Lash Kills, It Jumps On to the Next Weakest Hero.', effect: '{p} of the Leftover Damage Jumps to the Next Weakest Hero', values: [1, 1.25, 1.5], branch: 'blood', tier: 2, cost: 1 },
+  { id: 'execute', name: 'Execute', desc: 'Your Lash Instantly Kills Heroes That Are Almost Dead.', effect: 'Heroes Below {p} Life Die to a Lash', values: [0.15, 0.2, 0.25], branch: 'blood', tier: 2, cost: 1 },
+  { id: 'bloodletting', name: 'Bloodletting', desc: 'Heroes Struck by Your Lash Keep Bleeding for a While.', effect: '{p} of the Lash per Second for 3 s', values: [0.1, 0.15, 0.2], branch: 'blood', tier: 2, cost: 1, icon: 'sanguine' },
+  { id: 'frenzy', name: 'Frenzy', desc: 'The Lower Your Life, the Faster You Lash.', effect: 'Up to ×{x} Lash Speed at Low Life', values: [2.5, 3, 3.5], branch: 'blood', tier: 3, cost: 2 },
+  { id: 'transfusion', name: 'Transfusion', desc: 'When Your Lash Kills, You Get More Life Back than It Cost.', effect: 'A Killing Lash Returns ×{x} Its Cost', values: [2, 2.5, 3], branch: 'blood', tier: 3, cost: 2 },
+  { id: 'thirst', name: 'Thirst', desc: 'The Healthier You Are, the Less Your Lash Costs.', effect: 'Up to {p} Less Lash Cost at Full Life', values: [0.3, 0.5, 0.7], branch: 'blood', tier: 3, cost: 2, icon: 'bloodPact' },
+  { id: 'bloodlust', name: 'Bloodlust', desc: 'Every Hero Your Lash Kills Makes It Stronger Until the Wave Ends.', effect: '+{p} Lash Damage per Kill This Wave', values: [0.05, 0.08, 0.12], branch: 'blood', tier: 4, cost: 3, icon: 'frenzy' },
+  { id: 'twinLash', name: 'Twin Lash', desc: 'Every Third Lash Strikes Twice.', effect: 'Every 3rd Lash Strikes Again for {p}', values: [0.5, 0.75, 1], branch: 'blood', tier: 4, cost: 3, icon: 'chain' },
+  { id: 'crimsonTithe', name: 'Crimson Tithe', desc: 'Heroes Your Lash Kills Drop More Gold.', effect: '+{p} Gold from Lash Kills', values: [0.25, 0.5, 0.75], branch: 'blood', tier: 4, cost: 3, icon: 'tithe' },
+  { id: 'bloodMoon', name: 'Blood Moon', desc: 'Healing Beyond Your Full Life Turns into a Shield.', effect: 'Overheal Becomes a Shield, Up to {p} of Your Life', values: [0.5, 0.75, 1], branch: 'blood', tier: 5, cost: 4 },
+  { id: 'sanguineAvatar', name: 'Sanguine Avatar', desc: 'When You Are Close to Death, Your Lash Costs Nothing and Hits Every Hero.', effect: 'Below {p} Life: Free Lash on Every Hero', values: [0.25, 0.3, 0.35], branch: 'blood', tier: 5, cost: 4, icon: 'execute' },
 ];
 
 export const START_PACTS: Record<BuildId, PactId> = { aura: 'pactAura', thorns: 'pactThorns', blood: 'pactBlood' };
 
 /** Tuning numbers for the pacts that do not change with the pact's level. */
+export const BLEED_SECONDS = 3;
+export const BRAMBLE_EVERY = 2;
+export const TWIN_LASH_EVERY = 3;
 export const DOOM_PER_SECOND = 0.25;
 export const DESPAIR_BELOW = 0.3;
 export const BLACK_SUN_EVERY = 8;
