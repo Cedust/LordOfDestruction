@@ -20,7 +20,6 @@ for (const build of BUILDS.filter((b) => !only || b.id === only)) {
   };
   const save = newSave();
   const game = new Game(save, rng);
-  game.chooseBuild(build.id);
   console.log(`== ${build.name}`);
   let hours = 0;
   for (let r = 0; r < runs; r++) {

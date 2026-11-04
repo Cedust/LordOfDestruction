@@ -156,6 +156,7 @@ export type RunUpgradeId =
   | 'hide'
   | 'regen'
   | 'bloodPact'
+  | 'shockwave'
   | 'aura'
   | 'thorns'
   | 'lash';
@@ -169,9 +170,12 @@ export interface RunUpgradeDef {
   maxLevel?: number;
   /** Only offered while this build's start pact is owned. */
   build?: BuildId;
+  /** The first level is free in every run. */
+  free?: boolean;
 }
 
 export const RUN_UPGRADES: RunUpgradeDef[] = [
+  { id: 'shockwave', name: 'Shockwave', desc: 'Every Few Seconds a Shockwave Hurts Every Hero in the Hall.', baseCost: 8, costGrowth: 1.15, free: true },
   { id: 'aura', name: 'Dread Aura', desc: 'Every Hero in the Hall Takes Damage Over Time.', baseCost: 8, costGrowth: 1.15, build: 'aura' },
   { id: 'thorns', name: 'Thorns', desc: 'Every Hero That Hits You Gets Hurt in Return.', baseCost: 8, costGrowth: 1.15, build: 'thorns' },
   { id: 'lash', name: 'Blood Lash', desc: 'You Pay with Your Own Life to Strike Down the Weakest Hero.', baseCost: 8, costGrowth: 1.15, build: 'blood' },
@@ -180,6 +184,10 @@ export const RUN_UPGRADES: RunUpgradeDef[] = [
   { id: 'regen', name: 'Regeneration', desc: 'You Slowly Heal Over Time.', baseCost: 10, costGrowth: 1.16 },
   { id: 'bloodPact', name: 'Blood Pact', desc: 'You Heal a Little Whenever a Hero Dies.', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
 ];
+
+/** Shockwave, the basic attack: seconds between waves and damage at level 1. */
+export const SHOCKWAVE_INTERVAL = 2;
+export const SHOCKWAVE_DAMAGE = 10;
 
 /** Blood Lash: seconds between lashes, base share of max life dealt, share of current life paid. */
 export const LASH_INTERVAL = 2;
@@ -204,6 +212,7 @@ export type PrestigeId =
   | 'gloom'
   | 'barbs'
   | 'sanguine'
+  | 'tremor'
   | 'tithe'
   | 'avarice'
   | 'dreadHarvest'
@@ -225,6 +234,7 @@ export const PRESTIGE_UPGRADES: PrestigeDef[] = [
   { id: 'gloom', name: 'Gloom', desc: 'Your Aura Deals More Damage.', baseCost: 1, costStep: 0.5 },
   { id: 'barbs', name: 'Barbs', desc: 'Your Thorns Deal More Damage.', baseCost: 1, costStep: 0.5 },
   { id: 'sanguine', name: 'Sanguine', desc: 'Your Blood Lash Deals More Damage.', baseCost: 1, costStep: 0.5 },
+  { id: 'tremor', name: 'Tremor', desc: 'Your Shockwave Deals More Damage.', baseCost: 1, costStep: 0.5 },
   { id: 'tithe', name: 'Tithe', desc: 'Heroes Drop More Gold.', baseCost: 2, costStep: 0.5 },
   { id: 'avarice', name: 'Avarice', desc: 'Powers Cost Less Gold.', baseCost: 2, costStep: 0.5, maxLevel: 10 },
   { id: 'dreadHarvest', name: 'Dread Harvest', desc: 'You Gain Experience Faster and Level Up Sooner.', baseCost: 3, costStep: 1 },
@@ -393,6 +403,7 @@ export const DREAD_GROWTH: Partial<Record<PrestigeId, { linear: number; exp: num
   gloom: { linear: 0.25, exp: 1.05 },
   barbs: { linear: 0.25, exp: 1.05 },
   sanguine: { linear: 0.25, exp: 1.05 },
+  tremor: { linear: 0.25, exp: 1.05 },
   tithe: { linear: 0.15, exp: 1.04 },
 };
 

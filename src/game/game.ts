@@ -8,6 +8,7 @@ import {
   IRON_MAIDEN_BELOW,
   LASH_COST,
   LASH_INTERVAL,
+  SHOCKWAVE_INTERVAL,
   LORD_CHEST,
   LORD_X,
   LORD_Y,
@@ -34,7 +35,6 @@ import {
   rangeIndex,
   runUpgradeCost,
   sigilsForRecord,
-  type BuildId,
   type HeroKind,
   type PactId,
   type PrestigeId,
@@ -69,7 +69,7 @@ export interface Hero {
   lastHit: DamageSource;
 }
 
-export type DamageSource = 'aura' | 'thorns' | 'lash' | 'burst' | 'sun';
+export type DamageSource = 'aura' | 'thorns' | 'lash' | 'shockwave' | 'burst' | 'sun';
 
 export type Effect =
   | { type: 'text'; x: number; y: number; text: string; color: string; t: number; ttl: number }
@@ -121,6 +121,7 @@ export class Game {
   private nextId = 1;
   private lashTimer = LASH_INTERVAL;
   private sunTimer = BLACK_SUN_EVERY;
+  private shockTimer = SHOCKWAVE_INTERVAL;
   private rng: () => number;
   /** Called whenever something worth persisting changed. */
   onPersist: () => void = () => {};
@@ -153,11 +154,6 @@ export class Game {
     this.run.lordHp = Math.min(this.run.lordHp, this.stats.maxHp);
   }
 
-  /** At least one start pact is owned, so the run can do damage. */
-  hasBuild(): boolean {
-    return this.stats.builds.aura || this.stats.builds.thorns || this.stats.builds.blood;
-  }
-
   private pact(id: PactId): boolean {
     return this.save.pacts[id] > 0;
   }
@@ -179,7 +175,7 @@ export class Game {
   /** Level shown in the shop: build powers count their free first level. */
   runUpgradeLevel(id: RunUpgradeId): number {
     const def = RUN_UPGRADES.find((u) => u.id === id)!;
-    return powerLevel(id, this.run.levels, def.build ? this.stats.builds[def.build] : false);
+    return powerLevel(id, this.run.levels, def.free || (def.build ? this.stats.builds[def.build] : false));
   }
 
   runUpgradeCost(id: RunUpgradeId): number {
@@ -270,13 +266,6 @@ export class Game {
     return true;
   }
 
-  /** Choose the build for the very first run: buys that branch's start pact. */
-  chooseBuild(build: BuildId): boolean {
-    if (this.hasBuild() || this.phase === 'fighting') return false;
-    const id = PACTS.find((p) => p.branch === build && p.tier === 1)!.id;
-    return this.takePact(id);
-  }
-
   /** Sigils spent on pacts so far. */
   sigilsSpent(): number {
     let sum = 0;
@@ -332,8 +321,6 @@ export class Game {
 
     if (this.phase === 'pause') {
       this.regen(dt);
-      // Without a build nothing could die: wait until a start pact is chosen.
-      if (!this.hasBuild()) return;
       this.pauseTimer -= dt;
       if (this.pauseTimer <= 0) this.startWave();
       return;
@@ -343,6 +330,7 @@ export class Game {
     this.moveAndAttack(dt);
     this.applyAura(dt);
     this.blackSun(dt);
+    this.shockwave(dt);
     this.bloodLash(dt);
     this.removeDead();
 
@@ -544,6 +532,20 @@ export class Game {
     }
   }
 
+  /** Shockwave, the basic attack: every few seconds it hurts every hero on the field. */
+  private shockwave(dt: number): void {
+    this.shockTimer -= dt;
+    if (this.shockTimer > 0) return;
+    if (!this.heroes.some((h) => heroRange(h) >= 0)) {
+      this.shockTimer = 0; // wait until a hero is in reach
+      return;
+    }
+    this.shockTimer = SHOCKWAVE_INTERVAL;
+    const edge = RANGES[RANGES.length - 1].edge;
+    this.effects.push({ type: 'ring', x: LORD_X, y: LORD_Y, r: edge, color: '#b06bff', t: 0, ttl: 0.6 });
+    for (const h of this.heroes) if (heroRange(h) >= 0) this.damageHero(h, this.stats.shockwave, '#d7b0ff', 'shockwave');
+  }
+
   /** Black Sun: every few seconds the aura deals several seconds of damage at once. */
   private blackSun(dt: number): void {
     if (!this.pact('blackSun') || this.stats.auraReach < 0) return;
@@ -686,7 +688,7 @@ export class Game {
 
   /** The player may prestige at any time during a run once a build is chosen. */
   canPrestige(): boolean {
-    return this.phase !== 'fallen' && this.hasBuild();
+    return this.phase !== 'fallen';
   }
 
   /** End the run by choice: keep everything earned and go spend it. */

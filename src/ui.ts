@@ -1,8 +1,8 @@
-import { BUILDS, HEROES, MILESTONE_EVERY, MILESTONE_MULT, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_LEVELS, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
+import { HEROES, MILESTONE_EVERY, MILESTONE_MULT, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_LEVELS, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
 import { fmt, type Game } from './game/game';
 import { computeStats, dreadMult, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
-import { SIGIL, SkillTree, pactIconUrl } from './tree';
+import { SIGIL, SkillTree } from './tree';
 
 type Tab = 'powers' | 'dread' | 'pacts';
 
@@ -26,6 +26,8 @@ function statText(id: RunUpgradeId, s: LordStats): string {
       return `${Math.round(s.armor * 100)}% Blocked`;
     case 'regen':
       return `${fmt(s.regen)}/s`;
+    case 'shockwave':
+      return `${fmt(s.shockwave)} Dmg to All`;
     case 'aura':
       return `${fmt(s.auraDps[1])} Dmg/s`;
     case 'thorns':
@@ -52,6 +54,8 @@ function dreadText(id: PrestigeId, lvl: number): string {
       return `${pct(m)} Thorns Damage`;
     case 'sanguine':
       return `${pct(m)} Lash Damage`;
+    case 'tremor':
+      return `${pct(m)} Shockwave Damage`;
     case 'tithe':
       return `${pct(m)} Gold`;
     case 'avarice':
@@ -90,7 +94,6 @@ export class UI {
       }),
     );
     $('#speed').addEventListener('click', () => this.onSpeed());
-    this.buildChooser();
     const prestige = $<HTMLButtonElement>('#prestige');
     prestige.addEventListener('click', () => {
       // Two taps, so a stray tap never ends a run.
@@ -147,24 +150,6 @@ export class UI {
         <span class="cost"></span>`;
       btn.addEventListener('click', () => {
         if (this.game.buyPrestige(def.id)) this.update();
-      });
-      list.appendChild(btn);
-    }
-  }
-
-  /** Start pact picker, shown while no build is owned (first game, or after a reset). */
-  private buildChooser(): void {
-    const list = $('#choose-list');
-    for (const build of BUILDS) {
-      const pact = PACTS.find((p) => p.branch === build.id && p.tier === 1)!;
-      const btn = document.createElement('button');
-      btn.className = 'choice';
-      btn.style.setProperty('--branch', build.color);
-      btn.innerHTML = `
-        ${iconTag(pactIconUrl(pact), pact.name)}
-        <span class="info"><span class="name">${build.name}</span><span class="tag">${build.desc}</span><span class="desc">${pact.desc}</span></span>`;
-      btn.addEventListener('click', () => {
-        if (this.game.chooseBuild(build.id)) this.update();
       });
       list.appendChild(btn);
     }
@@ -259,7 +244,6 @@ export class UI {
     const sigilHint = `${g.save.sigils} ${SIGIL} Sigils · Next at Wave ${nextRecord} or Level ${nextLevel}`;
     $('#fallen-sigil-hint').textContent = sigilHint;
 
-    $('#choose').hidden = !(g.phase === 'pause' && !g.hasBuild());
 
     const overlay = $('#fallen');
     overlay.hidden = g.phase !== 'fallen';
