@@ -4,7 +4,7 @@ name: Ring of Gloom Icon
 category: equipment
 type: equipment_icon
 batch: 14-gear-icons-c
-status: ready
+status: review
 revision: 1
 output: assets/equipment/ringOfGloom.png
 format: png

@@ -4,7 +4,7 @@ name: Raven Feather Icon
 category: equipment
 type: equipment_icon
 batch: 14-gear-icons-c
-status: ready
+status: review
 revision: 1
 output: assets/equipment/ravenFeather.png
 format: png

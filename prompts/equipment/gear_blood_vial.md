@@ -4,7 +4,7 @@ name: Blood Vial Icon
 category: equipment
 type: equipment_icon
 batch: 14-gear-icons-c
-status: ready
+status: review
 revision: 1
 output: assets/equipment/bloodVial.png
 format: png

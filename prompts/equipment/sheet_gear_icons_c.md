@@ -4,7 +4,7 @@ name: Gear Icons Sheet C
 category: equipment
 type: icon_sheet
 batch: 14-gear-icons-c
-status: ready
+status: review
 revision: 1
 output: assets/equipment/sheets/gear-icons-c.png
 format: png

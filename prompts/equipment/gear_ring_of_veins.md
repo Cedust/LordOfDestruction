@@ -4,7 +4,7 @@ name: Ring of Veins Icon
 category: equipment
 type: equipment_icon
 batch: 14-gear-icons-c
-status: ready
+status: review
 revision: 1
 output: assets/equipment/ringOfVeins.png
 format: png

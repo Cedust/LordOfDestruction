@@ -4,7 +4,7 @@ name: Grave Gloves Icon
 category: equipment
 type: equipment_icon
 batch: 13-gear-icons-b
-status: ready
+status: review
 revision: 1
 output: assets/equipment/graveGloves.png
 format: png

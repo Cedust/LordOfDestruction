@@ -4,7 +4,7 @@ name: Chain Sash Icon
 category: equipment
 type: equipment_icon
 batch: 12-gear-icons-a
-status: ready
+status: review
 revision: 1
 output: assets/equipment/chainSash.png
 format: png
