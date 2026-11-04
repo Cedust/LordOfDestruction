@@ -1,4 +1,4 @@
-import { BUILDS, HEROES, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SHOCKWAVE_HITS, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
+import { BUILDS, HEROES, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
 import { fmt, type Game } from './game/game';
 import { computeStats, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
@@ -32,8 +32,6 @@ function statText(id: RunUpgradeId, s: LordStats): string {
       return `${Math.round(s.thorns * 100)}% of Each Hit`;
     case 'lash':
       return `${fmt(s.maxHp * s.lash)} Dmg per Lash`;
-    case 'shockwave':
-      return s.shockwaveDamage > 0 ? `${fmt(s.shockwaveDamage)} Dmg Every ${SHOCKWAVE_HITS} Hits` : 'None';
     case 'bloodPact':
       return s.bloodPact > 0 ? `${Math.round(s.bloodPact * 100)}% per Kill` : 'None';
   }
@@ -53,8 +51,6 @@ function dreadText(id: PrestigeId, lvl: number): string {
       return `${pct(0.4 * lvl)} Thorns Damage`;
     case 'sanguine':
       return `${pct(0.4 * lvl)} Lash Damage`;
-    case 'tremor':
-      return `${pct(0.4 * lvl)} Shockwave Damage`;
     case 'tithe':
       return `${pct(0.2 * lvl)} Gold`;
     case 'avarice':

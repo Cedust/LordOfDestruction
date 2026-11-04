@@ -14,7 +14,6 @@ export interface LordStats {
   thorns: number;
   /** Blood Lash damage as a share of max life; 0 without the Blood build. */
   lash: number;
-  shockwaveDamage: number;
   /** Share of max HP healed per kill. */
   bloodPact: number;
   goldMult: number;
@@ -56,8 +55,6 @@ export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevel
     auraReach: reach,
     thorns: thornLvl > 0 ? 1.5 * grow(thornLvl, 0.3, 1.05) * malice * (1 + 0.4 * p.barbs) : 0,
     lash: lashLvl > 0 ? LASH_SHARE * grow(lashLvl, 0.3, 1.04) * malice * (1 + 0.4 * p.sanguine) : 0,
-    shockwaveDamage:
-      run.shockwave > 0 ? 12 * grow(run.shockwave, 0.5, 1.08) * malice * (1 + 0.4 * p.tremor) : 0,
     bloodPact: 0.02 * run.bloodPact,
     goldMult: 1 + 0.2 * p.tithe,
     xpMult: 1 + DREAD_HARVEST_PER_LEVEL * p.dreadHarvest,

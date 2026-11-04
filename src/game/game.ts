@@ -26,8 +26,6 @@ import {
   RETALIATION_MULT,
   RUN_UPGRADES,
   SCALE,
-  SHOCKWAVE_HITS,
-  SHOCKWAVE_REACH,
   SPAWN_DIST,
   SPIKED_HIDE_MULT,
   SPLINTER_SHARE,
@@ -77,7 +75,7 @@ export interface Hero {
   lastHit: DamageSource;
 }
 
-export type DamageSource = 'aura' | 'thorns' | 'lash' | 'shockwave' | 'burst' | 'sun';
+export type DamageSource = 'aura' | 'thorns' | 'lash' | 'burst' | 'sun';
 
 export type Effect =
   | { type: 'text'; x: number; y: number; text: string; color: string; t: number; ttl: number }
@@ -467,11 +465,6 @@ export class Game {
     this.effects.push({ type: 'text', x: LORD_X + (this.rng() - 0.5) * 30, y: LORD_Y - LORD_CHEST - 20, text: '-' + fmt(taken), color: '#ff7a6b', t: 0, ttl: 0.8 });
 
     if (this.stats.thorns > 0) this.throwBack(h, raw, blocked);
-    if (this.stats.shockwaveDamage > 0 && this.run.hitsTaken % SHOCKWAVE_HITS === 0) {
-      const edge = RANGES[SHOCKWAVE_REACH].edge;
-      this.effects.push({ type: 'ring', x: LORD_X, y: LORD_Y, r: edge, color: '#b06bff', t: 0, ttl: 0.6 });
-      for (const other of this.heroes) if (other.dist <= edge) this.damageHero(other, this.stats.shockwaveDamage, '#d7b0ff', 'shockwave');
-    }
   }
 
   /** Thorns: the attacker takes part of its own hit back. */
