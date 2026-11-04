@@ -4,7 +4,7 @@ name: Unmaking Icon
 category: icons
 type: game_icon
 batch: 10-tier4-pact-icons-a
-status: ready
+status: review
 revision: 1
 output: assets/icons/unmaking.png
 format: png

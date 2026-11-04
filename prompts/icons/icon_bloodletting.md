@@ -4,7 +4,7 @@ name: Bloodletting Icon
 category: icons
 type: game_icon
 batch: 11-tier4-pact-icons-b
-status: ready
+status: review
 revision: 1
 output: assets/icons/bloodletting.png
 format: png
