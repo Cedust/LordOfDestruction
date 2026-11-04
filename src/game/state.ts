@@ -56,7 +56,7 @@ export function newSave(): SaveData {
 }
 
 /** Bumped whenever the pact tree changes; older trees are refunded in Sigils. */
-export const TREE_VERSION = 3;
+export const TREE_VERSION = 4;
 
 /** Dread that saves from before the skill tree spent on what are now pacts. */
 const OLD_DREAD_UNLOCKS: Record<string, number> = { wrath: 8, corpseBurst: 12 };
@@ -79,15 +79,6 @@ export function loadSave(): SaveData {
     if (data.pacts === undefined) {
       // Save from before the skill tree: refund the old Dread unlocks.
       for (const [id, cost] of Object.entries(OLD_DREAD_UNLOCKS)) data.dread += (oldPrestige[id] ?? 0) * cost;
-    }
-    // Shockwave and its Dread upgrade Tremor were removed: give back what was spent on them.
-    const tremor = oldPrestige.tremor ?? 0;
-    for (let l = 0; l < tremor; l++) data.dread += 1 + Math.floor(0.5 * l);
-    delete oldPrestige.tremor;
-    const runLevels = data.run?.levels as Record<string, number> | undefined;
-    if (data.run && runLevels?.shockwave) {
-      for (let l = 0; l < runLevels.shockwave; l++) data.run.gold += Math.ceil(60 * Math.pow(1.18, l));
-      delete runLevels.shockwave;
     }
     if (data.treeVersion !== TREE_VERSION) {
       // Older or no tree: start the new tree fresh with every Sigil the record has earned.

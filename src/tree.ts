@@ -1,4 +1,4 @@
-import { BUILDS, PACTS, pactEffect, pactMaxLevel, type BuildId, type PactDef, type PactId } from './game/config';
+import { BUILDS, PACTS, TIER_SIGILS, pactEffect, pactMaxLevel, type BuildId, type PactDef, type PactId } from './game/config';
 import type { Game } from './game/game';
 import { assetUrl } from './assets';
 
@@ -14,7 +14,7 @@ export function pactIconUrl(def: PactDef): string | undefined {
 }
 
 const BY_ID = new Map(PACTS.map((d) => [d.id, d]));
-const TIER_NAMES: Record<number, string> = { 1: 'Start Pact', 2: 'Tier 2', 3: 'Tier 3', 5: 'Capstone' };
+const TIER_NAMES: Record<number, string> = { 1: 'Start Pact', 2: 'Tier 2', 3: 'Tier 3', 4: 'Tier 4', 5: 'Capstone' };
 
 /** Badge for a tree node: its own icon, else the stand-in icon, else a letter until the art exists. */
 function badgeHtml(def: PactDef): string {
@@ -147,8 +147,13 @@ export class SkillTree {
     this.detail.querySelector('.desc')!.textContent = def.desc;
     this.detail.querySelector('.stat')!.textContent =
       max > 1 && owned && !maxed ? `${pactEffect(def, level)} → ${pactEffect(def, level + 1)}` : pactEffect(def, level);
-    const names = (def.requires ?? []).map((r) => BY_ID.get(r)!.name);
-    this.detail.querySelector('.req')!.textContent = locked ? `Requires ${names.join(' or ')}` : '';
+    const need = TIER_SIGILS[def.tier] ?? 0;
+    const startOwned = PACTS.some((p) => p.branch === def.branch && p.tier === 1 && g.save.pacts[p.id] > 0);
+    this.detail.querySelector('.req')!.textContent = !locked
+      ? ''
+      : startOwned
+        ? `Opens at ${sigilText(need)} Spent in This Branch (${g.branchSpent(def.branch)} Now)`
+        : `Requires the ${BY_ID.get(PACTS.find((p) => p.branch === def.branch && p.tier === 1)!.id)!.name} Start Pact`;
     this.buy.textContent = maxed ? (max > 1 ? 'MAX' : 'Owned') : sigilText(cost);
     this.buy.disabled = maxed || locked || g.save.sigils < cost || !g.canSpend();
   }

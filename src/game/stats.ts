@@ -1,4 +1,4 @@
-import { AVARICE_PER_LEVEL, DREAD_HARVEST_PER_LEVEL, DREAD_GROWTH, LASH_SHARE, MILESTONE_EVERY, MILESTONE_MULT, PACTS, pactValue, type BuildId, type PrestigeId, type RunUpgradeId } from './config';
+import { SHOCKWAVE_DAMAGE, AVARICE_PER_LEVEL, DREAD_HARVEST_PER_LEVEL, DREAD_GROWTH, LASH_SHARE, MILESTONE_EVERY, MILESTONE_MULT, PACTS, pactValue, type BuildId, type PrestigeId, type RunUpgradeId } from './config';
 import type { PactLevels, PrestigeLevels, RunLevels } from './state';
 
 export interface LordStats {
@@ -14,6 +14,8 @@ export interface LordStats {
   thorns: number;
   /** Blood Lash damage as a share of max life; 0 without the Blood build. */
   lash: number;
+  /** Damage of the Shockwave, the basic attack that hits every hero. */
+  shockwave: number;
   /** Share of max HP healed per kill. */
   bloodPact: number;
   goldMult: number;
@@ -58,6 +60,7 @@ export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevel
   const aura = [auraBase * sanctum, auraBase * shadow, auraBase * shadow];
   const thornLvl = powerLevel('thorns', run, builds.thorns);
   const lashLvl = powerLevel('lash', run, builds.blood);
+  const waveLvl = run.shockwave + 1;
   let reach = -1;
   aura.forEach((d, i) => {
     if (d > 0) reach = i;
@@ -70,6 +73,7 @@ export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevel
     auraReach: reach,
     thorns: thornLvl > 0 ? 1.5 * grow(thornLvl, 0.3, 1.05) * milestoneMult(thornLvl) * malice * dreadMult('barbs', p.barbs) : 0,
     lash: lashLvl > 0 ? LASH_SHARE * grow(lashLvl, 0.3, 1.04) * milestoneMult(lashLvl) * malice * dreadMult('sanguine', p.sanguine) : 0,
+    shockwave: SHOCKWAVE_DAMAGE * grow(waveLvl, 0.3, 1.06) * milestoneMult(waveLvl) * malice * dreadMult('tremor', p.tremor),
     bloodPact: 0.02 * run.bloodPact,
     goldMult: dreadMult('tithe', p.tithe),
     xpMult: 1 + DREAD_HARVEST_PER_LEVEL * p.dreadHarvest,
