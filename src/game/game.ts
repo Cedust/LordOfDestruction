@@ -1,18 +1,11 @@
 import {
   BLACK_SUN_EVERY,
-  BLACK_SUN_SECONDS,
-  BLOOD_MOON_SHIELD,
   CHAMPION_AURA_REDUCTION,
   CHAMPION_EVERY,
   DESPAIR_BELOW,
-  DOOM_MAX,
   DOOM_PER_SECOND,
-  EXECUTE_BELOW,
-  FRENZY_MAX,
-  GRASP,
   HEROES,
   IRON_MAIDEN_BELOW,
-  IRON_MAIDEN_MULT,
   LASH_COST,
   LASH_INTERVAL,
   LORD_CHEST,
@@ -23,20 +16,17 @@ import {
   QUEUE_GAP,
   RANGES,
   RETALIATION_EVERY,
-  RETALIATION_MULT,
   RUN_UPGRADES,
   SCALE,
-  SHOCKWAVE_HITS,
-  SHOCKWAVE_REACH,
   SPAWN_DIST,
-  SPIKED_HIDE_MULT,
-  SPLINTER_SHARE,
   THORN_BURST_RADIUS,
-  THORN_BURST_SHARE,
-  TRANSFUSION_MULT,
   WAVE_PAUSE,
-  WITHERING,
+  EXTRA_BUILD_COST,
+  SIGIL_LEVELS,
   dreadForLevel,
+  pactLevelCost,
+  pactMaxLevel,
+  pactValue,
   levelForXp,
   xpForKill,
   heroCountForWave,
@@ -54,6 +44,8 @@ import {
 import { computeStats, powerLevel, type LordStats } from './stats';
 import { emptyPacts, emptyRunLevels, type RunState, type SaveData } from './state';
 import { fieldPos } from './config';
+
+const PACT_BY_ID = new Map(PACTS.map((p) => [p.id, p]));
 
 export interface Hero {
   id: number;
@@ -77,7 +69,7 @@ export interface Hero {
   lastHit: DamageSource;
 }
 
-export type DamageSource = 'aura' | 'thorns' | 'lash' | 'shockwave' | 'burst' | 'sun';
+export type DamageSource = 'aura' | 'thorns' | 'lash' | 'burst' | 'sun';
 
 export type Effect =
   | { type: 'text'; x: number; y: number; text: string; color: string; t: number; ttl: number }
@@ -125,6 +117,7 @@ export class Game {
   /** Experience and Dread from levels earned during the current wave; left out of saves like `waveGold`. */
   private waveXp = 0;
   private waveDread = 0;
+  private waveSigils = 0;
   private nextId = 1;
   private lashTimer = LASH_INTERVAL;
   private sunTimer = BLACK_SUN_EVERY;
@@ -167,6 +160,11 @@ export class Game {
 
   private pact(id: PactId): boolean {
     return this.save.pacts[id] > 0;
+  }
+
+  /** The pact's number at its current level, 0 while not owned. */
+  private pv(id: PactId): number {
+    return pactValue(PACT_BY_ID.get(id)!, this.save.pacts[id]);
   }
 
   // ---------------------------------------------------------------------------
@@ -241,11 +239,19 @@ export class Game {
   }
 
   isPactMaxed(id: PactId): boolean {
-    return this.save.pacts[id] > 0;
+    return this.save.pacts[id] >= pactMaxLevel(PACT_BY_ID.get(id)!);
   }
 
+  /** Start pacts owned right now. */
+  private startPactsOwned(): number {
+    return PACTS.filter((p) => p.tier === 1 && this.save.pacts[p.id] > 0).length;
+  }
+
+  /** Sigils for the pact's next level. A second or third start pact costs extra. */
   pactCost(id: PactId): number {
-    return PACTS.find((u) => u.id === id)!.cost;
+    const def = PACT_BY_ID.get(id)!;
+    if (def.tier === 1) return def.cost + EXTRA_BUILD_COST * this.startPactsOwned();
+    return pactLevelCost(def, this.save.pacts[id]);
   }
 
   buyPact(id: PactId): boolean {
@@ -273,7 +279,14 @@ export class Game {
 
   /** Sigils spent on pacts so far. */
   sigilsSpent(): number {
-    return PACTS.reduce((sum, def) => sum + def.cost * this.save.pacts[def.id], 0);
+    let sum = 0;
+    for (const def of PACTS) {
+      if (def.tier === 1) continue;
+      for (let l = 0; l < this.save.pacts[def.id]; l++) sum += pactLevelCost(def, l);
+    }
+    const starts = this.startPactsOwned();
+    for (let i = 0; i < starts; i++) sum += 1 + EXTRA_BUILD_COST * i;
+    return sum;
   }
 
   /** Give back every Sigil and clear the tree. Only between runs. */
@@ -295,6 +308,7 @@ export class Game {
     this.waveGold = 0;
     this.waveXp = 0;
     this.waveDread = 0;
+    this.waveSigils = 0;
     this.phase = 'pause';
     this.pauseTimer = 2.5;
     this.lastSummary = null;
@@ -341,6 +355,7 @@ export class Game {
       this.waveGold = 0;
       this.waveXp = 0;
       this.waveDread = 0;
+      this.waveSigils = 0;
       this.phase = 'pause';
       this.pauseTimer = WAVE_PAUSE;
       this.onPersist();
@@ -356,7 +371,7 @@ export class Game {
     }
     this.run.lordHp = this.stats.maxHp;
     if (this.pact('bloodMoon')) {
-      const cap = this.stats.maxHp * BLOOD_MOON_SHIELD;
+      const cap = this.stats.maxHp * this.pv('bloodMoon');
       this.run.shield = Math.min(cap, (this.run.shield ?? 0) + amount - room);
     }
   }
@@ -429,7 +444,7 @@ export class Game {
       if (h.slot < 0) continue; // waiting for a free spot
       h.attackTimer -= dt;
       if (h.attackTimer <= 0) {
-        const slowed = this.pact('grasp') && this.inAura(h) ? GRASP : 1;
+        const slowed = this.inAura(h) ? 1 + this.pv('grasp') : 1;
         h.attackTimer = def.attackInterval * slowed;
         this.heroHitsLord(h);
       }
@@ -447,7 +462,7 @@ export class Game {
 
   private heroHitsLord(h: Hero): void {
     const def = HEROES[h.kind];
-    const withered = this.pact('withering') && this.inAura(h) ? 1 - WITHERING : 1;
+    const withered = this.inAura(h) ? 1 - this.pv('withering') : 1;
     const raw = h.damage * withered;
     const blocked = raw * this.stats.armor;
     let taken = raw - blocked;
@@ -467,19 +482,14 @@ export class Game {
     this.effects.push({ type: 'text', x: LORD_X + (this.rng() - 0.5) * 30, y: LORD_Y - LORD_CHEST - 20, text: '-' + fmt(taken), color: '#ff7a6b', t: 0, ttl: 0.8 });
 
     if (this.stats.thorns > 0) this.throwBack(h, raw, blocked);
-    if (this.stats.shockwaveDamage > 0 && this.run.hitsTaken % SHOCKWAVE_HITS === 0) {
-      const edge = RANGES[SHOCKWAVE_REACH].edge;
-      this.effects.push({ type: 'ring', x: LORD_X, y: LORD_Y, r: edge, color: '#b06bff', t: 0, ttl: 0.6 });
-      for (const other of this.heroes) if (other.dist <= edge) this.damageHero(other, this.stats.shockwaveDamage, '#d7b0ff', 'shockwave');
-    }
   }
 
   /** Thorns: the attacker takes part of its own hit back. */
   private throwBack(h: Hero, raw: number, blocked: number): void {
     let amount = raw * this.stats.thorns;
-    if (this.pact('spikedHide')) amount += blocked * SPIKED_HIDE_MULT * this.stats.thorns;
-    if (this.pact('retaliation') && this.run.hitsTaken % RETALIATION_EVERY === 0) amount *= RETALIATION_MULT;
-    if (this.pact('ironMaiden') && this.run.lordHp < this.stats.maxHp * IRON_MAIDEN_BELOW) amount *= IRON_MAIDEN_MULT;
+    if (this.pact('spikedHide')) amount += blocked * this.pv('spikedHide') * this.stats.thorns;
+    if (this.pact('retaliation') && this.run.hitsTaken % RETALIATION_EVERY === 0) amount *= this.pv('retaliation');
+    if (this.pact('ironMaiden') && this.run.lordHp < this.stats.maxHp * IRON_MAIDEN_BELOW) amount *= this.pv('ironMaiden');
     const p = heroPos(h);
     this.damageHero(h, amount, '#ff9b4a', 'thorns');
     this.effects.push({ type: 'thorn', x: p.x, y: p.y, t: 0, ttl: 0.35 });
@@ -488,7 +498,7 @@ export class Game {
       if (next) {
         const q = heroPos(next);
         this.effects.push({ type: 'arrow', x1: p.x, y1: p.y - 10, x2: q.x, y2: q.y - 10, color: '#ffb27a', t: 0, ttl: 0.2 });
-        this.damageHero(next, amount * SPLINTER_SHARE, '#ffb27a', 'thorns');
+        this.damageHero(next, amount * this.pv('splinter'), '#ffb27a', 'thorns');
       }
     }
   }
@@ -521,8 +531,8 @@ export class Game {
     if (r < 0) return 0;
     let dps = this.stats.auraDps[r];
     if (h.kind === 'champion') dps *= CHAMPION_AURA_REDUCTION;
-    if (this.pact('doom')) dps *= Math.min(DOOM_MAX, 1 + DOOM_PER_SECOND * h.auraTime);
-    if (this.pact('despair') && h.hp < h.maxHp * DESPAIR_BELOW) dps *= 2;
+    if (this.pact('doom')) dps *= Math.min(this.pv('doom'), 1 + DOOM_PER_SECOND * h.auraTime);
+    if (this.pact('despair') && h.hp < h.maxHp * DESPAIR_BELOW) dps *= this.pv('despair');
     return dps;
   }
 
@@ -541,13 +551,13 @@ export class Game {
     if (this.sunTimer > 0) return;
     this.sunTimer = BLACK_SUN_EVERY;
     this.effects.push({ type: 'ring', x: LORD_X, y: LORD_Y, r: RANGES[this.stats.auraReach].edge, color: '#7a3cff', t: 0, ttl: 0.7 });
-    for (const h of this.heroes) if (this.inAura(h)) this.damageHero(h, this.auraDpsOn(h) * BLACK_SUN_SECONDS, '#c9a0ff', 'sun');
+    for (const h of this.heroes) if (this.inAura(h)) this.damageHero(h, this.auraDpsOn(h) * this.pv('blackSun'), '#c9a0ff', 'sun');
   }
 
   /** Blood Lash: strike the weakest hero on the field, paid with life. */
   private bloodLash(dt: number): void {
     if (this.stats.lash <= 0) return;
-    const speed = this.pact('frenzy') ? 1 + (FRENZY_MAX - 1) * (1 - this.run.lordHp / this.stats.maxHp) : 1;
+    const speed = this.pact('frenzy') ? 1 + (this.pv('frenzy') - 1) * (1 - this.run.lordHp / this.stats.maxHp) : 1;
     this.lashTimer -= dt * speed;
     if (this.lashTimer > 0) return;
     const target = this.weakest();
@@ -561,13 +571,14 @@ export class Game {
     while (h && damage > 0) {
       const p = heroPos(h);
       this.effects.push({ type: 'arrow', x1: from.x, y1: from.y, x2: p.x, y2: p.y - 14, color: '#d8243f', t: 0, ttl: 0.3 });
-      const execute = this.pact('execute') && h.hp < h.maxHp * EXECUTE_BELOW;
+      const execute = this.pact('execute') && h.hp < h.maxHp * this.pv('execute');
       const before = h.hp;
       this.damageHero(h, execute ? h.hp : damage, execute ? '#ff4060' : '#ff6b81', 'lash');
       if (h.hp > 0) break;
-      if (this.pact('transfusion')) this.heal(cost * TRANSFUSION_MULT);
+      if (this.pact('transfusion')) this.heal(cost * this.pv('transfusion'));
       if (!this.pact('chain')) break;
       damage -= execute ? 0 : Math.min(damage, before);
+      damage *= this.pv('chain');
       from = { x: p.x, y: p.y - 14 };
       h = this.weakest();
     }
@@ -622,7 +633,7 @@ export class Game {
       this.effects.push({ type: 'ring', x: p.x, y: p.y, r: THORN_BURST_RADIUS, color: '#ff9b4a', t: 0, ttl: 0.45 });
       for (const o of this.heroes) {
         const q = heroPos(o);
-        if (Math.hypot(q.x - p.x, q.y - p.y) <= THORN_BURST_RADIUS) this.damageHero(o, h.maxHp * THORN_BURST_SHARE, '#ffb27a', 'thorns');
+        if (Math.hypot(q.x - p.x, q.y - p.y) <= THORN_BURST_RADIUS) this.damageHero(o, h.maxHp * this.pv('thornBurst'), '#ffb27a', 'thorns');
       }
     }
   }
@@ -655,6 +666,11 @@ export class Game {
       this.save.dread += dread;
       this.waveDread += dread;
       this.run.dreadGained = (this.run.dreadGained ?? 0) + dread;
+      if (l % SIGIL_LEVELS === 0) {
+        this.save.sigils++;
+        this.waveSigils++;
+        this.run.levelSigils = (this.run.levelSigils ?? 0) + 1;
+      }
     }
     if (after > before) {
       this.effects.push({ type: 'text', x: LORD_X, y: LORD_Y - LORD_CHEST - 70, text: `Level ${after}!`, color: '#c78bff', t: 0, ttl: 2 });
@@ -684,11 +700,13 @@ export class Game {
     else this.heroes = [];
     this.waveXp = 0;
     this.waveDread = 0;
+    this.waveSigils = 0;
     const wave = this.run.wave;
     const newBest = wave > this.save.bestWave;
-    const sigils = sigilsForRecord(this.save.bestWave, wave);
+    const recordSigils = sigilsForRecord(this.save.bestWave, wave);
+    const sigils = recordSigils + (this.run.levelSigils ?? 0);
     this.save.bestWave = Math.max(this.save.bestWave, wave);
-    this.save.sigils += sigils;
+    this.save.sigils += recordSigils;
     this.save.runs++;
     this.save.run = null;
     const levels = this.level() - (this.run.startLevel ?? this.level());
@@ -698,13 +716,19 @@ export class Game {
 
   /** The save to write: like the run, it rewinds to the start of the current wave. */
   snapshotSave(): SaveData {
-    return { ...this.save, xp: this.save.xp - this.waveXp, dread: this.save.dread - this.waveDread, run: this.snapshotRun() };
+    return {
+      ...this.save,
+      xp: this.save.xp - this.waveXp,
+      dread: this.save.dread - this.waveDread,
+      sigils: this.save.sigils - this.waveSigils,
+      run: this.snapshotRun(),
+    };
   }
 
   /** Snapshot of the run for saving: resumes at the start of the current wave. */
   snapshotRun(): RunState | null {
     if (this.phase === 'fallen') return null;
-    return { ...this.run, gold: this.savedGold(), levels: { ...this.run.levels }, dreadGained: (this.run.dreadGained ?? 0) - this.waveDread };
+    return { ...this.run, gold: this.savedGold(), levels: { ...this.run.levels }, dreadGained: (this.run.dreadGained ?? 0) - this.waveDread, levelSigils: (this.run.levelSigils ?? 0) - this.waveSigils };
   }
 }
 

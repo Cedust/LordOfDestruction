@@ -1,6 +1,6 @@
-import { BUILDS, HEROES, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SHOCKWAVE_HITS, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
+import { BUILDS, HEROES, MILESTONE_EVERY, MILESTONE_MULT, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_LEVELS, SIGIL_WAVES, type PrestigeId, type RunUpgradeId } from './game/config';
 import { fmt, type Game } from './game/game';
-import { computeStats, type LordStats } from './game/stats';
+import { computeStats, dreadMult, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
 import { SIGIL, SkillTree, pactIconUrl } from './tree';
 
@@ -32,8 +32,6 @@ function statText(id: RunUpgradeId, s: LordStats): string {
       return `${Math.round(s.thorns * 100)}% of Each Hit`;
     case 'lash':
       return `${fmt(s.maxHp * s.lash)} Dmg per Lash`;
-    case 'shockwave':
-      return s.shockwaveDamage > 0 ? `${fmt(s.shockwaveDamage)} Dmg Every ${SHOCKWAVE_HITS} Hits` : 'None';
     case 'bloodPact':
       return s.bloodPact > 0 ? `${Math.round(s.bloodPact * 100)}% per Kill` : 'None';
   }
@@ -41,22 +39,21 @@ function statText(id: RunUpgradeId, s: LordStats): string {
 
 /** What a Dread upgrade gives at a level, in plain numbers. */
 function dreadText(id: PrestigeId, lvl: number): string {
-  const pct = (n: number) => `+${Math.round(n * 100)}%`;
+  const pct = (n: number) => `+${fmt(Math.round(n * 100))}%`;
+  const m = dreadMult(id, lvl) - 1;
   switch (id) {
     case 'blackHeart':
-      return `${pct(0.25 * lvl)} Life and Regeneration`;
+      return `${pct(m)} Life and Regeneration`;
     case 'malice':
-      return `${pct(0.15 * lvl)} All Damage`;
+      return `${pct(m)} All Damage`;
     case 'gloom':
-      return `${pct(0.4 * lvl)} Aura Damage`;
+      return `${pct(m)} Aura Damage`;
     case 'barbs':
-      return `${pct(0.4 * lvl)} Thorns Damage`;
+      return `${pct(m)} Thorns Damage`;
     case 'sanguine':
-      return `${pct(0.4 * lvl)} Lash Damage`;
-    case 'tremor':
-      return `${pct(0.4 * lvl)} Shockwave Damage`;
+      return `${pct(m)} Lash Damage`;
     case 'tithe':
-      return `${pct(0.2 * lvl)} Gold`;
+      return `${pct(m)} Gold`;
     case 'avarice':
       return `−${Math.round(5 * lvl)}% Power Cost`;
     case 'dreadHarvest':
@@ -231,7 +228,11 @@ export class UI {
       const cost = g.runUpgradeCost(def.id);
       const next = computeStats({ ...g.run.levels, [def.id]: level + 1 }, g.save.prestige, g.save.pacts);
       btn.querySelector('.lvl')!.textContent = `Lv ${g.runUpgradeLevel(def.id)}`;
-      btn.querySelector('.stat')!.textContent = maxed ? statText(def.id, s) + ' (Max)' : `${statText(def.id, s)} → ${statText(def.id, next)}`;
+      const shown = g.runUpgradeLevel(def.id);
+      const milestone = def.maxLevel === undefined ? ` · ×${MILESTONE_MULT} at Lv ${(Math.floor(shown / MILESTONE_EVERY) + 1) * MILESTONE_EVERY}` : '';
+      btn.querySelector('.stat')!.textContent = maxed
+        ? statText(def.id, s) + ' (Max)'
+        : `${statText(def.id, s)} → ${statText(def.id, next)}${milestone}`;
       btn.querySelector('.cost')!.textContent = maxed ? 'MAX' : `${fmt(cost)}g`;
       btn.disabled = maxed || g.run.gold < cost || g.phase === 'fallen';
     }
@@ -254,7 +255,8 @@ export class UI {
       b.textContent = spent > 0 ? `Reset Pacts (+${spent} ${SIGIL})` : 'Reset Pacts';
     });
     const nextRecord = (Math.floor(g.save.bestWave / SIGIL_WAVES) + 1) * SIGIL_WAVES;
-    const sigilHint = `${g.save.sigils} ${SIGIL} Sigils · Next at Wave ${nextRecord}`;
+    const nextLevel = (Math.floor(g.level() / SIGIL_LEVELS) + 1) * SIGIL_LEVELS;
+    const sigilHint = `${g.save.sigils} ${SIGIL} Sigils · Next at Wave ${nextRecord} or Level ${nextLevel}`;
     $('#fallen-sigil-hint').textContent = sigilHint;
 
     $('#choose').hidden = !(g.phase === 'pause' && !g.hasBuild());
