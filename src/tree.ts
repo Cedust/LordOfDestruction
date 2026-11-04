@@ -1,4 +1,4 @@
-import { BUILDS, PACTS, type BuildId, type PactDef, type PactId } from './game/config';
+import { BUILDS, PACTS, pactEffect, pactMaxLevel, type BuildId, type PactDef, type PactId } from './game/config';
 import type { Game } from './game/game';
 import { assetUrl } from './assets';
 
@@ -118,28 +118,38 @@ export class SkillTree {
     for (const [id, page] of this.pages) page.hidden = id !== this.branch;
     for (const def of PACTS) {
       const btn = this.nodes.get(def.id)!;
-      const owned = g.save.pacts[def.id] > 0;
+      const level = g.save.pacts[def.id];
+      const owned = level > 0;
+      const maxed = g.isPactMaxed(def.id);
       const locked = g.isPactLocked(def.id);
+      const max = pactMaxLevel(def);
       btn.classList.toggle('owned', owned);
       btn.classList.toggle('locked', locked);
-      btn.classList.toggle('ready', !locked && !owned && g.canSpend() && g.save.sigils >= g.pactCost(def.id));
+      btn.classList.toggle('ready', !locked && !maxed && g.canSpend() && g.save.sigils >= g.pactCost(def.id));
       btn.classList.toggle('selected', def.id === this.selected);
-      btn.querySelector('.node-lvl')!.textContent = owned ? 'Owned' : locked ? 'Locked' : sigilText(def.cost);
+      btn.querySelector('.node-lvl')!.textContent = maxed
+        ? max > 1 ? `Lv ${level}/${max}` : 'Owned'
+        : locked ? 'Locked' : owned ? `Lv ${level}/${max}` : sigilText(g.pactCost(def.id));
     }
 
     const def = BY_ID.get(this.selected)!;
-    const owned = g.save.pacts[def.id] > 0;
+    const level = g.save.pacts[def.id];
+    const owned = level > 0;
+    const maxed = g.isPactMaxed(def.id);
+    const max = pactMaxLevel(def);
     const locked = g.isPactLocked(def.id);
+    const cost = g.pactCost(def.id);
     const branch = BUILDS.find((b) => b.id === def.branch)!;
     this.detail.style.setProperty('--branch', branch.color);
     this.detail.querySelector('.detail-badge')!.innerHTML = badgeHtml(def);
     this.detail.querySelector('.detail-name')!.textContent = def.name;
-    this.detail.querySelector('.lvl')!.textContent = owned ? 'Owned' : '';
+    this.detail.querySelector('.lvl')!.textContent = max > 1 ? `Lv ${level}/${max}` : owned ? 'Owned' : '';
     this.detail.querySelector('.desc')!.textContent = def.desc;
-    this.detail.querySelector('.stat')!.textContent = def.effect;
+    this.detail.querySelector('.stat')!.textContent =
+      max > 1 && owned && !maxed ? `${pactEffect(def, level)} → ${pactEffect(def, level + 1)}` : pactEffect(def, level);
     const names = (def.requires ?? []).map((r) => BY_ID.get(r)!.name);
     this.detail.querySelector('.req')!.textContent = locked ? `Requires ${names.join(' or ')}` : '';
-    this.buy.textContent = owned ? 'Owned' : sigilText(def.cost);
-    this.buy.disabled = owned || locked || g.save.sigils < def.cost || !g.canSpend();
+    this.buy.textContent = maxed ? (max > 1 ? 'MAX' : 'Owned') : sigilText(cost);
+    this.buy.disabled = maxed || locked || g.save.sigils < cost || !g.canSpend();
   }
 }

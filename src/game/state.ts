@@ -1,4 +1,4 @@
-import { PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_WAVES, START_SIGILS, type PactId, type PrestigeId, type RunUpgradeId } from './config';
+import { PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_LEVELS, SIGIL_WAVES, START_SIGILS, levelForXp, type PactId, type PrestigeId, type RunUpgradeId } from './config';
 
 export type RunLevels = Record<RunUpgradeId, number>;
 export type PrestigeLevels = Record<PrestigeId, number>;
@@ -15,6 +15,8 @@ export interface RunState {
   /** Lord level when the run began, and Dread points gained since, for the run summary. */
   startLevel?: number;
   dreadGained?: number;
+  /** Sigils earned from Lord levels during this run, for the run summary. */
+  levelSigils?: number;
 }
 
 export interface SaveData {
@@ -54,7 +56,7 @@ export function newSave(): SaveData {
 }
 
 /** Bumped whenever the pact tree changes; older trees are refunded in Sigils. */
-export const TREE_VERSION = 2;
+export const TREE_VERSION = 3;
 
 /** Dread that saves from before the skill tree spent on what are now pacts. */
 const OLD_DREAD_UNLOCKS: Record<string, number> = { wrath: 8, corpseBurst: 12 };
@@ -90,7 +92,8 @@ export function loadSave(): SaveData {
     if (data.treeVersion !== TREE_VERSION) {
       // Older or no tree: start the new tree fresh with every Sigil the record has earned.
       data.pacts = emptyPacts();
-      data.sigils = START_SIGILS + Math.floor((data.bestWave ?? 0) / SIGIL_WAVES);
+      data.sigils =
+        START_SIGILS + Math.floor((data.bestWave ?? 0) / SIGIL_WAVES) + Math.floor(levelForXp(data.xp ?? 0).level / SIGIL_LEVELS);
       data.treeVersion = TREE_VERSION;
       data.run = null;
     }
