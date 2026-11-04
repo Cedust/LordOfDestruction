@@ -6360,6 +6360,12 @@
           "status": "review",
           "by": "claude",
           "note": "sheet sliced into icons, technical and visual checks passed"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "review",
+          "by": "claude",
+          "note": "replaced by Timo's single regenerated icon"
         }
       ],
       "generations": [
@@ -6380,6 +6386,26 @@
             "visual": {
               "passed": true,
               "note": "12 separate items per sheet, order and items match, same style and angle, no text, no badge, transparent outside the items"
+            }
+          }
+        },
+        {
+          "datetime": "2026-11-04T20:22:36Z",
+          "revision": 1,
+          "source": "timo upload in project thread (single icon, replaces sheet A cell 2,2)",
+          "attempts": 1,
+          "result": "passed",
+          "status_after": "review",
+          "error": null,
+          "rejected_candidates": [],
+          "validation": {
+            "technical": {
+              "passed": true,
+              "note": "padded to square, resized to 256x256, validate_asset.py passed"
+            },
+            "visual": {
+              "passed": true,
+              "note": "tombstone-shaped shoulder plates, same style as the set, transparent outside"
             }
           }
         }
