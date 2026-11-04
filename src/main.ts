@@ -13,10 +13,8 @@ function persist(): void {
 game.onPersist = persist;
 
 const renderer = new Renderer(document.querySelector<HTMLCanvasElement>('#battle')!);
-const SPEEDS = [1, 2, 3];
-const ui = new UI(game, () => {
-  const i = SPEEDS.indexOf(game.save.speed);
-  game.save.speed = SPEEDS[(i + 1) % SPEEDS.length];
+const ui = new UI(game, (speed) => {
+  game.save.speed = speed;
   persist();
 });
 

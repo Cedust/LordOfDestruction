@@ -71,7 +71,7 @@ export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevel
   return {
     maxHp: 100 * (1 + 0.22 * run.vitality) * Math.pow(1.05, run.vitality) * milestoneMult(run.vitality) * life,
     armor: 0.6 * (1 - Math.pow(0.95, run.hide)),
-    regen: (1 + 0.8 * run.regen) * Math.pow(1.05, run.regen) * milestoneMult(run.regen) * heart * gearMult(gear, 'regen'),
+    regen: (run.regen > 0 ? 1 + 0.8 * run.regen : 0) * Math.pow(1.05, run.regen) * milestoneMult(run.regen) * heart * gearMult(gear, 'regen'),
     auraDps: aura,
     auraReach: reach,
     thorns: thornLvl > 0 ? 1.5 * grow(thornLvl, 0.3, 1.05) * milestoneMult(thornLvl) * malice * dreadMult('barbs', p.barbs) * setMult(gear, 'thorns') : 0,

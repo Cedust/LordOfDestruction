@@ -6,11 +6,11 @@ import { assetUrl } from './assets';
 // placeholder shapes any more.
 // Background framing (world units). BG_SCALE zooms throne-room.png, BG_SHIFT_X moves
 // it sideways; LORD_FEET_DY is where the Lord's feet sit relative to LORD_Y.
-const BG_SCALE = 0.32;
+const BG_SCALE = 0;
 const BG_SHIFT_X = 0;
 const LORD_FEET_DY = 0;
-/** Outline of the raised dais in throne-room.png pixels (top surface plus steps). */
-const DAIS_PX: [number, number][] = [[0, 495], [598, 495], [600, 540], [487, 752], [0, 752]];
+/** Outline of a raised dais in throne-room.png pixels; the current hall has a flat floor, so none. */
+const DAIS_PX: [number, number][] = [];
 
 const IMAGE_PATHS = {
   lord: 'characters/lord',
@@ -82,8 +82,7 @@ export class Renderer {
     const ctx = this.ctx;
     const bg = images['throne-room'];
     if (bg) {
-      // Anchored to the top and zoomed slightly so the raised platform on the left
-      // of throne-room.png sits right under the Lord's feet.
+      // The whole hall fills the battle (both are 3:2), anchored to the top.
       const s = Math.max(WORLD_W / bg.width, WORLD_H / bg.height, BG_SCALE);
       const w = bg.width * s;
       const h = bg.height * s;
@@ -104,7 +103,7 @@ export class Renderer {
     const bg = images['throne-room'];
     ctx.beginPath();
     ctx.rect(0, FLOOR_Y, WORLD_W, WORLD_H - FLOOR_Y);
-    if (!bg) {
+    if (!bg || DAIS_PX.length === 0) {
       ctx.clip();
       return;
     }
