@@ -19,10 +19,18 @@ const PLACEHOLDER: Record<SlotId, string> = {
   gloves: 'ironcladFists', sword: 'ironGreatsword', amulet: 'goldLocket', ring1: 'ironBand', ring2: 'onyxRing', charm: 'luckyCoin',
 };
 
-/** Empty slot: a dark silhouette of a piece that fits there, else the slot's name. */
+/** Empty slot: its outline icon (assets/ui/slots/), else a dimmed piece that fits there, else the slot's name. */
 function slotPlaceholder(id: SlotId, name: string): string {
+  const outline = assetUrl(`ui/slots/${id === 'ring1' || id === 'ring2' ? 'ring' : id}`);
+  if (outline) return `<img class="gear-icon outline" alt="${name}" src="${outline}">`;
   const url = assetUrl(`equipment/${PLACEHOLDER[id]}`);
   return url ? `<img class="gear-icon ghost" alt="${name}" src="${url}">` : name;
+}
+
+/** Icon for a piece not forged yet: the outline bundle, else a question mark. */
+function unknownIcon(): string {
+  const url = assetUrl('ui/slots/unknown');
+  return url ? `<img class="gear-icon outline" alt="" src="${url}">` : itemIcon(undefined, '?');
 }
 
 /**
@@ -114,7 +122,7 @@ export class GearPanel {
       const bonus = `+${fmt(Math.round(BONUS_PER_LEVEL[item.bonus] * Math.max(1, level) * 100))}% ${BONUS_NAMES[item.bonus]}`;
       row.innerHTML = level
         ? `${itemIcon(item, '')}<span class="dt"><span class="cn">${item.name}</span><span class="cl">${bonus} · Lv ${level}</span></span><span class="tag ${worn ? '' : 'wear'}">${worn ? 'Worn' : 'Wear'}</span>`
-        : `${itemIcon(undefined, '?')}<span class="dt"><span class="cn">Unknown</span><span class="cl">Not Forged Yet</span></span>`;
+        : `${unknownIcon()}<span class="dt"><span class="cn">Unknown</span><span class="cl">Not Forged Yet</span></span>`;
       row.addEventListener('click', () => {
         if (this.game.equip(item.id)) this.onChange();
       });
