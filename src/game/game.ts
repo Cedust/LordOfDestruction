@@ -100,6 +100,8 @@ export interface RunSummary {
   dread: number;
   /** Sigils earned for a new record. */
   sigils: number;
+  /** Spoils from Champions during the run. */
+  spoils: number;
   bestWave: number;
   newBest: boolean;
 }
@@ -124,6 +126,8 @@ export class Game {
   lordHurt = 99;
   time = 0;
   lastSummary: RunSummary | null = null;
+  /** Heroes the current wave started with, for the wave progress bar. */
+  waveTotal = 0;
   /** Gold earned during the current wave; not saved, so a reload replays the wave fairly. */
   private waveGold = 0;
   /** Experience and Dread from levels earned during the current wave; left out of saves like `waveGold`. */
@@ -203,6 +207,29 @@ export class Game {
   isRunUpgradeMaxed(id: RunUpgradeId): boolean {
     const def = RUN_UPGRADES.find((u) => u.id === id)!;
     return def.maxLevel !== undefined && this.run.levels[id] >= def.maxLevel;
+  }
+
+  /** How many levels a buy of up to `max` levels gets (at least 1 shown, even when unaffordable) and what it costs. */
+  runUpgradeBulk(id: RunUpgradeId, max: number): { count: number; cost: number } {
+    const def = RUN_UPGRADES.find((u) => u.id === id)!;
+    const start = this.run.levels[id];
+    const cap = def.maxLevel === undefined ? Infinity : def.maxLevel - start;
+    let count = 0;
+    let cost = 0;
+    while (count < max && count < cap) {
+      const next = Math.ceil(runUpgradeCost(def, start + count) * this.stats.costMult);
+      if (count > 0 && cost + next > this.run.gold) break;
+      cost += next;
+      count++;
+    }
+    return { count, cost };
+  }
+
+  /** Buy up to `max` levels at once; returns how many were bought. */
+  buyRunUpgradeBulk(id: RunUpgradeId, max: number): number {
+    let n = 0;
+    while (n < max && this.buyRunUpgrade(id)) n++;
+    return n;
   }
 
   buyRunUpgrade(id: RunUpgradeId): boolean {
@@ -415,7 +442,6 @@ export class Game {
       this.waveXp = 0;
       this.waveDread = 0;
       this.waveSigils = 0;
-    this.waveSpoils = 0;
       this.waveSpoils = 0;
       this.phase = 'pause';
       this.pauseTimer = WAVE_PAUSE;
@@ -487,6 +513,7 @@ export class Game {
       });
     });
     this.stacks = { aura: 0, thorns: 0, lash: 0 };
+    this.waveTotal = this.heroes.length;
     this.phase = 'fighting';
   }
 
@@ -777,6 +804,7 @@ export class Game {
       const spoils = Math.round(spoilsForChampion(this.run.wave) * this.stats.spoilsMult);
       this.save.gear.spoils += spoils;
       this.waveSpoils += spoils;
+      this.run.spoilsGained = (this.run.spoilsGained ?? 0) + spoils;
       this.effects.push({ type: 'text', x: p.x, y: p.y - 30, text: `+${spoils} Spoils`, color: '#e8c07a', t: 0, ttl: 1.6 });
       this.effects.push({ type: 'text', x: LORD_X + 20, y: LORD_Y - LORD_CHEST - 50, text: 'Champion Slain!', color: '#ffd166', t: 0, ttl: 1.8 });
     }
@@ -871,7 +899,7 @@ export class Game {
     this.save.runs++;
     this.save.run = null;
     const levels = this.level() - (this.run.startLevel ?? this.level());
-    this.lastSummary = { wave, manual, levels, dread: this.run.dreadGained ?? 0, sigils, bestWave: this.save.bestWave, newBest };
+    this.lastSummary = { wave, manual, levels, dread: this.run.dreadGained ?? 0, sigils, spoils: this.run.spoilsGained ?? 0, bestWave: this.save.bestWave, newBest };
     this.onPersist();
   }
 
@@ -890,7 +918,7 @@ export class Game {
   /** Snapshot of the run for saving: resumes at the start of the current wave. */
   snapshotRun(): RunState | null {
     if (this.phase === 'fallen') return null;
-    return { ...this.run, gold: this.savedGold(), levels: { ...this.run.levels }, dreadGained: (this.run.dreadGained ?? 0) - this.waveDread, levelSigils: (this.run.levelSigils ?? 0) - this.waveSigils };
+    return { ...this.run, gold: this.savedGold(), levels: { ...this.run.levels }, dreadGained: (this.run.dreadGained ?? 0) - this.waveDread, levelSigils: (this.run.levelSigils ?? 0) - this.waveSigils, spoilsGained: (this.run.spoilsGained ?? 0) - this.waveSpoils };
   }
 }
 

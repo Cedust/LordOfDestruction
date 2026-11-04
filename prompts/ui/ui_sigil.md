@@ -4,7 +4,7 @@ name: Sigil Icon
 category: ui
 type: ui_icon
 batch: 15-ui-icons
-status: ready
+status: review
 revision: 1
 output: assets/ui/sigil.png
 format: png

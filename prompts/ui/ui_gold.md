@@ -4,7 +4,7 @@ name: Gold Icon
 category: ui
 type: ui_icon
 batch: 15-ui-icons
-status: ready
+status: review
 revision: 1
 output: assets/ui/gold.png
 format: png

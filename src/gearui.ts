@@ -14,55 +14,58 @@ function setColor(item: ItemDef): string {
 }
 
 /**
- * The Gear tab: a paperdoll with twelve slots around the Lord, the pieces of the selected
- * slot to wear, and the forge that turns Spoils into a random piece.
+ * Where each slot sits on the doll (row / column / row end / column end), laid out like
+ * the body: shoulders, helm and amulet on top; gloves, chest and cloak; the rings; belt
+ * and boots at the bottom; sword and charm as tall weapon slots on either side.
+ */
+const AREAS: Record<SlotId, string> = {
+  shoulders: '1/1/2/2', helm: '1/2/2/3', amulet: '1/3/2/4',
+  gloves: '2/1/3/2', chest: '2/2/4/3', cloak: '2/3/3/4',
+  ring1: '3/1/4/2', ring2: '3/3/4/4',
+  sword: '4/1/6/2', belt: '4/2/5/3', charm: '4/3/6/4',
+  boots: '5/2/6/3',
+};
+
+/**
+ * The Gear tab: the slots laid out like a body, the pieces of the selected slot to wear,
+ * the set progress, and the forge button in the panel header.
  */
 export class GearPanel {
   private selected: SlotId = 'helm';
   private slotButtons = new Map<SlotId, HTMLButtonElement>();
   private pieces: HTMLElement;
-  private forgeBtn: HTMLButtonElement;
+  private slotName: HTMLElement;
+  private sets: HTMLElement;
   private result: HTMLElement;
   private last = '';
-  private sets: HTMLElement;
 
-  constructor(private game: Game, root: HTMLElement, private onChange: () => void) {
+  constructor(private game: Game, root: HTMLElement, private forgeBtn: HTMLButtonElement, private spoilsEl: HTMLElement, private onChange: () => void) {
+    const wrap = document.createElement('div');
+    wrap.className = 'gearwrap';
     const doll = document.createElement('div');
-    doll.className = 'paperdoll';
-    const left = document.createElement('div');
-    left.className = 'doll-col';
-    const right = document.createElement('div');
-    right.className = 'doll-col';
-    const lord = document.createElement('div');
-    lord.className = 'doll-lord';
-    const lordUrl = assetUrl('characters/lord');
-    lord.innerHTML = lordUrl ? `<img alt="" src="${lordUrl}">` : '';
-    SLOTS.forEach((slot, i) => {
+    doll.className = 'd3';
+    for (const slot of SLOTS) {
       const btn = document.createElement('button');
-      btn.className = 'doll-slot';
+      btn.className = 'dslot';
+      btn.style.gridArea = AREAS[slot.id];
+      btn.setAttribute('aria-label', slot.name);
       btn.addEventListener('click', () => {
         this.selected = slot.id;
         this.update();
       });
-      (i < 6 ? left : right).appendChild(btn);
+      doll.appendChild(btn);
       this.slotButtons.set(slot.id, btn);
-    });
-    doll.append(left, lord, right);
-    root.appendChild(doll);
+    }
+    const side = document.createElement('div');
+    side.className = 'gside';
+    side.innerHTML = `<div class="sub-h slot-name"></div><div class="plist"></div><div class="forge-result"></div><div class="sub-h">Sets</div><div class="sets"></div>`;
+    wrap.append(doll, side);
+    root.appendChild(wrap);
+    this.slotName = side.querySelector('.slot-name')!;
+    this.pieces = side.querySelector('.plist')!;
+    this.result = side.querySelector('.forge-result')!;
+    this.sets = side.querySelector('.sets')!;
 
-    this.sets = document.createElement('div');
-    this.sets.className = 'gear-sets';
-    root.appendChild(this.sets);
-
-    this.pieces = document.createElement('div');
-    this.pieces.className = 'list compact';
-    root.appendChild(this.pieces);
-
-    const forge = document.createElement('div');
-    forge.className = 'forge';
-    forge.innerHTML = `<div class="info"><span class="name">The Forge</span><span class="desc">Spend Spoils from Champions on a Random Piece. A Piece You Already Own Grows Stronger.</span><span class="stat forge-result"></span></div>`;
-    this.forgeBtn = document.createElement('button');
-    this.forgeBtn.className = 'buy';
     this.forgeBtn.addEventListener('click', () => {
       const r = this.game.forge();
       if (!r) return;
@@ -70,9 +73,6 @@ export class GearPanel {
       this.last = r.isNew ? `New: ${r.item.name}` : `${r.item.name} Reaches Lv ${r.level}`;
       this.onChange();
     });
-    forge.appendChild(this.forgeBtn);
-    this.result = forge.querySelector('.forge-result')!;
-    root.appendChild(forge);
   }
 
   update(): void {
@@ -83,42 +83,52 @@ export class GearPanel {
       btn.classList.toggle('selected', slot.id === this.selected);
       btn.classList.toggle('empty', !worn);
       btn.style.setProperty('--set', worn?.set ? setColor(worn) : 'var(--line)');
-      btn.innerHTML = `${itemIcon(worn, '')}<span class="doll-name">${worn ? `${worn.name}` : slot.name}</span><span class="doll-lvl">${worn ? `Lv ${gear.owned[worn.id]}` : ''}</span>`;
+      btn.innerHTML = worn ? `${itemIcon(worn, '')}<span class="lv">${gear.owned[worn.id]}</span>` : slot.name;
     }
-
-    this.sets.innerHTML = SETS.map((set) => {
-      const n = setPieces(gear, set.build);
-      const color = BUILDS.find((b) => b.id === set.build)!.color;
-      const bonus = n >= 4 ? `×${SET_BONUS_4}` : n >= 2 ? `×${SET_BONUS_2}` : '—';
-      return `<span class="gear-set" style="--set:${color}">${set.name} ${n}/4 · ${bonus}</span>`;
-    }).join('');
 
     const slot = SLOTS.find((s) => s.id === this.selected)!;
     const items = ITEMS.filter((i) => i.slot === this.selected);
+    const found = items.filter((i) => gear.owned[i.id]).length;
+    this.slotName.textContent = `${slot.name} · ${found}/${items.length} Found`;
     this.pieces.innerHTML = '';
     for (const item of items) {
       const level = gear.owned[item.id] ?? 0;
       const worn = gear.equipped[slot.id] === item.id;
       const row = document.createElement('button');
-      row.className = 'upgrade gear-piece';
+      row.className = 'prow2';
       row.disabled = level === 0 || worn;
-      row.classList.toggle('worn', worn);
+      row.classList.toggle('unk', level === 0);
       row.style.setProperty('--set', level && item.set ? setColor(item) : 'var(--line)');
-      const set = item.set ? SETS.find((s) => s.build === item.set)! : undefined;
       const bonus = `+${fmt(Math.round(BONUS_PER_LEVEL[item.bonus] * Math.max(1, level) * 100))}% ${BONUS_NAMES[item.bonus]}`;
       row.innerHTML = level
-        ? `${itemIcon(item, '')}<span class="info"><span class="name">${item.name} <span class="lvl">Lv ${level}</span></span><span class="stat">${bonus}${set ? ` · ${set.name}` : ''}</span></span><span class="cost">${worn ? 'Worn' : 'Wear'}</span>`
-        : `${itemIcon(undefined, '?')}<span class="info"><span class="name">Unknown ${slot.name}</span><span class="stat">Not Forged Yet</span></span><span class="cost"></span>`;
+        ? `${itemIcon(item, '')}<span class="dt"><span class="cn">${item.name}</span><span class="cl">${bonus} · Lv ${level}</span></span><span class="tag ${worn ? '' : 'wear'}">${worn ? 'Worn' : 'Wear'}</span>`
+        : `${itemIcon(undefined, '?')}<span class="dt"><span class="cn">Unknown</span><span class="cl">Not Forged Yet</span></span>`;
       row.addEventListener('click', () => {
         if (this.game.equip(item.id)) this.onChange();
       });
       this.pieces.appendChild(row);
     }
 
+    this.sets.innerHTML = SETS.map((set) => {
+      const n = setPieces(gear, set.build);
+      const color = BUILDS.find((b) => b.id === set.build)!.color;
+      const bonus = n >= 4 ? ` ×${SET_BONUS_4}` : n >= 2 ? ` ×${SET_BONUS_2}` : '';
+      const pips = [0, 1, 2, 3].map((i) => `<i class="${i < n ? 'f' : ''}"></i>`).join('');
+      return `<div class="set" style="--c:${color}">${set.name}${bonus}<span class="pips">${pips}</span></div>`;
+    }).join('');
+
     const cost = this.game.forgeCost();
-    this.forgeBtn.textContent = `${fmt(cost)} Spoils`;
+    this.forgeBtn.innerHTML = `Forge · ${fmt(cost)} ${curHtml('spoils')}`;
     this.forgeBtn.disabled = gear.spoils < cost || !this.game.canForge();
-    const owned = Object.keys(gear.owned).length;
-    this.result.textContent = `${fmt(gear.spoils)} Spoils · ${owned}/${ITEMS.length} Found${this.last ? ` · ${this.last}` : ''}`;
+    this.spoilsEl.textContent = fmt(gear.spoils);
+    this.result.textContent = this.last;
   }
+}
+
+const CUR_SYMBOL: Record<string, string> = { gold: 'g', dread: '☠', sigil: '✦', spoils: '◆', settings: '⚙' };
+
+/** A currency symbol: the UI icon when it exists, else a drawn coin with a letter. */
+export function curHtml(kind: string): string {
+  const url = assetUrl(`ui/${kind}`);
+  return url ? `<img class="cur" alt="" src="${url}">` : `<span class="cur" data-cur="${kind}">${CUR_SYMBOL[kind] ?? ''}</span>`;
 }

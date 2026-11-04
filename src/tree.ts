@@ -4,6 +4,12 @@ import { assetUrl } from './assets';
 
 export const SIGIL = '✦';
 
+/** Lock symbol for buttons that only work between runs. */
+export function lockHtml(): string {
+  const url = assetUrl('ui/lock');
+  return url ? `<img class="cur" alt="" src="${url}">` : '🔒';
+}
+
 export function sigilText(n: number): string {
   return `${n} ${SIGIL}`;
 }
@@ -39,15 +45,15 @@ export class SkillTree {
   private detail: HTMLElement;
   private buy: HTMLButtonElement;
 
-  constructor(private game: Game, root: HTMLElement, detailHost: HTMLElement, private onChange: () => void) {
+  constructor(private game: Game, root: HTMLElement, detailHost: HTMLElement, private onChange: () => void, tabsHost: HTMLElement = root) {
     const tabs = document.createElement('div');
     tabs.className = 'branch-tabs';
-    root.appendChild(tabs);
+    tabsHost.appendChild(tabs);
     for (const build of BUILDS) {
       const tab = document.createElement('button');
       tab.className = 'branch-tab';
       tab.style.setProperty('--branch', build.color);
-      tab.innerHTML = `<span class="branch-name">${build.name}</span><span class="branch-desc">${build.desc}</span>`;
+      tab.innerHTML = `<span class="branch-name">${build.name}</span><span class="branch-desc"></span>`;
       tab.addEventListener('click', () => {
         this.picked = true;
         this.show(build.id);
@@ -84,12 +90,12 @@ export class SkillTree {
     }
 
     this.detail = document.createElement('div');
-    this.detail.className = 'node-detail';
+    this.detail.className = 'detail';
     this.detail.innerHTML = `
       <div class="detail-badge"></div>
       <div class="info"><span class="name"><span class="detail-name"></span> <span class="lvl"></span></span><span class="desc"></span><span class="stat"></span><span class="req"></span></div>`;
     this.buy = document.createElement('button');
-    this.buy.className = 'buy';
+    this.buy.className = 'buy teal wide';
     this.buy.addEventListener('click', () => {
       if (this.game.buyPact(this.selected)) this.onChange();
     });
@@ -114,7 +120,11 @@ export class SkillTree {
     const g = this.game;
     const followed = this.ownedBranch();
     if (!this.picked && followed && followed !== this.branch) this.show(followed);
-    for (const [id, tab] of this.tabs) tab.classList.toggle('active', id === this.branch);
+    for (const [id, tab] of this.tabs) {
+      tab.classList.toggle('active', id === this.branch);
+      const spent = g.branchSpent(id);
+      tab.querySelector('.branch-desc')!.textContent = spent > 0 ? `${sigilText(spent)} Spent` : BUILDS.find((b) => b.id === id)!.desc;
+    }
     for (const [id, page] of this.pages) page.hidden = id !== this.branch;
     for (const def of PACTS) {
       const btn = this.nodes.get(def.id)!;
@@ -127,9 +137,12 @@ export class SkillTree {
       btn.classList.toggle('locked', locked);
       btn.classList.toggle('ready', !locked && !maxed && g.canSpend() && g.save.sigils >= g.pactCost(def.id));
       btn.classList.toggle('selected', def.id === this.selected);
+      const branchStarted = PACTS.some((p) => p.branch === def.branch && p.tier === 1 && g.save.pacts[p.id] > 0);
       btn.querySelector('.node-lvl')!.textContent = maxed
         ? max > 1 ? `Lv ${level}/${max}` : 'Owned'
-        : locked ? 'Locked' : owned ? `Lv ${level}/${max}` : sigilText(g.pactCost(def.id));
+        : locked
+          ? branchStarted ? `Opens at ${TIER_SIGILS[def.tier] ?? 0}` : 'Locked'
+          : owned ? `Lv ${level}/${max}` : sigilText(g.pactCost(def.id));
     }
 
     const def = BY_ID.get(this.selected)!;
@@ -154,7 +167,12 @@ export class SkillTree {
       : startOwned
         ? `Opens at ${sigilText(need)} Spent in This Branch (${g.branchSpent(def.branch)} Now)`
         : `Requires the ${BY_ID.get(PACTS.find((p) => p.branch === def.branch && p.tier === 1)!.id)!.name} Start Pact`;
-    this.buy.textContent = maxed ? (max > 1 ? 'MAX' : 'Owned') : sigilText(cost);
+    const nextLv = max > 1 ? `Lv ${level + 1}/${max}` : 'Unlock';
+    this.buy.innerHTML = maxed
+      ? max > 1 ? 'MAX' : 'Owned'
+      : !g.canSpend()
+        ? `${lockHtml()}<small>After Run</small>`
+        : `${sigilText(cost)}<small>${nextLv}</small>`;
     this.buy.disabled = maxed || locked || g.save.sigils < cost || !g.canSpend();
   }
 }

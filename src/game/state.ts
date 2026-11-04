@@ -18,6 +18,8 @@ export interface RunState {
   dreadGained?: number;
   /** Sigils earned from Lord levels during this run, for the run summary. */
   levelSigils?: number;
+  /** Spoils earned during this run, for the run summary. */
+  spoilsGained?: number;
 }
 
 export interface SaveData {
@@ -38,6 +40,8 @@ export interface SaveData {
   speed: number;
   /** Show the life and level bars in percent instead of numbers. */
   barPercent?: boolean;
+  /** Buy amount in the Powers tab: 1, 10 or 0 for as many as affordable. */
+  buyMode?: number;
   /** Forged gear, worn pieces and unspent Spoils. */
   gear: GearState;
 }

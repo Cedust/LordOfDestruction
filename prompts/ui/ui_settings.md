@@ -4,7 +4,7 @@ name: Settings Icon
 category: ui
 type: ui_icon
 batch: 15-ui-icons
-status: ready
+status: review
 revision: 1
 output: assets/ui/settings.png
 format: png
