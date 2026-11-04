@@ -285,6 +285,7 @@ span.cur[data-cur='settings'] { background: none; color: var(--muted); font-size
 .sheet h2 { margin: 0; font-size: 18px; font-weight: 900; }
 .set-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-weight: 700; }
 .set-row .seg button { padding: 6px 12px; font-size: 13px; }
+.big-btn.restart { height: 44px; font-size: 14px; }
 .big-btn.close { background: linear-gradient(180deg, #b77cf5, #8a4fd8 45%, #6a32b8); }
 
 /* Small phones: tighter gear doll */

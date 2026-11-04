@@ -87,11 +87,17 @@ export class UI {
   private gear: GearPanel;
   private prestigeArmed = false;
   private prestigeTimer = 0;
+  private restartArmed = false;
+  private restartTimer = 0;
   /** The summary of the last run is shown until the player taps Continue. */
   private summaryOpen = false;
   private wasFallen = false;
 
-  constructor(private game: Game, private onSpeed: (speed: number) => void) {
+  constructor(
+    private game: Game,
+    private onSpeed: (speed: number) => void,
+    private onRestart: () => void,
+  ) {
     this.fillIcons();
     this.buildPowers();
     this.buildDread();
@@ -147,9 +153,30 @@ export class UI {
       $('#settings').hidden = false;
       this.update();
     });
-    $('#settings-close').addEventListener('click', () => ($('#settings').hidden = true));
+    $('#settings-close').addEventListener('click', () => this.closeSettings());
     $('#settings').addEventListener('click', (e) => {
-      if (e.target === $('#settings')) $('#settings').hidden = true;
+      if (e.target === $('#settings')) this.closeSettings();
+    });
+    // Fullscreen hides the browser bars. Not every browser allows it (iPhone Safari does not), so the row hides there.
+    const root = document.documentElement;
+    if (!root.requestFullscreen || !document.fullscreenEnabled) $('#set-fs-row').hidden = true;
+    $$<HTMLButtonElement>('#set-fs button').forEach((b) =>
+      b.addEventListener('click', () => {
+        const on = b.dataset.v === '1';
+        if (on && !document.fullscreenElement) root.requestFullscreen().catch(() => {});
+        if (!on && document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      }),
+    );
+    document.addEventListener('fullscreenchange', () => this.update());
+    // Wipes the whole save. Two taps, like Prestige, so a stray tap never costs any progress.
+    const restart = $<HTMLButtonElement>('#set-restart');
+    restart.addEventListener('click', () => {
+      if (this.restartArmed) {
+        this.onRestart();
+        return;
+      }
+      this.armRestart(true);
+      this.restartTimer = window.setTimeout(() => this.armRestart(false), 3000);
     });
     $$<HTMLButtonElement>('#set-bars button').forEach((b) => b.addEventListener('click', () => this.setBarPercent(b.dataset.v === '1')));
     $$<HTMLButtonElement>('#set-speed button').forEach((b) =>
@@ -160,6 +187,19 @@ export class UI {
     );
 
     this.setTab('powers');
+  }
+
+  private armRestart(on: boolean): void {
+    this.restartArmed = on;
+    clearTimeout(this.restartTimer);
+    const b = $<HTMLButtonElement>('#set-restart');
+    b.classList.toggle('confirm', on);
+    b.textContent = on ? 'Tap Again to Erase Everything' : 'Restart Game';
+  }
+
+  private closeSettings(): void {
+    $('#settings').hidden = true;
+    this.armRestart(false);
   }
 
   private setBarPercent(on: boolean): void {
@@ -415,5 +455,6 @@ export class UI {
     // Settings
     $$<HTMLButtonElement>('#set-bars button').forEach((b) => b.classList.toggle('on', (b.dataset.v === '1') === !!g.save.barPercent));
     $$<HTMLButtonElement>('#set-speed button').forEach((b) => b.classList.toggle('on', Number(b.dataset.v) === g.save.speed));
+    $$<HTMLButtonElement>('#set-fs button').forEach((b) => b.classList.toggle('on', (b.dataset.v === '1') === !!document.fullscreenElement));
   }
 }
