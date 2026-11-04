@@ -157,6 +157,17 @@ export class UI {
     $('#settings').addEventListener('click', (e) => {
       if (e.target === $('#settings')) this.closeSettings();
     });
+    // Fullscreen hides the browser bars. Not every browser allows it (iPhone Safari does not), so the row hides there.
+    const root = document.documentElement;
+    if (!root.requestFullscreen || !document.fullscreenEnabled) $('#set-fs-row').hidden = true;
+    $$<HTMLButtonElement>('#set-fs button').forEach((b) =>
+      b.addEventListener('click', () => {
+        const on = b.dataset.v === '1';
+        if (on && !document.fullscreenElement) root.requestFullscreen().catch(() => {});
+        if (!on && document.fullscreenElement) document.exitFullscreen().catch(() => {});
+      }),
+    );
+    document.addEventListener('fullscreenchange', () => this.update());
     // Wipes the whole save. Two taps, like Prestige, so a stray tap never costs any progress.
     const restart = $<HTMLButtonElement>('#set-restart');
     restart.addEventListener('click', () => {
@@ -444,5 +455,6 @@ export class UI {
     // Settings
     $$<HTMLButtonElement>('#set-bars button').forEach((b) => b.classList.toggle('on', (b.dataset.v === '1') === !!g.save.barPercent));
     $$<HTMLButtonElement>('#set-speed button').forEach((b) => b.classList.toggle('on', Number(b.dataset.v) === g.save.speed));
+    $$<HTMLButtonElement>('#set-fs button').forEach((b) => b.classList.toggle('on', (b.dataset.v === '1') === !!document.fullscreenElement));
   }
 }
