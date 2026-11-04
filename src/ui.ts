@@ -3,8 +3,9 @@ import { fmt, type Game } from './game/game';
 import { computeStats, dreadMult, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
 import { SIGIL, SkillTree } from './tree';
+import { GearPanel } from './gearui';
 
-type Tab = 'powers' | 'dread' | 'pacts';
+type Tab = 'powers' | 'dread' | 'pacts' | 'gear';
 
 const $ = <T extends HTMLElement>(sel: string) => document.querySelector(sel) as T;
 
@@ -70,11 +71,13 @@ function dreadText(id: PrestigeId, lvl: number): string {
 export class UI {
   private runButtons = new Map<RunUpgradeId, HTMLButtonElement>();
   private trees: SkillTree[] = [];
+  private gear!: GearPanel;
   private prestigeArmed = false;
   private prestigeTimer = 0;
 
   constructor(private game: Game, private onSpeed: () => void) {
     this.buildRunList();
+    this.gear = new GearPanel(game, $('#gear-list'), () => this.update());
     this.buildPrestigeList($('#dread-upgrades'));
     this.buildPrestigeList($('#fallen-dread'));
     this.trees = [
@@ -129,6 +132,7 @@ export class UI {
     $('#powers-list').hidden = tab !== 'powers';
     $('#dread-list').hidden = tab !== 'dread';
     $('#pacts-list').hidden = tab !== 'pacts';
+    $('#gear-list').hidden = tab !== 'gear';
   }
 
   /** The fallen screen shows either the Dread upgrades or the pact tree. */
@@ -234,6 +238,7 @@ export class UI {
     });
 
     for (const tree of this.trees) tree.update();
+    this.gear.update();
     const spent = g.sigilsSpent();
     document.querySelectorAll<HTMLButtonElement>('.reset-pacts').forEach((b) => {
       b.disabled = spent === 0 || g.phase !== 'fallen';

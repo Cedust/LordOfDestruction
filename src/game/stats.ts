@@ -1,4 +1,5 @@
 import { SHOCKWAVE_DAMAGE, AVARICE_PER_LEVEL, DREAD_HARVEST_PER_LEVEL, DREAD_GROWTH, LASH_SHARE, MILESTONE_EVERY, MILESTONE_MULT, PACTS, pactValue, type BuildId, type PrestigeId, type RunUpgradeId } from './config';
+import { gearMult, setMult, type GearState } from './gear';
 import type { PactLevels, PrestigeLevels, RunLevels } from './state';
 
 export interface LordStats {
@@ -20,6 +21,7 @@ export interface LordStats {
   bloodPact: number;
   goldMult: number;
   xpMult: number;
+  spoilsMult: number;
   /** Multiplier on the gold price of powers. */
   costMult: number;
   builds: Record<BuildId, boolean>;
@@ -48,13 +50,14 @@ export function dreadMult(id: PrestigeId, level: number): number {
 
 const pv = (pacts: PactLevels, id: keyof PactLevels) => pactValue(PACTS.find((p) => p.id === id)!, pacts[id]);
 
-/** Compute the lord's current stats from run levels, Dread upgrades and pacts. */
-export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevels): LordStats {
+/** Compute the lord's current stats from run levels, Dread upgrades, pacts and worn gear. */
+export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevels, gear?: GearState): LordStats {
   const builds = { aura: pacts.pactAura > 0, thorns: pacts.pactThorns > 0, blood: pacts.pactBlood > 0 };
-  const malice = dreadMult('malice', p.malice);
+  const malice = dreadMult('malice', p.malice) * gearMult(gear, 'damage');
   const heart = dreadMult('blackHeart', p.blackHeart);
+  const life = heart * gearMult(gear, 'life');
   const auraLvl = powerLevel('aura', run, builds.aura);
-  const auraBase = auraLvl > 0 ? 13 * grow(auraLvl, 0.4, 1.085) * milestoneMult(auraLvl) * malice * dreadMult('gloom', p.gloom) : 0;
+  const auraBase = auraLvl > 0 ? 13 * grow(auraLvl, 0.4, 1.085) * milestoneMult(auraLvl) * malice * dreadMult('gloom', p.gloom) * setMult(gear, 'aura') : 0;
   const shadow = 1 + pv(pacts, 'longShadow');
   const sanctum = pacts.innerSanctum > 0 ? pv(pacts, 'innerSanctum') : 1;
   const aura = [auraBase * sanctum, auraBase * shadow, auraBase * shadow];
@@ -66,17 +69,18 @@ export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevel
     if (d > 0) reach = i;
   });
   return {
-    maxHp: 100 * (1 + 0.22 * run.vitality) * Math.pow(1.05, run.vitality) * milestoneMult(run.vitality) * heart,
+    maxHp: 100 * (1 + 0.22 * run.vitality) * Math.pow(1.05, run.vitality) * milestoneMult(run.vitality) * life,
     armor: 0.6 * (1 - Math.pow(0.95, run.hide)),
-    regen: (1 + 0.8 * run.regen) * Math.pow(1.05, run.regen) * milestoneMult(run.regen) * heart,
+    regen: (1 + 0.8 * run.regen) * Math.pow(1.05, run.regen) * milestoneMult(run.regen) * heart * gearMult(gear, 'regen'),
     auraDps: aura,
     auraReach: reach,
-    thorns: thornLvl > 0 ? 1.5 * grow(thornLvl, 0.3, 1.05) * milestoneMult(thornLvl) * malice * dreadMult('barbs', p.barbs) : 0,
-    lash: lashLvl > 0 ? LASH_SHARE * grow(lashLvl, 0.3, 1.04) * milestoneMult(lashLvl) * malice * dreadMult('sanguine', p.sanguine) : 0,
-    shockwave: SHOCKWAVE_DAMAGE * grow(waveLvl, 0.3, 1.06) * milestoneMult(waveLvl) * malice * dreadMult('tremor', p.tremor),
+    thorns: thornLvl > 0 ? 1.5 * grow(thornLvl, 0.3, 1.05) * milestoneMult(thornLvl) * malice * dreadMult('barbs', p.barbs) * setMult(gear, 'thorns') : 0,
+    lash: lashLvl > 0 ? LASH_SHARE * grow(lashLvl, 0.3, 1.04) * milestoneMult(lashLvl) * malice * dreadMult('sanguine', p.sanguine) * setMult(gear, 'blood') : 0,
+    shockwave: SHOCKWAVE_DAMAGE * grow(waveLvl, 0.3, 1.06) * milestoneMult(waveLvl) * malice * dreadMult('tremor', p.tremor) * gearMult(gear, 'shockwave'),
     bloodPact: 0.02 * run.bloodPact,
-    goldMult: dreadMult('tithe', p.tithe),
-    xpMult: 1 + DREAD_HARVEST_PER_LEVEL * p.dreadHarvest,
+    goldMult: dreadMult('tithe', p.tithe) * gearMult(gear, 'gold'),
+    xpMult: (1 + DREAD_HARVEST_PER_LEVEL * p.dreadHarvest) * gearMult(gear, 'xp'),
+    spoilsMult: gearMult(gear, 'spoils'),
     costMult: 1 - AVARICE_PER_LEVEL * p.avarice,
     builds,
   };

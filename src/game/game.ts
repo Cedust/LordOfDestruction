@@ -49,6 +49,7 @@ import {
 import { computeStats, powerLevel, type LordStats } from './stats';
 import { emptyPacts, emptyRunLevels, type RunState, type SaveData } from './state';
 import { fieldPos } from './config';
+import { ITEMS, ITEM_BY_ID, forgeCost, spoilsForChampion, type ItemDef } from './gear';
 
 const PACT_BY_ID = new Map(PACTS.map((p) => [p.id, p]));
 
@@ -129,6 +130,7 @@ export class Game {
   private waveXp = 0;
   private waveDread = 0;
   private waveSigils = 0;
+  private waveSpoils = 0;
   private nextId = 1;
   private lashTimer = LASH_INTERVAL;
   private sunTimer = BLACK_SUN_EVERY;
@@ -161,7 +163,7 @@ export class Game {
 
   refreshStats(): void {
     const prevMax = this.stats?.maxHp;
-    this.stats = computeStats(this.run.levels, this.save.prestige, this.save.pacts);
+    this.stats = computeStats(this.run.levels, this.save.prestige, this.save.pacts, this.save.gear);
     if (prevMax !== undefined && this.stats.maxHp > prevMax) {
       // Gaining max life also grants that life.
       this.run.lordHp += this.stats.maxHp - prevMax;
@@ -236,6 +238,44 @@ export class Game {
     this.save.dread -= cost;
     this.save.prestige[id]++;
     if (this.phase !== 'fallen') this.refreshStats();
+    this.onPersist();
+    return true;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Gear (forged with Spoils, at any time)
+
+  forgeCost(): number {
+    return forgeCost(this.save.gear.forged);
+  }
+
+  /** Forging waits for the break between waves, so a reload can never replay Spoils already spent. */
+  canForge(): boolean {
+    return this.phase !== 'fighting';
+  }
+
+  /** Forge a random piece: new pieces start at level 1, known ones gain a level. New pieces are worn if the slot is empty. */
+  forge(): { item: ItemDef; level: number; isNew: boolean } | null {
+    const gear = this.save.gear;
+    const cost = this.forgeCost();
+    if (!this.canForge() || gear.spoils < cost) return null;
+    gear.spoils -= cost;
+    gear.forged++;
+    const item = ITEMS[Math.floor(this.rng() * ITEMS.length)];
+    const isNew = !gear.owned[item.id];
+    gear.owned[item.id] = (gear.owned[item.id] ?? 0) + 1;
+    if (!gear.equipped[item.slot]) gear.equipped[item.slot] = item.id;
+    this.refreshStats();
+    this.onPersist();
+    return { item, level: gear.owned[item.id], isNew };
+  }
+
+  /** Wear an owned piece in its slot. */
+  equip(id: string): boolean {
+    const item = ITEM_BY_ID.get(id);
+    if (!item || !this.save.gear.owned[id]) return false;
+    this.save.gear.equipped[item.slot] = id;
+    this.refreshStats();
     this.onPersist();
     return true;
   }
@@ -318,7 +358,7 @@ export class Game {
   rise(): void {
     this.run = this.freshRun();
     this.save.run = this.run;
-    this.stats = computeStats(this.run.levels, this.save.prestige, this.save.pacts);
+    this.stats = computeStats(this.run.levels, this.save.prestige, this.save.pacts, this.save.gear);
     this.run.lordHp = this.stats.maxHp;
     this.heroes = [];
     this.effects = [];
@@ -326,6 +366,7 @@ export class Game {
     this.waveXp = 0;
     this.waveDread = 0;
     this.waveSigils = 0;
+    this.waveSpoils = 0;
     this.phase = 'pause';
     this.pauseTimer = 2.5;
     this.lastSummary = null;
@@ -374,6 +415,8 @@ export class Game {
       this.waveXp = 0;
       this.waveDread = 0;
       this.waveSigils = 0;
+    this.waveSpoils = 0;
+      this.waveSpoils = 0;
       this.phase = 'pause';
       this.pauseTimer = WAVE_PAUSE;
       this.onPersist();
@@ -731,6 +774,10 @@ export class Game {
     this.gainXp(xpForKill(this.run.wave, h.kind === 'champion') * this.stats.xpMult);
     if (h.kind === 'champion') {
       this.heal(this.stats.maxHp);
+      const spoils = Math.round(spoilsForChampion(this.run.wave) * this.stats.spoilsMult);
+      this.save.gear.spoils += spoils;
+      this.waveSpoils += spoils;
+      this.effects.push({ type: 'text', x: p.x, y: p.y - 30, text: `+${spoils} Spoils`, color: '#e8c07a', t: 0, ttl: 1.6 });
       this.effects.push({ type: 'text', x: LORD_X + 20, y: LORD_Y - LORD_CHEST - 50, text: 'Champion Slain!', color: '#ffd166', t: 0, ttl: 1.8 });
     }
     if (this.pact('crownOfThorns') && h.lastHit === 'thorns') {
@@ -814,6 +861,7 @@ export class Game {
     this.waveXp = 0;
     this.waveDread = 0;
     this.waveSigils = 0;
+    this.waveSpoils = 0;
     const wave = this.run.wave;
     const newBest = wave > this.save.bestWave;
     const recordSigils = sigilsForRecord(this.save.bestWave, wave);
@@ -834,6 +882,7 @@ export class Game {
       xp: this.save.xp - this.waveXp,
       dread: this.save.dread - this.waveDread,
       sigils: this.save.sigils - this.waveSigils,
+      gear: { ...this.save.gear, spoils: this.save.gear.spoils - this.waveSpoils },
       run: this.snapshotRun(),
     };
   }

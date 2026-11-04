@@ -30,6 +30,29 @@ def prompt_for(asset_id: str) -> Path:
     return hits[0]
 
 
+def _main_run(sums: list[int]) -> tuple[int, int] | None:
+    """Longest-mass run of non-empty lines: drops stray bits a neighbour cell pokes in."""
+    runs, start = [], None
+    for i, v in enumerate(sums + [0]):
+        if v and start is None:
+            start = i
+        elif not v and start is not None:
+            runs.append((start, i))
+            start = None
+    return max(runs, key=lambda r: sum(sums[r[0]:r[1]])) if runs else None
+
+
+def item_bbox(alpha: Image.Image) -> tuple[int, int, int, int] | None:
+    """Bounding box of the main shape in a cell's alpha mask (values 0 or 255)."""
+    w, h = alpha.size
+    data = alpha.load()
+    rows = _main_run([sum(1 for x in range(w) if data[x, y]) for y in range(h)])
+    if not rows:
+        return None
+    cols = _main_run([sum(1 for y in range(*rows) if data[x, y]) for x in range(w)])
+    return (cols[0], rows[0], cols[1], rows[1])
+
+
 def main(argv: list[str]) -> int:
     if len(argv) != 3:
         print(__doc__)
@@ -52,7 +75,7 @@ def main(argv: list[str]) -> int:
     for i, asset_id in enumerate(ids):
         c, r = i % cols, i // cols
         box = (round(c * cw), round(r * ch), round((c + 1) * cw), round((r + 1) * ch))
-        bbox = alpha.crop(box).getbbox()
+        bbox = item_bbox(alpha.crop(box))
         if not bbox:
             results.append({"asset_id": asset_id, "error": f"cell {c + 1},{r + 1} is empty"})
             ok = False
