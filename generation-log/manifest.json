@@ -755,8 +755,8 @@
       "prompt": "prompts/environments/env_throne_room.md",
       "output": "assets/environments/throne-room.png",
       "batch": "03-environment",
-      "status": "approved",
-      "revision": 4,
+      "status": "ready",
+      "revision": 5,
       "history": [
         {
           "date": "2026-11-01",
@@ -811,6 +811,12 @@
           "status": "approved",
           "by": "timo",
           "note": "approved by Timo"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r5: low single step in the bottom-left corner, taller open hall for flying heroes, calm top band for the HUD (Timo, mobile UI round)"
         }
       ],
       "generations": [
@@ -8050,6 +8056,118 @@
               "note": "12 separate items per sheet, order and items match, same style and angle, no text, no badge, transparent outside the items"
             }
           }
+        }
+      ]
+    },
+    {
+      "asset_id": "sheet_ui_icons",
+      "prompt": "prompts/ui/sheet_ui_icons.md",
+      "output": "assets/ui/sheets/ui-icons.png",
+      "batch": "15-ui-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "ui_settings",
+      "prompt": "prompts/ui/ui_settings.md",
+      "output": "assets/ui/settings.png",
+      "batch": "15-ui-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "ui_gold",
+      "prompt": "prompts/ui/ui_gold.md",
+      "output": "assets/ui/gold.png",
+      "batch": "15-ui-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "ui_dread",
+      "prompt": "prompts/ui/ui_dread.md",
+      "output": "assets/ui/dread.png",
+      "batch": "15-ui-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "ui_sigil",
+      "prompt": "prompts/ui/ui_sigil.md",
+      "output": "assets/ui/sigil.png",
+      "batch": "15-ui-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "ui_spoils",
+      "prompt": "prompts/ui/ui_spoils.md",
+      "output": "assets/ui/spoils.png",
+      "batch": "15-ui-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
+    },
+    {
+      "asset_id": "ui_lock",
+      "prompt": "prompts/ui/ui_lock.md",
+      "output": "assets/ui/lock.png",
+      "batch": "15-ui-icons",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
         }
       ]
     }
