@@ -4,7 +4,7 @@ name: Bone Mantle Icon
 category: equipment
 type: equipment_icon
 batch: 12-gear-icons-a
-status: review
+status: approved
 revision: 1
 output: assets/equipment/boneMantle.png
 format: png

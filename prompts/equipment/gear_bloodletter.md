@@ -4,7 +4,7 @@ name: Bloodletter Icon
 category: equipment
 type: equipment_icon
 batch: 13-gear-icons-b
-status: review
+status: approved
 revision: 1
 output: assets/equipment/bloodletter.png
 format: png

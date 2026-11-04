@@ -4,7 +4,7 @@ name: Bone Amulet Icon
 category: equipment
 type: equipment_icon
 batch: 14-gear-icons-c
-status: review
+status: approved
 revision: 1
 output: assets/equipment/boneAmulet.png
 format: png

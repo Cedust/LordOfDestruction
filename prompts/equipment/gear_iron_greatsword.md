@@ -4,7 +4,7 @@ name: Iron Greatsword Icon
 category: equipment
 type: equipment_icon
 batch: 13-gear-icons-b
-status: review
+status: approved
 revision: 1
 output: assets/equipment/ironGreatsword.png
 format: png

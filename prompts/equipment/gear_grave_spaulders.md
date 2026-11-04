@@ -4,7 +4,7 @@ name: Grave Spaulders Icon
 category: equipment
 type: equipment_icon
 batch: 12-gear-icons-a
-status: review
+status: approved
 revision: 1
 output: assets/equipment/graveSpaulders.png
 format: png

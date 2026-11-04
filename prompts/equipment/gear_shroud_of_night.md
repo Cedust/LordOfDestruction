@@ -4,7 +4,7 @@ name: Shroud of Night Icon
 category: equipment
 type: equipment_icon
 batch: 13-gear-icons-b
-status: review
+status: approved
 revision: 1
 output: assets/equipment/shroudOfNight.png
 format: png

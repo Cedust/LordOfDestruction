@@ -4,7 +4,7 @@ name: Eye of Dusk Icon
 category: equipment
 type: equipment_icon
 batch: 14-gear-icons-c
-status: review
+status: approved
 revision: 1
 output: assets/equipment/eyeOfDusk.png
 format: png
