@@ -58,6 +58,13 @@ document.addEventListener('visibilitychange', () => {
   last = performance.now();
 });
 window.addEventListener('pagehide', persist);
+// F5, Ctrl+R or closing the tab by accident: save first, then let the browser ask
+// "Leave site?" so the player can stay.
+window.addEventListener('beforeunload', (e) => {
+  persist();
+  e.preventDefault();
+  e.returnValue = '';
+});
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   navigator.serviceWorker.register('./sw.js').catch(() => {});
