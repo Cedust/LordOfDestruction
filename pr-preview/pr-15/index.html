@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#140f1c" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icon.svg" />
+    <title>Lord of Destruction</title>
+    <script type="module" crossorigin src="./assets/index-BeH1wJrj.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-8AUcK6wv.css">
+  </head>
+  <body>
+    <main id="app">
+      <section class="battle-wrap" id="battle-wrap">
+        <canvas id="battle"></canvas>
+        <div class="hud">
+          <div class="hud-left">
+            <span class="pill gold" id="hud-gold"><span class="cur" data-cur="gold"></span><b id="gold">0</b></span>
+            <span class="pill dread" id="hud-dread" hidden><span class="cur" data-cur="dread"></span><b class="dread-count">0</b></span>
+            <span class="pill sigil" id="hud-sigil" hidden><span class="cur" data-cur="sigil"></span><b class="sigil-count">0</b></span>
+          </div>
+          <div class="wave" id="wave-box">
+            <div class="w-label">Wave</div>
+            <div class="w-num" id="wave">1</div>
+            <div class="w-prog"><i id="wave-prog"></i></div>
+            <div class="w-best" id="best">Best 0</div>
+          </div>
+          <button class="icon-btn" id="settings-btn" aria-label="Settings"><span class="cur" data-cur="settings"></span></button>
+        </div>
+        <div class="banner" id="banner" hidden><b id="banner-title"></b><span id="banner-sub"></span></div>
+      </section>
+
+      <div class="lord">
+        <div id="level-box" class="lvl-badge" aria-label="Your level"><small>Level</small><b id="level-num">1</b></div>
+        <div class="bars" id="bars">
+          <div class="bar hp" id="hp-bar" aria-label="Your life"><i id="hp-fill"></i><span id="hp-text"></span></div>
+          <div class="bar xp" id="level-bar" aria-label="Experience"><i id="level-fill"></i><span id="level-text"></span></div>
+        </div>
+        <button id="prestige" class="big-btn prestige">Prestige</button>
+      </div>
+
+      <section class="panel" id="panel">
+        <div class="page" data-page="powers">
+          <div class="ph">
+            <button class="grip" aria-label="Resize panel"></button>
+            <h2>Powers</h2>
+            <div class="seg" id="buy-mode">
+              <button data-mode="1">×1</button><button data-mode="10">×10</button><button data-mode="0">Max</button>
+            </div>
+          </div>
+          <div class="scroll" id="powers-list"></div>
+        </div>
+        <div class="page" data-page="dread" hidden>
+          <div class="ph">
+            <button class="grip" aria-label="Resize panel"></button>
+            <h2>Dread</h2>
+            <span class="pill dread sm"><span class="cur" data-cur="dread"></span><b class="dread-count">0</b></span>
+          </div>
+          <div class="scroll"><div class="dgrid" id="dread-grid"></div></div>
+          <div class="detail" id="dread-detail"></div>
+        </div>
+        <div class="page" data-page="pacts" hidden>
+          <div class="ph">
+            <button class="grip" aria-label="Resize panel"></button>
+            <h2>Dark Pacts</h2>
+            <button class="reset-pacts">Reset</button>
+            <span class="pill sigil sm"><span class="cur" data-cur="sigil"></span><b class="sigil-count">0</b></span>
+          </div>
+          <div class="branches" id="pacts-branches"></div>
+          <div class="scroll" id="pacts-tree"></div>
+          <div id="pacts-detail"></div>
+        </div>
+        <div class="page" data-page="gear" hidden>
+          <div class="ph">
+            <button class="grip" aria-label="Resize panel"></button>
+            <h2>Gear</h2>
+            <span class="pill spoils sm"><span class="cur" data-cur="spoils"></span><b id="spoils">0</b></span>
+            <button class="forge-btn" id="forge"></button>
+          </div>
+          <div class="scroll" id="gear-list"></div>
+        </div>
+      </section>
+
+      <nav class="nav" id="nav">
+        <button class="tab" data-tab="powers"><span class="tab-icon"></span>Powers<span class="badge" hidden></span></button>
+        <button class="tab" data-tab="dread"><span class="tab-icon"></span>Dread<span class="badge" hidden></span></button>
+        <button class="tab" data-tab="pacts"><span class="tab-icon"></span>Pacts<span class="badge" hidden></span></button>
+        <button class="tab" data-tab="gear"><span class="tab-icon"></span>Gear<span class="badge" hidden></span></button>
+      </nav>
+
+      <div id="summary" class="summary" hidden>
+        <div class="summary-inner">
+          <img class="sum-lord" id="sum-lord" alt="" />
+          <h1 id="sum-title">You Have Fallen</h1>
+          <div class="sum-run" id="sum-run"></div>
+          <div class="sum-wl">Wave</div>
+          <div class="sum-wave" id="sum-wave">0</div>
+          <span class="record" id="sum-record"></span>
+          <div class="gains" id="sum-gains"></div>
+          <button class="big-btn start wide" id="sum-continue">Continue</button>
+        </div>
+      </div>
+
+      <div id="settings" class="sheet-wrap" hidden>
+        <div class="sheet" role="dialog" aria-label="Settings">
+          <h2>Settings</h2>
+          <div class="set-row"><span>Bars</span><div class="seg" id="set-bars"><button data-v="0">Numbers</button><button data-v="1">Percent</button></div></div>
+          <div class="set-row"><span>Game Speed</span><div class="seg" id="set-speed"><button data-v="1">1×</button><button data-v="2">2×</button><button data-v="3">3×</button></div></div>
+          <button class="big-btn wide restart" id="set-restart">Restart Game</button>
+          <button class="big-btn wide close" id="settings-close">Close</button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
