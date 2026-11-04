@@ -12,12 +12,12 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); }
+/* No pull-to-refresh or bounce: a swipe down on a phone must never reload the game. */
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text); overscroll-behavior: none; }
 body {
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
-  overscroll-behavior: none;
 }
 button { font: inherit; color: inherit; }
 #app {
@@ -86,7 +86,7 @@ button { font: inherit; color: inherit; }
 }
 .overlay[hidden], .list[hidden] { display: none; }
 .panel {
-  width: 100%; max-width: 480px; max-height: 100%; overflow: auto; background: var(--panel);
+  width: 100%; max-width: 480px; max-height: 100%; overflow: auto; overscroll-behavior: contain; background: var(--panel);
   border: 1px solid var(--line); border-radius: 16px; padding: 18px; text-align: center;
 }
 .panel h1 { margin: 0 0 6px; font-size: 24px; color: #ff8a7a; letter-spacing: .02em; }
