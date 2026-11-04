@@ -9,6 +9,8 @@ const game = new Game(save);
 
 /** Set once the player restarts the game, so nothing writes the old save back. */
 let wiped = false;
+/** Set when the game reloads itself on purpose, so the browser does not ask "Leave site?". */
+let leaving = false;
 function persist(): void {
   if (wiped) return;
   writeSave(game.snapshotSave());
@@ -26,7 +28,19 @@ const ui = new UI(
     // Restart Game: erase the save and load a fresh page, without the "Leave site?" prompt.
     wiped = true;
     clearSave();
-    window.removeEventListener('beforeunload', onBeforeUnload);
+    leaving = true;
+    location.reload();
+  },
+  async () => {
+    // Load Latest Version: save, ask the service worker for the new build, then reload.
+    persist();
+    leaving = true;
+    try {
+      const reg = await navigator.serviceWorker?.getRegistration();
+      await reg?.update();
+    } catch {
+      // Offline or no service worker: the reload still fetches what it can.
+    }
     location.reload();
   },
 );
@@ -72,7 +86,7 @@ window.addEventListener('pagehide', persist);
 // F5, Ctrl+R or closing the tab by accident: save first, then let the browser ask
 // "Leave site?" so the player can stay.
 function onBeforeUnload(e: BeforeUnloadEvent): void {
-  if (wiped) return;
+  if (wiped || leaving) return;
   persist();
   e.preventDefault();
   e.returnValue = '';

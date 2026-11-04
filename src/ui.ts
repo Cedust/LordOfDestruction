@@ -97,6 +97,7 @@ export class UI {
     private game: Game,
     private onSpeed: (speed: number) => void,
     private onRestart: () => void,
+    private onUpdate: () => void,
   ) {
     this.fillIcons();
     this.buildPowers();
@@ -168,6 +169,11 @@ export class UI {
       }),
     );
     document.addEventListener('fullscreenchange', () => this.update());
+    // Saves and reloads the page, so a new build shows up without the "Leave site?" prompt.
+    $('#set-update').addEventListener('click', () => {
+      $('#set-update').textContent = 'Loading…';
+      this.onUpdate();
+    });
     // Wipes the whole save. Two taps, like Prestige, so a stray tap never costs any progress.
     const restart = $<HTMLButtonElement>('#set-restart');
     restart.addEventListener('click', () => {
