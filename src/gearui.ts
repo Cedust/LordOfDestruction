@@ -13,6 +13,18 @@ function setColor(item: ItemDef): string {
   return BUILDS.find((b) => b.id === item.set)?.color ?? 'var(--muted)';
 }
 
+/** A plain piece per slot whose shape stands in for an empty slot. */
+const PLACEHOLDER: Record<SlotId, string> = {
+  helm: 'ironVisor', shoulders: 'boneMantle', chest: 'blackPlate', belt: 'gildedGirdle', boots: 'ironTreads', cloak: 'crimsonCloak',
+  gloves: 'ironcladFists', sword: 'ironGreatsword', amulet: 'goldLocket', ring1: 'ironBand', ring2: 'onyxRing', charm: 'luckyCoin',
+};
+
+/** Empty slot: a dark silhouette of a piece that fits there, else the slot's name. */
+function slotPlaceholder(id: SlotId, name: string): string {
+  const url = assetUrl(`equipment/${PLACEHOLDER[id]}`);
+  return url ? `<img class="gear-icon ghost" alt="${name}" src="${url}">` : name;
+}
+
 /**
  * Where each slot sits on the doll (row / column / row end / column end), laid out like
  * the body: shoulders, helm and amulet on top; gloves, chest and cloak; the rings; belt
@@ -83,7 +95,7 @@ export class GearPanel {
       btn.classList.toggle('selected', slot.id === this.selected);
       btn.classList.toggle('empty', !worn);
       btn.style.setProperty('--set', worn?.set ? setColor(worn) : 'var(--line)');
-      btn.innerHTML = worn ? `${itemIcon(worn, '')}<span class="lv">${gear.owned[worn.id]}</span>` : slot.name;
+      btn.innerHTML = worn ? `${itemIcon(worn, '')}<span class="lv">${gear.owned[worn.id]}</span>` : slotPlaceholder(slot.id, slot.name);
     }
 
     const slot = SLOTS.find((s) => s.id === this.selected)!;
