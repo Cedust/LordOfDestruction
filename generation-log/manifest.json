@@ -8237,13 +8237,25 @@
       "output": "assets/ui/sheets/slot-icons.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "rejected",
+          "by": "claude",
+          "note": "r1 result failed checks: blurred shapes on an opaque lilac background"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8253,13 +8265,19 @@
       "output": "assets/ui/slots/helm.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8269,13 +8287,19 @@
       "output": "assets/ui/slots/shoulders.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8285,13 +8309,19 @@
       "output": "assets/ui/slots/chest.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8301,13 +8331,19 @@
       "output": "assets/ui/slots/belt.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8317,13 +8353,19 @@
       "output": "assets/ui/slots/boots.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8333,13 +8375,19 @@
       "output": "assets/ui/slots/cloak.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8349,13 +8397,19 @@
       "output": "assets/ui/slots/gloves.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8365,13 +8419,19 @@
       "output": "assets/ui/slots/sword.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8381,13 +8441,19 @@
       "output": "assets/ui/slots/amulet.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8397,13 +8463,19 @@
       "output": "assets/ui/slots/ring.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8413,13 +8485,19 @@
       "output": "assets/ui/slots/charm.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     },
@@ -8429,13 +8507,19 @@
       "output": "assets/ui/slots/unknown.png",
       "batch": "16-slot-icons",
       "status": "ready",
-      "revision": 1,
+      "revision": 2,
       "history": [
         {
           "date": "2026-11-04",
           "status": "ready",
           "by": "claude",
           "note": "created"
+        },
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "r2: flat sharp silhouettes"
         }
       ]
     }
