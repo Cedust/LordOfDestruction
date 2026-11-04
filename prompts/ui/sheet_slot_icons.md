@@ -4,8 +4,8 @@ name: Gear Slot Icons Sheet
 category: ui
 type: icon_sheet
 batch: 16-slot-icons
-status: ready
-revision: 2
+status: review
+revision: 1
 output: assets/ui/sheets/slot-icons.png
 format: png
 transparency: true
@@ -34,7 +34,7 @@ produces:
 
 Game asset for "Lord of Destruction", a browser idle auto-battler. A sheet of 12 neutral outline symbols that mark the empty equipment slots on the Lord's gear screen. Each symbol is later cut out and shown at 34 to 40 pixels, dimmed, inside an empty slot, until the player puts a real item there.
 
-Art style: clean, simple 2D game interface symbols with crisp, sharp edges. Each symbol is one flat, solid silhouette in a single light grey-lilac color (#b9aecb), surrounded by a thin, sharp, darker purple outline (#3a2d4b). No gradients, no shading, no glow, no blur, no soft edges, no texture, no inner details except a few essential lines that make the shape readable. Simple, sturdy, slightly stylized dark-fantasy shapes, like the empty slot markers of an inventory screen.
+Art style: clean, simple 2D game interface symbols. Each symbol is a flat outline drawing only: one thick, smooth, even line in a soft light grey-lilac color (about #b9aecb), with the inside left completely transparent. No fill, no shading, no color, no texture, no highlights, no inner details except a few essential lines that make the shape readable. Simple, sturdy, slightly stylized dark-fantasy shapes, like the empty slot markers of an inventory screen.
 
 Subject: exactly 12 separate symbols arranged in a strict grid of 4 columns and 3 rows, read left to right, top to bottom, in this order:
 1. a closed knight helmet with a narrow eye slit, seen from the front (Helm)
@@ -52,9 +52,9 @@ Subject: exactly 12 separate symbols arranged in a strict grid of 4 columns and 
 
 Every symbol: one simple outline shape, centered in its own grid cell (about 384 pixels wide and 341 pixels tall) and filling most of it. All symbols use the identical line color and line thickness and are drawn at a similar size, so they look like one set. Symbols never touch or overlap each other or the image edge.
 
-Technical: landscape image, 1536x1024, PNG with a fully transparent background everywhere outside the symbols (real alpha channel). The background must be truly transparent, not a colored, blurred or painted surface. No grid lines, no cell borders, no background panel.
+Technical: landscape image, 1536x1024, PNG with a fully transparent background everywhere outside the lines (real alpha channel), and transparent inside the outlines as well. No grid lines, no cell borders, no background panel.
 
-Reference image assets/ui/sheets/ui-icons.png: interface icons of the same game. Match their sharp edges and simple, sturdy shapes, but draw every symbol as a flat light grey-lilac silhouette without other colors.
+Reference image assets/ui/sheets/ui-icons.png: interface icons of the same game. Match their line smoothness and the simple, sturdy shapes, but draw only light grey-lilac outlines without any fill or color.
 
 Do not include any text, letters, numbers, labels, logos, watermark, signature, border, frame, badge, background shape or shadow.
 
@@ -62,12 +62,11 @@ Do not include any text, letters, numbers, labels, logos, watermark, signature, 
 
 - Exactly 12 symbols in a 4x3 grid, none touching
 - Order and shapes match the list
-- Flat light grey-lilac silhouettes with a thin dark outline, sharp edges, no blur
+- Outline only: one light grey-lilac line, no fill, no color, no shading
 - Same line weight and size across the set
 - Readable at 34 px
-- Truly transparent background
+- Transparent background and inside
 
 ## Changelog
 
 - r1 (2026-11-04): first version. Timo wants own neutral outline icons for empty gear slots instead of dimmed item icons.
-- r2 (2026-11-04): r1 result rejected: blurry blobs on an opaque lilac surface. Now flat sharp silhouettes with a thin dark outline instead of outline-only lines, and a stricter transparency line.
