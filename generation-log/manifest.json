@@ -6076,6 +6076,669 @@
           }
         }
       ]
+    },
+    {
+      "asset_id": "sheet_gear_icons_a",
+      "prompt": "prompts/equipment/sheet_gear_icons_a.md",
+      "output": "assets/equipment/sheets/gear-icons-a.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_horned_helm",
+      "prompt": "prompts/equipment/gear_horned_helm.md",
+      "output": "assets/equipment/hornedHelm.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_iron_visor",
+      "prompt": "prompts/equipment/gear_iron_visor.md",
+      "output": "assets/equipment/ironVisor.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_skull_cap",
+      "prompt": "prompts/equipment/gear_skull_cap.md",
+      "output": "assets/equipment/skullCap.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_spiked_pauldrons",
+      "prompt": "prompts/equipment/gear_spiked_pauldrons.md",
+      "output": "assets/equipment/spikedPauldrons.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_bone_mantle",
+      "prompt": "prompts/equipment/gear_bone_mantle.md",
+      "output": "assets/equipment/boneMantle.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_grave_spaulders",
+      "prompt": "prompts/equipment/gear_grave_spaulders.md",
+      "output": "assets/equipment/graveSpaulders.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_thorned_cuirass",
+      "prompt": "prompts/equipment/gear_thorned_cuirass.md",
+      "output": "assets/equipment/thornedCuirass.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_black_plate",
+      "prompt": "prompts/equipment/gear_black_plate.md",
+      "output": "assets/equipment/blackPlate.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_ashen_hauberk",
+      "prompt": "prompts/equipment/gear_ashen_hauberk.md",
+      "output": "assets/equipment/ashenHauberk.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_briar_belt",
+      "prompt": "prompts/equipment/gear_briar_belt.md",
+      "output": "assets/equipment/briarBelt.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_gilded_girdle",
+      "prompt": "prompts/equipment/gear_gilded_girdle.md",
+      "output": "assets/equipment/gildedGirdle.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_chain_sash",
+      "prompt": "prompts/equipment/gear_chain_sash.md",
+      "output": "assets/equipment/chainSash.png",
+      "batch": "12-gear-icons-a",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_a"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "sheet_gear_icons_b",
+      "prompt": "prompts/equipment/sheet_gear_icons_b.md",
+      "output": "assets/equipment/sheets/gear-icons-b.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_bloodstep_greaves",
+      "prompt": "prompts/equipment/gear_bloodstep_greaves.md",
+      "output": "assets/equipment/bloodstepGreaves.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_iron_treads",
+      "prompt": "prompts/equipment/gear_iron_treads.md",
+      "output": "assets/equipment/ironTreads.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_ashen_boots",
+      "prompt": "prompts/equipment/gear_ashen_boots.md",
+      "output": "assets/equipment/ashenBoots.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_shroud_of_night",
+      "prompt": "prompts/equipment/gear_shroud_of_night.md",
+      "output": "assets/equipment/shroudOfNight.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_crimson_cloak",
+      "prompt": "prompts/equipment/gear_crimson_cloak.md",
+      "output": "assets/equipment/crimsonCloak.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_tattered_cape",
+      "prompt": "prompts/equipment/gear_tattered_cape.md",
+      "output": "assets/equipment/tatteredCape.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_barbed_gauntlets",
+      "prompt": "prompts/equipment/gear_barbed_gauntlets.md",
+      "output": "assets/equipment/barbedGauntlets.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_ironclad_fists",
+      "prompt": "prompts/equipment/gear_ironclad_fists.md",
+      "output": "assets/equipment/ironcladFists.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_grave_gloves",
+      "prompt": "prompts/equipment/gear_grave_gloves.md",
+      "output": "assets/equipment/graveGloves.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_bloodletter",
+      "prompt": "prompts/equipment/gear_bloodletter.md",
+      "output": "assets/equipment/bloodletter.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_dread_blade",
+      "prompt": "prompts/equipment/gear_dread_blade.md",
+      "output": "assets/equipment/dreadBlade.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_iron_greatsword",
+      "prompt": "prompts/equipment/gear_iron_greatsword.md",
+      "output": "assets/equipment/ironGreatsword.png",
+      "batch": "13-gear-icons-b",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_b"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "sheet_gear_icons_c",
+      "prompt": "prompts/equipment/sheet_gear_icons_c.md",
+      "output": "assets/equipment/sheets/gear-icons-c.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_eye_of_dusk",
+      "prompt": "prompts/equipment/gear_eye_of_dusk.md",
+      "output": "assets/equipment/eyeOfDusk.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_bone_amulet",
+      "prompt": "prompts/equipment/gear_bone_amulet.md",
+      "output": "assets/equipment/boneAmulet.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_gold_locket",
+      "prompt": "prompts/equipment/gear_gold_locket.md",
+      "output": "assets/equipment/goldLocket.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_ring_of_gloom",
+      "prompt": "prompts/equipment/gear_ring_of_gloom.md",
+      "output": "assets/equipment/ringOfGloom.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_iron_band",
+      "prompt": "prompts/equipment/gear_iron_band.md",
+      "output": "assets/equipment/ironBand.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_signet_of_greed",
+      "prompt": "prompts/equipment/gear_signet_of_greed.md",
+      "output": "assets/equipment/signetOfGreed.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_ring_of_veins",
+      "prompt": "prompts/equipment/gear_ring_of_veins.md",
+      "output": "assets/equipment/ringOfVeins.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_onyx_ring",
+      "prompt": "prompts/equipment/gear_onyx_ring.md",
+      "output": "assets/equipment/onyxRing.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_copper_ring",
+      "prompt": "prompts/equipment/gear_copper_ring.md",
+      "output": "assets/equipment/copperRing.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_blood_vial",
+      "prompt": "prompts/equipment/gear_blood_vial.md",
+      "output": "assets/equipment/bloodVial.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_raven_feather",
+      "prompt": "prompts/equipment/gear_raven_feather.md",
+      "output": "assets/equipment/ravenFeather.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
+    },
+    {
+      "asset_id": "gear_lucky_coin",
+      "prompt": "prompts/equipment/gear_lucky_coin.md",
+      "output": "assets/equipment/luckyCoin.png",
+      "batch": "14-gear-icons-c",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-04",
+          "status": "ready",
+          "by": "claude",
+          "note": "created; produced by sheet_gear_icons_c"
+        }
+      ],
+      "generations": []
     }
   ]
 }
