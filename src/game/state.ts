@@ -1,3 +1,4 @@
+import { emptyGear, type GearState } from './gear';
 import { PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, SIGIL_LEVELS, SIGIL_WAVES, START_SIGILS, levelForXp, type PactId, type PrestigeId, type RunUpgradeId } from './config';
 
 export type RunLevels = Record<RunUpgradeId, number>;
@@ -37,6 +38,8 @@ export interface SaveData {
   speed: number;
   /** Show the life and level bars in percent instead of numbers. */
   barPercent?: boolean;
+  /** Forged gear, worn pieces and unspent Spoils. */
+  gear: GearState;
 }
 
 export function emptyRunLevels(): RunLevels {
@@ -52,7 +55,7 @@ export function emptyPacts(): PactLevels {
 }
 
 export function newSave(): SaveData {
-  return { version: 1, dread: 0, xp: 0, bestWave: 0, runs: 0, prestige: emptyPrestige(), sigils: START_SIGILS, pacts: emptyPacts(), treeVersion: TREE_VERSION, run: null, speed: 1 };
+  return { version: 1, dread: 0, xp: 0, bestWave: 0, runs: 0, prestige: emptyPrestige(), sigils: START_SIGILS, pacts: emptyPacts(), treeVersion: TREE_VERSION, run: null, speed: 1, gear: emptyGear() };
 }
 
 /** Bumped whenever the pact tree changes; older trees are refunded in Sigils. */
@@ -93,6 +96,7 @@ export function loadSave(): SaveData {
       ...data,
       prestige: pick(base.prestige, oldPrestige),
       pacts: pick(base.pacts, data.pacts),
+      gear: { ...emptyGear(), ...(data.gear ?? {}) },
       run: data.run ? { ...data.run, levels: { ...emptyRunLevels(), ...data.run.levels } } : null,
     };
   } catch {

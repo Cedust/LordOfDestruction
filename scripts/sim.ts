@@ -4,6 +4,7 @@
 import { BUILDS, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, type BuildId } from '../src/game/config';
 import { Game } from '../src/game/game';
 import { newSave } from '../src/game/state';
+import { ITEMS, SLOTS } from '../src/game/gear';
 
 const runs = Number(process.argv[2] ?? 10);
 const only = (process.argv[3] || undefined) as BuildId | undefined;
@@ -56,6 +57,13 @@ for (const build of BUILDS.filter((b) => !only || b.id === only)) {
       );
       if (options[0] && game.buyPrestige(options[0].id)) bought = true;
     }
+    // Gear: forge everything affordable, then wear own-set pieces first, else the highest level.
+    while (game.forge());
+    for (const slot of SLOTS) {
+      const owned = ITEMS.filter((i) => i.slot === slot.id && save.gear.owned[i.id]);
+      owned.sort((a, b) => Number(b.set === build.id) - Number(a.set === build.id) || save.gear.owned[b.id] - save.gear.owned[a.id]);
+      if (owned[0]) game.equip(owned[0].id);
+    }
     // Pacts: the bot stays in its own branch and keeps buying the cheapest open level.
     bought = true;
     while (bought) {
@@ -66,6 +74,7 @@ for (const build of BUILDS.filter((b) => !only || b.id === only)) {
       if (open[0] && game.buyPact(open[0].id)) bought = true;
     }
     const pacts = Object.entries(save.pacts).filter(([, v]) => v > 0).map(([k, v]) => `${k}:${v}`).join(' ');
+    if (show) console.log(`   gear: ${Object.keys(save.gear.owned).length}/36 found, ${save.gear.forged} forged, spoils ${save.gear.spoils}`);
     if (show) console.log(`   pacts: ${pacts} | sigils left ${save.sigils}`);
     game.rise();
   }

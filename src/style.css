@@ -228,3 +228,28 @@ button { font: inherit; color: inherit; }
 .level-box.flash { box-shadow: inset 0 2px 0 rgba(255, 255, 255, .12), 0 3px 0 #1a0d26, 0 0 0 2px var(--dread), 0 0 14px var(--dread); }
 .level-gain { color: var(--text); font-weight: 700; margin: 10px 0 0; }
 .level-gain:empty { display: none; }
+
+/* Gear: paperdoll with six slots on each side of the Lord */
+.paperdoll { display: grid; grid-template-columns: 1fr 96px 1fr; gap: 6px; align-items: stretch; }
+.doll-col { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.doll-lord { display: flex; align-items: center; justify-content: center; }
+.doll-lord img { width: 100%; max-height: 300px; object-fit: contain; }
+.doll-slot {
+  display: grid; grid-template-columns: 32px 1fr; grid-template-rows: auto auto; column-gap: 6px; align-items: center;
+  text-align: left; background: var(--panel); border: 2px solid var(--set); border-radius: 10px; padding: 4px 6px; cursor: pointer; min-width: 0;
+}
+.doll-slot.empty { border-style: dashed; color: var(--muted); }
+.doll-slot.selected { background: var(--panel-2); outline: 2px solid var(--text); outline-offset: 1px; }
+.doll-slot .gear-icon { grid-row: span 2; width: 32px; height: 32px; }
+.doll-name { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.doll-lvl { font-size: 10px; color: var(--muted); }
+.gear-icon { width: 40px; height: 40px; flex: none; border-radius: 8px; object-fit: contain; }
+.gear-icon.placeholder { display: flex; align-items: center; justify-content: center; background: var(--panel-2); color: var(--muted); font-weight: 700; }
+.gear-sets { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
+.gear-set { font-size: 12px; color: var(--set); border: 1px solid var(--set); border-radius: 999px; padding: 2px 8px; }
+.gear-piece { border-left: 4px solid var(--set) !important; }
+.gear-piece.worn { opacity: 1 !important; background: var(--panel-2); }
+.forge { display: flex; align-items: center; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px; }
+.forge .info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.forge .desc { font-size: 12px; color: var(--muted); }
+.forge .stat { font-size: 12px; color: #e8c07a; }
