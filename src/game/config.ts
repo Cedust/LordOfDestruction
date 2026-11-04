@@ -67,28 +67,27 @@ export const SCALE = {
 };
 
 export const WORLD_W = 420;
-export const WORLD_H = 300;
-export const LORD_X = 64;
-export const LORD_Y = 190;
+export const WORLD_H = 280;
+export const LORD_X = 62;
+export const LORD_Y = 252;
 /** Vertical squash of the floor plane, so the battlefield reads as seen from the side. */
 export const DEPTH = 0.5;
 /** Where the floor of the throne room begins; floor markings are not drawn above it. */
-export const FLOOR_Y = 166;
+export const FLOOR_Y = 150;
 /**
- * Ranges are strips on the floor, from left to right, starting in front of the dais
- * stairs. Their borders follow the perspective of the floor tiles in throne-room.png:
+ * Ranges are strips on the floor, from left to right, starting just in front of the Lord. Their borders follow the perspective of the floor tiles in throne-room.png:
  * straight lines that meet in a vanishing point (FIELD_VP_X, FIELD_VP_Y) above the hall.
  * A hero's distance is measured along the row FIELD_REF_Y (FIELD_X + dist * FIELD_SCALE there); its lane
  * is how far down it stands between FIELD_TOP and FIELD_BOTTOM.
  */
-export const FIELD_X = 128;
+export const FIELD_X = 112;
 export const FIELD_TOP = 160;
-export const FIELD_BOTTOM = 282;
-export const FIELD_REF_Y = 282;
+export const FIELD_BOTTOM = 266;
+export const FIELD_REF_Y = 266;
 /** Stretches the strips so Far ends near the right edge of the screen. */
-export const FIELD_SCALE = 1.2;
-export const FIELD_VP_X = 225;
-export const FIELD_VP_Y = 2;
+export const FIELD_SCALE = 1.27;
+export const FIELD_VP_X = 215;
+export const FIELD_VP_Y = -40;
 
 /** World x of the line `dist` from the field's left border, at height y. */
 export function fieldX(dist: number, y: number): number {
