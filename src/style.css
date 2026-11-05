@@ -166,8 +166,10 @@ span.cur[data-cur='settings'] { background: none; color: var(--muted); font-size
 .buy:not(:disabled):active { transform: translateY(2px); box-shadow: 0 0 0 var(--ink); }
 .buy.purple { background: linear-gradient(180deg, #c99bff, #8a4fd8 55%, #6a32b8); color: #fff; text-shadow: 0 1px 0 rgba(0, 0, 0, .4); }
 .buy.teal { background: linear-gradient(180deg, #b6f4ea, #4fb8a8 55%, #2a7f73); color: #0d2a26; }
+.buy.boost { background: linear-gradient(180deg, #ffc27a, #ff7a1f 55%, #c84a0c); color: #fff; text-shadow: 0 1px 0 rgba(0, 0, 0, .45); }
 .buy:disabled { background: linear-gradient(180deg, #4a3d5c, #342a42); color: var(--muted); text-shadow: none; box-shadow: 0 2px 0 var(--ink); cursor: default; }
 .buy.wide { min-width: 96px; }
+.buy.boost:disabled { border-color: #c84a0c; color: #ffb27a; }
 .buy .cur { width: 16px; height: 16px; font-size: 9px; }
 .cost-line { display: inline-flex; align-items: center; gap: 4px; }
 
