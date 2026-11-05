@@ -29,6 +29,11 @@ import {
   WAVE_PAUSE,
   WAVE_HEAL,
   START_GOLD,
+  HERO_DAMAGE,
+  HERO_PACE,
+  flattenHit,
+  RUN_START_SHARE,
+  FIGHT_START_SHARE,
   RUSH_WALK,
   EXTRA_BUILD_COST,
   SIGIL_LEVELS,
@@ -132,6 +137,8 @@ export class Game {
   lastSummary: RunSummary | null = null;
   /** Heroes the current wave started with, for the wave progress bar. */
   waveTotal = 0;
+  /** Seconds the current wave has been fought. */
+  waveTime = 0;
   /** Gold earned during the current wave; not saved, so a reload replays the wave fairly. */
   private waveGold = 0;
   /** Experience and Dread from levels earned during the current wave; left out of saves like `waveGold`. */
@@ -162,9 +169,13 @@ export class Game {
 
   private freshRun(): RunState {
     const head = this.save.prestige.headStart;
-    const startWave = 1 + 5 * head;
+    // Runs begin close to where the fighting gets real, not with a long stretch of instant kills.
+    const fight = this.save.fightWave ?? Math.floor(this.save.bestWave * RUN_START_SHARE);
+    const startWave = Math.max(1 + 5 * head, Math.min(Math.floor(this.save.bestWave * RUN_START_SHARE), Math.floor(fight * FIGHT_START_SHARE)));
     let gold = 0;
-    for (let w = 1; w < startWave; w++) gold += heroCountForWave(w) * 7 * Math.pow(SCALE.gold, w - 1) * 0.7;
+    // The gold the skipped waves would have dropped, with Dread and gear gold bonuses.
+    const goldMult = computeStats(emptyRunLevels(), this.save.prestige, this.save.pacts, this.save.gear).goldMult;
+    for (let w = 1; w < startWave; w++) gold += heroCountForWave(w) * 7 * Math.pow(SCALE.gold, w - 1) * goldMult;
     gold = Math.max(gold, START_GOLD);
     const run: RunState = { wave: startWave, gold: Math.floor(gold), levels: emptyRunLevels(), lordHp: 0, hitsTaken: 0, startLevel: this.level(), dreadGained: 0 };
     return run;
@@ -440,6 +451,7 @@ export class Game {
       return;
     }
 
+    this.waveTime += dt;
     this.regen(dt);
     this.moveAndAttack(dt);
     this.applyAura(dt);
@@ -450,6 +462,7 @@ export class Game {
     this.bloodLash(dt);
     this.removeDead();
 
+    if (this.run.firstHurt === undefined && this.run.lordHp < this.stats.maxHp * 0.9) this.run.firstHurt = this.run.wave;
     if (this.run.lordHp <= 0) {
       this.endRun(false);
       return;
@@ -518,8 +531,8 @@ export class Game {
         dist: SPAWN_DIST + i * 22 + this.rng() * 20,
         hp: def.hp * hpMult,
         maxHp: def.hp * hpMult,
-        damage: def.damage * Math.pow(SCALE.damage, wave - 1),
-        attackTimer: def.attackInterval * (0.3 + this.rng() * 0.7),
+        damage: def.damage * HERO_DAMAGE * HERO_PACE * Math.pow(SCALE.damage, wave - 1),
+        attackTimer: def.attackInterval * HERO_PACE * (0.3 + this.rng() * 0.7),
         gold: def.gold * Math.pow(SCALE.gold, wave - 1),
         hurt: 99,
         anim: this.rng() * 10,
@@ -534,6 +547,7 @@ export class Game {
     });
     this.stacks = { aura: 0, thorns: 0, lash: 0 };
     this.waveTotal = this.heroes.length;
+    this.waveTime = 0;
     this.phase = 'fighting';
   }
 
@@ -564,7 +578,7 @@ export class Game {
       h.attackTimer -= dt;
       if (h.attackTimer <= 0) {
         const slowed = this.inAura(h) ? 1 + this.pv('grasp') : 1;
-        h.attackTimer = def.attackInterval * slowed;
+        h.attackTimer = def.attackInterval * HERO_PACE * slowed;
         this.heroHitsLord(h);
       }
     }
@@ -584,7 +598,8 @@ export class Game {
     const withered = this.inAura(h) ? 1 - this.pv('withering') : 1;
     const raw = h.damage * withered;
     const blocked = raw * blockShare(this.stats.armor, this.run.wave);
-    let taken = raw - blocked;
+    // Big hits flatten out below a slice of max life, so life drains visibly instead of vanishing at once.
+    let taken = flattenHit(raw - blocked, this.stats.maxHp);
     const shield = this.run.shield ?? 0;
     if (shield > 0) {
       const absorbed = Math.min(shield, taken);
@@ -916,6 +931,7 @@ export class Game {
     const recordSigils = sigilsForRecord(this.save.bestWave, wave);
     const sigils = recordSigils + (this.run.levelSigils ?? 0);
     this.save.bestWave = Math.max(this.save.bestWave, wave);
+    this.save.fightWave = Math.max(this.run.firstHurt ?? wave, this.save.fightWave ?? 0);
     this.save.sigils += recordSigils;
     this.save.runs++;
     this.save.run = null;

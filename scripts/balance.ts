@@ -4,6 +4,7 @@
 // Usage: npm run balance [hours] [build] [every]
 import { BUILDS, PACTS, PRESTIGE_UPGRADES, RUN_UPGRADES, type BuildId } from '../src/game/config';
 import { Game } from '../src/game/game';
+import { blockShare } from '../src/game/stats';
 import { newSave, type SaveData } from '../src/game/state';
 import { ITEMS, SLOTS } from '../src/game/gear';
 
@@ -92,6 +93,13 @@ for (const build of BUILDS.filter((b) => !only || b.id === only)) {
     let waveStart = 0;
     let minHpShare = 1;
     let dangerWaves = 0;
+    let cleanWaves = 0;
+    const tail: string[] = [];
+    let hpSum = 0;
+    let hurtWave = 0;
+    let hurtT = 0;
+    let slowWave = 0;
+    let slowT = 0;
     let idle: string[] = [];
     const idleAt = [0.5, 0.8, 0.95].map((f) => Math.max(2, Math.floor(best * f)));
     // First run has no record: just play it out. Later runs prestige once 60 s pass without a new wave beyond the record pace.
@@ -102,8 +110,13 @@ for (const build of BUILDS.filter((b) => !only || b.id === only)) {
       minHpShare = Math.min(minHpShare, game.run.lordHp / game.stats.maxHp);
       if (game.run.wave !== lastWave) {
         waveTimes.push(t - waveStart);
+        tail.push(`w${game.run.wave - 1}:${(t - waveStart).toFixed(0)}s/${Math.round(minHpShare * 100)}%`);
         waveStart = t;
         if (minHpShare < 0.5) dangerWaves++;
+        if (minHpShare > 0.999) cleanWaves++;
+        hpSum += minHpShare;
+        if (!hurtWave && minHpShare < 0.9) { hurtWave = game.run.wave - 1; hurtT = t; }
+        if (!slowWave && waveTimes[waveTimes.length - 1] > 5) { slowWave = game.run.wave - 1; slowT = t; }
         minHpShare = 1;
         lastWave = game.run.wave;
         lastRecordT = t;
@@ -117,7 +130,9 @@ for (const build of BUILDS.filter((b) => !only || b.id === only)) {
         taps += shop(game);
       }
       // Stuck: a wave takes longer than 40 s -> prestige (like a player who sees the wall).
-      if (t - lastRecordT > 40) game.prestige();
+      const last5 = waveTimes.slice(-5);
+      const slow = last5.length === 5 && last5.reduce((a, b) => a + b, 0) / 5 > 20 && game.run.wave > best;
+      if (t - lastRecordT > 40 || slow || t > 3600) game.prestige();
     }
     const s = game.lastSummary!;
     total += t;
@@ -128,8 +143,9 @@ for (const build of BUILDS.filter((b) => !only || b.id === only)) {
       const avg = (a: number[]) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
       console.log(
         `[${(total / 3600).toFixed(1)} h] run ${r}: wave ${s.wave} (best ${best}), ${(t / 60).toFixed(1)} min, ${s.manual ? 'prestige' : 'fell'} | ` +
-          `taps ${taps} (${(taps / (t / 60)).toFixed(1)}/min) | wave s: 1st half ${avg(half).toFixed(1)}, all ${avg(waveTimes).toFixed(1)} | danger waves ${dangerWaves} | idle ${idle.join(' ')} | Lv ${game.level()} (+${s.levels})`,
+          `taps ${taps} (${(taps / (t / 60)).toFixed(1)}/min) | wave s: 1st half ${avg(half).toFixed(1)}, all ${avg(waveTimes).toFixed(1)} | danger ${dangerWaves} untouched ${Math.round((100 * cleanWaves) / Math.max(1, waveTimes.length))}% avgLow ${Math.round((100 * hpSum) / Math.max(1, waveTimes.length))}% | zone: slow@${slowWave} hurt@${hurtWave} -> end ${s.wave} (${Math.round(t - (slowT || t))}s/${Math.round(t - (hurtT || t))}s) | idle ${idle.join(' ')} | Lv ${game.level()} (+${s.levels})`,
       );
+      if (process.env.TAIL) console.log('     last: ' + tail.slice(-10).join(' ') + ` | died w${s.wave}: ` + game.heroes.map((h) => `${h.kind}(dmg ${Math.round(h.damage)}, hp ${Math.round((100 * h.hp) / h.maxHp)}%)`).join(',') + ` | maxHp ${Math.round(game.stats.maxHp)} regen ${Math.round(game.stats.regen)} block ${(blockShare(game.stats.armor, s.wave) * 100).toFixed(1)}%`);
       const lv = Object.entries(game.run.levels).filter(([, v]) => v > 0).map(([k, v]) => `${k}:${v}`).join(' ');
       console.log(`     powers ${lv} | gear ${Object.keys(save.gear.owned).length}/36 | sigils spent ${game.sigilsSpent()}`);
     }

@@ -54,16 +54,22 @@ export const HEROES: Record<HeroKind, HeroDef> = {
   archer: { name: 'Archer', hp: 13, damage: 2.4, attackInterval: 1.5, speed: 60, range: 'mid', gold: 8, fromWave: 3, weight: 3, ranged: true, color: '#7fb07a', radius: 12 },
   cutpurse: { name: 'Cutpurse', hp: 10, damage: 3.6, attackInterval: 0.7, speed: 110, range: 'near', gold: 10, fromWave: 6, weight: 2, ranged: false, color: '#c9a35b', radius: 11 },
   battlemage: { name: 'Battlemage', hp: 12, damage: 6, attackInterval: 2.6, speed: 55, range: 'far', gold: 12, fromWave: 8, weight: 1.5, ranged: true, color: '#6fc3d8', radius: 12 },
-  champion: { name: 'Champion', hp: 180, damage: 7, attackInterval: 1.4, speed: 45, range: 'near', gold: 120, fromWave: 10, weight: 0, ranged: false, color: '#f1c75b', radius: 20 },
+  champion: { name: 'Champion', hp: 50, damage: 5, attackInterval: 1.4, speed: 45, range: 'near', gold: 120, fromWave: 10, weight: 0, ranged: false, color: '#f1c75b', radius: 20 },
 };
+
+/** All hero damage is multiplied by this, so a fight wears the Lord down over many seconds. */
+export const HERO_DAMAGE = 0.4;
+/** Heroes attack this much more often for this much less damage per hit, so life drains in small steps instead of big chunks. */
+export const HERO_PACE = 0.4;
+
 
 export const CHAMPION_EVERY = 10;
 export const CHAMPION_AURA_REDUCTION = 0.75; // shield blocks a quarter of aura damage
 
 export const SCALE = {
-  hp: 1.16,
-  damage: 1.11,
-  gold: 1.16,
+  hp: 1.09,
+  damage: 1.065,
+  gold: 1.09,
 };
 
 export const WORLD_W = 420;
@@ -129,6 +135,22 @@ export const RUSH_WALK = 3;
 export const WAVE_HEAL = 0.25;
 /** Gold every run starts with, so the first powers can be bought right away. */
 export const START_GOLD = 40;
+/** A new run starts at this share of the best wave, with the gold of the waves it skips. */
+export const RUN_START_SHARE = 0.9;
+/** ...but never later than this share of the wave where the last run first got dangerous. */
+export const FIGHT_START_SHARE = 0.9;
+
+/**
+ * A hero hit never takes more than HIT_MAX of the Lord's max life. Small hits count in full, big ones
+ * flatten out toward HIT_MAX (x · M / (x + M), x = hit / max life). Being far behind still kills within
+ * a few hits, but life drains visibly instead of vanishing in a single blow.
+ */
+export const HIT_MAX = 0.15;
+
+export function flattenHit(damage: number, maxHp: number): number {
+  const x = damage / maxHp;
+  return maxHp * ((x * HIT_MAX) / (x + HIT_MAX));
+}
 
 export function heroCountForWave(wave: number): number {
   return Math.min(6, 1 + Math.floor(wave / 3));
@@ -446,13 +468,13 @@ export const SIGIL_LEVELS = 50;
  * every level worth about as much as the last, so records keep moving instead of hitting a wall.
  */
 export const DREAD_GROWTH: Partial<Record<PrestigeId, { linear: number; exp: number }>> = {
-  blackHeart: { linear: 0.15, exp: 1.05 },
-  malice: { linear: 0.1, exp: 1.05 },
-  gloom: { linear: 0.25, exp: 1.05 },
-  barbs: { linear: 0.25, exp: 1.05 },
-  sanguine: { linear: 0.25, exp: 1.05 },
-  tremor: { linear: 0.25, exp: 1.05 },
-  tithe: { linear: 0.15, exp: 1.04 },
+  blackHeart: { linear: 0.15, exp: 1.03 },
+  malice: { linear: 0.1, exp: 1.03 },
+  gloom: { linear: 0.25, exp: 1.03 },
+  barbs: { linear: 0.25, exp: 1.03 },
+  sanguine: { linear: 0.25, exp: 1.03 },
+  tremor: { linear: 0.25, exp: 1.03 },
+  tithe: { linear: 0.15, exp: 1.025 },
 };
 
 /** Milestones for run powers without a level cap: every MILESTONE_EVERY levels, ×MILESTONE_MULT. */

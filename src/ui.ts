@@ -1,6 +1,6 @@
 import { HEROES, MILESTONE_EVERY, MILESTONE_MULT, PRESTIGE_UPGRADES, RUN_UPGRADES, type PrestigeId, type RunUpgradeId } from './game/config';
 import { fmt, fmtBonus, fmtShare, type Game } from './game/game';
-import { blockShare, computeStats, dreadMult, type LordStats } from './game/stats';
+import { computeStats, dreadMult, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
 import { lockHtml, SkillTree } from './tree';
 import { curHtml, GearPanel } from './gearui';
@@ -17,12 +17,12 @@ function iconHtml(id: string, name: string): string {
 }
 
 /** Human-readable value of the stat an upgrade improves. */
-function statText(id: RunUpgradeId, s: LordStats, wave: number): string {
+function statText(id: RunUpgradeId, s: LordStats): string {
   switch (id) {
     case 'vitality':
       return `${fmt(s.maxHp)} Max Life`;
     case 'hide':
-      return `${Math.round(blockShare(s.armor, wave) * 100)}% Blocked`;
+      return `${fmt(s.armor)} Armor`;
     case 'regen':
       return `${fmt(s.regen)} Life/s`;
     case 'shockwave':
@@ -381,13 +381,14 @@ export class UI {
       row.name.innerHTML = `${def.name}<em>Lv ${shown}</em>${isNew ? '<span class="new-tag">NEW</span>' : milestone}`;
       const bulk = g.runUpgradeBulk(def.id, mode === 0 ? Infinity : mode);
       const next = computeStats({ ...g.run.levels, [def.id]: g.run.levels[def.id] + Math.max(1, bulk.count) }, g.save.prestige, g.save.pacts, g.save.gear);
-      const stat = maxed ? `${statText(def.id, s, g.run.wave)} (Max)` : `${statText(def.id, s, g.run.wave)} → <b>${statText(def.id, next, g.run.wave)}</b>`;
+      const stat = maxed ? `${statText(def.id, s)} (Max)` : `${statText(def.id, s)} → <b>${statText(def.id, next)}</b>`;
       // Lv 0 explains what the power does; after that the values, with the text one tap away.
       row.line.innerHTML = isNew ? `<span class="ds">${def.desc}</span>` : row.info ? `<span class="ds">${def.desc}</span><br><span class="st">${stat}</span>` : `<span class="st">${stat}</span>`;
       const afford = !maxed && bulk.count > 0 && g.run.gold >= bulk.cost;
       const boost = !maxed && g.isMilestoneNext(def.id);
       row.buy.classList.toggle('boost', boost);
-      row.buy.innerHTML = maxed ? 'MAX' : boost ? `${fmt(bulk.cost)}g<small>×${MILESTONE_MULT} Boost</small>` : `${fmt(bulk.cost)}g<small>+${Math.max(1, bulk.count)} Lv</small>`;
+      const gold = curHtml('gold').replace('class="cur"', 'class="cur inline-cur"');
+      row.buy.innerHTML = maxed ? 'MAX' : boost ? `<span class="price">${fmt(bulk.cost)} ${gold}</span><small>×${MILESTONE_MULT} Boost</small>` : `<span class="price">${fmt(bulk.cost)} ${gold}</span><small>+${Math.max(1, bulk.count)} Lv</small>`;
       row.buy.disabled = !afford || between;
       if (afford) powersReady = true;
     }
@@ -439,7 +440,8 @@ export class UI {
     setBadge('powers', powersReady && this.tab !== 'powers');
     setBadge('dread', dreadReady);
     setBadge('pacts', pactsReady);
-    setBadge('gear', g.save.gear.spoils >= g.forgeCost() && g.canForge() && this.tab !== 'gear');
+    // Not tied to the short break between waves, so the dot does not flicker on and off.
+    setBadge('gear', g.save.gear.spoils >= g.forgeCost() && this.tab !== 'gear');
 
     // Run summary
     $('#summary').hidden = !this.summaryOpen;

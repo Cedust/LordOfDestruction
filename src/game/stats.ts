@@ -69,13 +69,13 @@ export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevel
     if (d > 0) reach = i;
   });
   return {
-    maxHp: 100 * (1 + 0.22 * run.vitality) * Math.pow(1.1, run.vitality) * milestoneMult(run.vitality) * life,
-    armor: run.hide > 0 ? HIDE_ARMOR * grow(run.hide, 0.3, 1.18) * milestoneMult(run.hide) : 0,
-    regen: (2 + 0.8 * run.regen) * Math.pow(1.1, run.regen) * milestoneMult(run.regen) * heart * gearMult(gear, 'regen'),
+    maxHp: 100 * (1 + 0.22 * run.vitality) * Math.pow(1.05, run.vitality) * milestoneMult(run.vitality) * life,
+    armor: run.hide > 0 ? HIDE_ARMOR * grow(run.hide, 0.3, 1.09) * milestoneMult(run.hide) : 0,
+    regen: (run.regen > 0 ? 1 + 0.8 * run.regen : 0) * Math.pow(1.05, run.regen) * milestoneMult(run.regen) * heart * gearMult(gear, 'regen'),
     auraDps: aura,
     auraReach: reach,
-    thorns: thornLvl > 0 ? 1.5 * grow(thornLvl, 0.3, 1.165) * milestoneMult(thornLvl) * malice * dreadMult('barbs', p.barbs) * setMult(gear, 'thorns') : 0,
-    lash: lashLvl > 0 ? LASH_SHARE * grow(lashLvl, 0.3, 1.037) * milestoneMult(lashLvl) * malice * dreadMult('sanguine', p.sanguine) * setMult(gear, 'blood') : 0,
+    thorns: thornLvl > 0 ? 1.5 * grow(thornLvl, 0.3, 1.0) * milestoneMult(thornLvl) * malice * dreadMult('barbs', p.barbs) * setMult(gear, 'thorns') : 0,
+    lash: lashLvl > 0 ? LASH_SHARE * grow(lashLvl, 0.3, 1.08) * milestoneMult(lashLvl) * malice * dreadMult('sanguine', p.sanguine) * setMult(gear, 'blood') : 0,
     shockwave: SHOCKWAVE_DAMAGE * grow(waveLvl, 0.3, 1.18) * milestoneMult(waveLvl) * malice * dreadMult('tremor', p.tremor) * gearMult(gear, 'shockwave'),
     bloodPact: 0.02 * run.bloodPact,
     goldMult: dreadMult('tithe', p.tithe) * gearMult(gear, 'gold'),

@@ -162,6 +162,7 @@ span.cur[data-cur='settings'] { background: none; color: var(--muted); font-size
   background: linear-gradient(180deg, #ffe08f, #f0b43a 55%, #c47f1c); color: #2a1606;
   box-shadow: inset 0 2px 0 rgba(255, 255, 255, .5), inset 0 -3px 0 rgba(0, 0, 0, .18), 0 2px 0 var(--ink);
 }
+.buy .price { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
 .buy small { font-size: 10px; font-weight: 800; opacity: .75; }
 .buy:not(:disabled):active { transform: translateY(2px); box-shadow: 0 0 0 var(--ink); }
 .buy.purple { background: linear-gradient(180deg, #c99bff, #8a4fd8 55%, #6a32b8); color: #fff; text-shadow: 0 1px 0 rgba(0, 0, 0, .4); }

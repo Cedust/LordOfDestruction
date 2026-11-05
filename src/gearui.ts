@@ -138,7 +138,7 @@ export class GearPanel {
     }).join('');
 
     const cost = this.game.forgeCost();
-    this.forgeBtn.innerHTML = `Forge · ${fmt(cost)} ${curHtml('spoils')}`;
+    this.forgeBtn.innerHTML = this.game.canForge() || gear.spoils < cost ? `Forge · ${fmt(cost)} ${curHtml('spoils')}` : 'Forge After This Wave';
     this.forgeBtn.disabled = gear.spoils < cost || !this.game.canForge();
     this.spoilsEl.textContent = fmt(gear.spoils);
     this.result.textContent = this.last;
