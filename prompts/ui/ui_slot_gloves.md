@@ -13,6 +13,7 @@ aspect_ratio: "1:1"
 generation_size: 1024x1024
 final_size: 128x128
 reference_images: []
+rotate: 180
 ---
 
 ## Prompt
@@ -36,3 +37,4 @@ Do not include any text, letters, numbers, logos, watermark, signature, border o
 ## Changelog
 
 - r1 (2026-11-04): first version. Normally cut from sheet_slot_icons; this prompt is the fallback.
+- 2026-11-05: Timo: the cut-out glove is turned 180 degrees (`rotate: 180`, applied by scripts/slice_sheet.py).
