@@ -62,8 +62,8 @@ export const CHAMPION_AURA_REDUCTION = 0.75; // shield blocks a quarter of aura 
 
 export const SCALE = {
   hp: 1.16,
-  damage: 1.12,
-  gold: 1.12,
+  damage: 1.11,
+  gold: 1.16,
 };
 
 export const WORLD_W = 420;
@@ -122,7 +122,13 @@ export function fieldPos(dist: number, lane: number): { x: number; y: number } {
 /** Height of the Lord's chest above LORD_Y, where projectiles hit and numbers pop. */
 export const LORD_CHEST = 55;
 export const SPAWN_DIST = 330;
-export const WAVE_PAUSE = 1.2; // seconds between waves
+export const WAVE_PAUSE = 0.6; // seconds between waves
+/** Heroes walk this much faster until they step onto the field, so easy waves fly by. */
+export const RUSH_WALK = 3;
+/** Share of max life the Lord recovers whenever a wave is cleared. */
+export const WAVE_HEAL = 0.25;
+/** Gold every run starts with, so the first powers can be bought right away. */
+export const START_GOLD = 40;
 
 export function heroCountForWave(wave: number): number {
   return Math.min(6, 1 + Math.floor(wave / 3));
@@ -174,13 +180,13 @@ export interface RunUpgradeDef {
 }
 
 export const RUN_UPGRADES: RunUpgradeDef[] = [
-  { id: 'shockwave', name: 'Shockwave', desc: 'Every Few Seconds a Shockwave Hurts Every Hero in the Hall.', baseCost: 8, costGrowth: 1.15, free: true },
-  { id: 'aura', name: 'Dread Aura', desc: 'Every Hero in the Hall Takes Damage Over Time.', baseCost: 8, costGrowth: 1.15, build: 'aura' },
-  { id: 'thorns', name: 'Thorns', desc: 'Every Hero That Hits You Gets Hurt in Return.', baseCost: 8, costGrowth: 1.15, build: 'thorns' },
-  { id: 'lash', name: 'Blood Lash', desc: 'You Pay with Your Own Life to Strike Down the Weakest Hero.', baseCost: 8, costGrowth: 1.15, build: 'blood' },
-  { id: 'vitality', name: 'Vitality', desc: 'You Can Take More Damage Before You Fall.', baseCost: 8, costGrowth: 1.15 },
-  { id: 'hide', name: 'Hide', desc: 'Every Hit Against You Hurts a Little Less.', baseCost: 15, costGrowth: 1.2, maxLevel: 40 },
-  { id: 'regen', name: 'Regeneration', desc: 'You Slowly Heal Over Time.', baseCost: 10, costGrowth: 1.16 },
+  { id: 'shockwave', name: 'Shockwave', desc: 'Every Few Seconds a Shockwave Hurts Every Hero in the Hall.', baseCost: 8, costGrowth: 1.3, free: true },
+  { id: 'aura', name: 'Dread Aura', desc: 'Every Hero in the Hall Takes Damage Over Time.', baseCost: 8, costGrowth: 1.3, build: 'aura' },
+  { id: 'thorns', name: 'Thorns', desc: 'Every Hero That Hits You Gets Hurt in Return.', baseCost: 8, costGrowth: 1.3, build: 'thorns' },
+  { id: 'lash', name: 'Blood Lash', desc: 'You Pay with Your Own Life to Strike Down the Weakest Hero.', baseCost: 8, costGrowth: 1.3, build: 'blood' },
+  { id: 'vitality', name: 'Vitality', desc: 'You Can Take More Damage Before You Fall.', baseCost: 8, costGrowth: 1.3 },
+  { id: 'hide', name: 'Hide', desc: 'Blocks a Share of the Damage from Every Hit You Take.', baseCost: 15, costGrowth: 1.3 },
+  { id: 'regen', name: 'Regeneration', desc: 'You Slowly Heal Over Time.', baseCost: 10, costGrowth: 1.3 },
   { id: 'bloodPact', name: 'Blood Pact', desc: 'You Heal a Little Whenever a Hero Dies.', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
 ];
 
@@ -192,6 +198,14 @@ export const SHOCKWAVE_DAMAGE = 10;
 export const LASH_INTERVAL = 2;
 export const LASH_SHARE = 0.1;
 export const LASH_COST = 0.03;
+
+/**
+ * Hide works like armor in Diablo: the share blocked is armor / (armor + HIDE_K × hero strength),
+ * where hero strength is how much harder heroes hit in this wave than in wave 1. It never reaches
+ * 100%, so Hide can be levelled forever, but it has to keep up with the waves.
+ */
+export const HIDE_ARMOR = 10;
+export const HIDE_K = 25;
 
 export function runUpgradeCost(def: RunUpgradeDef, level: number): number {
   return Math.ceil(def.baseCost * Math.pow(def.costGrowth, level));
@@ -237,7 +251,7 @@ export const PRESTIGE_UPGRADES: PrestigeDef[] = [
   { id: 'tithe', name: 'Tithe', desc: 'Heroes Drop More Gold.', baseCost: 2, costStep: 0.5 },
   { id: 'avarice', name: 'Avarice', desc: 'Powers Cost Less Gold.', baseCost: 2, costStep: 0.5, maxLevel: 10 },
   { id: 'dreadHarvest', name: 'Dread Harvest', desc: 'You Gain Experience Faster and Level Up Sooner.', baseCost: 3, costStep: 1 },
-  { id: 'headStart', name: 'Head Start', desc: 'New Runs Skip the First Waves and Start with Gold.', baseCost: 3, costStep: 1, maxLevel: 10 },
+  { id: 'headStart', name: 'Head Start', desc: 'New Runs Skip the First Waves and Start with Gold.', baseCost: 3, costStep: 1, maxLevel: 20 },
 ];
 
 /** Dread costs rise by a fixed amount per level, since every Lord level gives one point. */

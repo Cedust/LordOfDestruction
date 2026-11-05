@@ -1,10 +1,10 @@
-import { SHOCKWAVE_DAMAGE, AVARICE_PER_LEVEL, DREAD_HARVEST_PER_LEVEL, DREAD_GROWTH, LASH_SHARE, MILESTONE_EVERY, MILESTONE_MULT, PACTS, pactValue, type BuildId, type PrestigeId, type RunUpgradeId } from './config';
+import { HIDE_ARMOR, HIDE_K, SCALE, SHOCKWAVE_DAMAGE, AVARICE_PER_LEVEL, DREAD_HARVEST_PER_LEVEL, DREAD_GROWTH, LASH_SHARE, MILESTONE_EVERY, MILESTONE_MULT, PACTS, pactValue, type BuildId, type PrestigeId, type RunUpgradeId } from './config';
 import { gearMult, setMult, type GearState } from './gear';
 import type { PactLevels, PrestigeLevels, RunLevels } from './state';
 
 export interface LordStats {
   maxHp: number;
-  /** Share of incoming damage that is blocked, 0..1. */
+  /** Armor rating from Hide; see `blockShare` for the share it blocks in a wave. */
   armor: number;
   regen: number;
   /** Aura damage per second in Near, Mid and Far (0 where there is none). */
@@ -57,7 +57,7 @@ export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevel
   const heart = dreadMult('blackHeart', p.blackHeart);
   const life = heart * gearMult(gear, 'life');
   const auraLvl = powerLevel('aura', run, builds.aura);
-  const auraBase = auraLvl > 0 ? 13 * grow(auraLvl, 0.4, 1.085) * milestoneMult(auraLvl) * malice * dreadMult('gloom', p.gloom) * setMult(gear, 'aura') : 0;
+  const auraBase = auraLvl > 0 ? 13 * grow(auraLvl, 0.4, 1.18) * milestoneMult(auraLvl) * malice * dreadMult('gloom', p.gloom) * setMult(gear, 'aura') : 0;
   const shadow = 1 + pv(pacts, 'longShadow');
   const sanctum = pacts.innerSanctum > 0 ? pv(pacts, 'innerSanctum') : 1;
   const aura = [auraBase * sanctum, auraBase * shadow, auraBase * shadow];
@@ -69,14 +69,14 @@ export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevel
     if (d > 0) reach = i;
   });
   return {
-    maxHp: 100 * (1 + 0.22 * run.vitality) * Math.pow(1.05, run.vitality) * milestoneMult(run.vitality) * life,
-    armor: 0.6 * (1 - Math.pow(0.95, run.hide)),
-    regen: (run.regen > 0 ? 1 + 0.8 * run.regen : 0) * Math.pow(1.05, run.regen) * milestoneMult(run.regen) * heart * gearMult(gear, 'regen'),
+    maxHp: 100 * (1 + 0.22 * run.vitality) * Math.pow(1.1, run.vitality) * milestoneMult(run.vitality) * life,
+    armor: run.hide > 0 ? HIDE_ARMOR * grow(run.hide, 0.3, 1.18) * milestoneMult(run.hide) : 0,
+    regen: (2 + 0.8 * run.regen) * Math.pow(1.1, run.regen) * milestoneMult(run.regen) * heart * gearMult(gear, 'regen'),
     auraDps: aura,
     auraReach: reach,
-    thorns: thornLvl > 0 ? 1.5 * grow(thornLvl, 0.3, 1.05) * milestoneMult(thornLvl) * malice * dreadMult('barbs', p.barbs) * setMult(gear, 'thorns') : 0,
-    lash: lashLvl > 0 ? LASH_SHARE * grow(lashLvl, 0.3, 1.04) * milestoneMult(lashLvl) * malice * dreadMult('sanguine', p.sanguine) * setMult(gear, 'blood') : 0,
-    shockwave: SHOCKWAVE_DAMAGE * grow(waveLvl, 0.3, 1.06) * milestoneMult(waveLvl) * malice * dreadMult('tremor', p.tremor) * gearMult(gear, 'shockwave'),
+    thorns: thornLvl > 0 ? 1.5 * grow(thornLvl, 0.3, 1.165) * milestoneMult(thornLvl) * malice * dreadMult('barbs', p.barbs) * setMult(gear, 'thorns') : 0,
+    lash: lashLvl > 0 ? LASH_SHARE * grow(lashLvl, 0.3, 1.037) * milestoneMult(lashLvl) * malice * dreadMult('sanguine', p.sanguine) * setMult(gear, 'blood') : 0,
+    shockwave: SHOCKWAVE_DAMAGE * grow(waveLvl, 0.3, 1.18) * milestoneMult(waveLvl) * malice * dreadMult('tremor', p.tremor) * gearMult(gear, 'shockwave'),
     bloodPact: 0.02 * run.bloodPact,
     goldMult: dreadMult('tithe', p.tithe) * gearMult(gear, 'gold'),
     xpMult: (1 + DREAD_HARVEST_PER_LEVEL * p.dreadHarvest) * gearMult(gear, 'xp'),
@@ -84,4 +84,14 @@ export function computeStats(run: RunLevels, p: PrestigeLevels, pacts: PactLevel
     costMult: 1 - AVARICE_PER_LEVEL * p.avarice,
     builds,
   };
+}
+
+/** How much harder heroes hit in this wave than in wave 1. */
+export function heroStrength(wave: number): number {
+  return Math.pow(SCALE.damage, wave - 1);
+}
+
+/** Share of each hit that Hide blocks in this wave: armor / (armor + K × hero strength). */
+export function blockShare(armor: number, wave: number): number {
+  return armor <= 0 ? 0 : armor / (armor + HIDE_K * heroStrength(wave));
 }

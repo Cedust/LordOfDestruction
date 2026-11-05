@@ -15,6 +15,7 @@ npm install
 npm run dev       # local dev server
 npm run build     # type-check and production build into dist/
 npm run sim       # headless balance simulation (bot plays several runs)
+npm run balance   # play-like report: npm run balance [hours] [build] [seconds between visits]
 ```
 
 ## Structure
@@ -29,6 +30,7 @@ npm run sim       # headless balance simulation (bot plays several runs)
 | `src/ui.ts` | HTML interface: top bar, upgrade lists, fallen screen |
 | `src/tree.ts` | Dark Pacts skill tree view |
 | `scripts/sim.ts` | Balance simulation |
+| `scripts/balance.ts` | Balance report: taps per minute, wave speed, idle tolerance, long-term record curve |
 
 ## Art
 

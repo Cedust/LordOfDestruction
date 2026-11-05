@@ -1,6 +1,6 @@
 import { HEROES, MILESTONE_EVERY, MILESTONE_MULT, PRESTIGE_UPGRADES, RUN_UPGRADES, type PrestigeId, type RunUpgradeId } from './game/config';
-import { fmt, type Game } from './game/game';
-import { computeStats, dreadMult, type LordStats } from './game/stats';
+import { fmt, fmtBonus, fmtShare, type Game } from './game/game';
+import { blockShare, computeStats, dreadMult, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
 import { lockHtml, SkillTree } from './tree';
 import { curHtml, GearPanel } from './gearui';
@@ -17,12 +17,12 @@ function iconHtml(id: string, name: string): string {
 }
 
 /** Human-readable value of the stat an upgrade improves. */
-function statText(id: RunUpgradeId, s: LordStats): string {
+function statText(id: RunUpgradeId, s: LordStats, wave: number): string {
   switch (id) {
     case 'vitality':
       return `${fmt(s.maxHp)} Life`;
     case 'hide':
-      return `${Math.round(s.armor * 100)}% Blocked`;
+      return `${Math.round(blockShare(s.armor, wave) * 100)}% Blocked`;
     case 'regen':
       return `${fmt(s.regen)}/s`;
     case 'shockwave':
@@ -30,7 +30,7 @@ function statText(id: RunUpgradeId, s: LordStats): string {
     case 'aura':
       return `${fmt(s.auraDps[1])} Dmg/s`;
     case 'thorns':
-      return `${Math.round(s.thorns * 100)}% of Each Hit`;
+      return `${fmtShare(s.thorns)} of Each Hit`;
     case 'lash':
       return `${fmt(s.maxHp * s.lash)} Dmg per Lash`;
     case 'bloodPact':
@@ -40,7 +40,7 @@ function statText(id: RunUpgradeId, s: LordStats): string {
 
 /** What a Dread upgrade gives at a level, in plain numbers. */
 function dreadText(id: PrestigeId, lvl: number): string {
-  const pct = (n: number) => `+${fmt(Math.round(n * 100))}%`;
+  const pct = fmtBonus;
   const m = dreadMult(id, lvl) - 1;
   switch (id) {
     case 'blackHeart':
@@ -381,7 +381,7 @@ export class UI {
       row.name.innerHTML = `${def.name}<em>Lv ${shown}</em>${isNew ? '<span class="new-tag">NEW</span>' : milestone}`;
       const bulk = g.runUpgradeBulk(def.id, mode === 0 ? Infinity : mode);
       const next = computeStats({ ...g.run.levels, [def.id]: g.run.levels[def.id] + Math.max(1, bulk.count) }, g.save.prestige, g.save.pacts, g.save.gear);
-      const stat = maxed ? `${statText(def.id, s)} (Max)` : `${statText(def.id, s)} → <b>${statText(def.id, next)}</b>`;
+      const stat = maxed ? `${statText(def.id, s, g.run.wave)} (Max)` : `${statText(def.id, s, g.run.wave)} → <b>${statText(def.id, next, g.run.wave)}</b>`;
       // Lv 0 explains what the power does; after that the values, with the text one tap away.
       row.line.innerHTML = isNew ? `<span class="ds">${def.desc}</span>` : row.info ? `<span class="ds">${def.desc}</span><br><span class="st">${stat}</span>` : `<span class="st">${stat}</span>`;
       const afford = !maxed && bulk.count > 0 && g.run.gold >= bulk.cost;
