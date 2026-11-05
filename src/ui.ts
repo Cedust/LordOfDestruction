@@ -385,7 +385,9 @@ export class UI {
       // Lv 0 explains what the power does; after that the values, with the text one tap away.
       row.line.innerHTML = isNew ? `<span class="ds">${def.desc}</span>` : row.info ? `<span class="ds">${def.desc}</span><br><span class="st">${stat}</span>` : `<span class="st">${stat}</span>`;
       const afford = !maxed && bulk.count > 0 && g.run.gold >= bulk.cost;
-      row.buy.innerHTML = maxed ? 'MAX' : `${fmt(bulk.cost)}g<small>+${Math.max(1, bulk.count)} Lv</small>`;
+      const boost = !maxed && g.isMilestoneNext(def.id);
+      row.buy.classList.toggle('boost', boost);
+      row.buy.innerHTML = maxed ? 'MAX' : boost ? `${fmt(bulk.cost)}g<small>×${MILESTONE_MULT} Boost</small>` : `${fmt(bulk.cost)}g<small>+${Math.max(1, bulk.count)} Lv</small>`;
       row.buy.disabled = !afford || between;
       if (afford) powersReady = true;
     }

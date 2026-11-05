@@ -21,6 +21,7 @@ import {
   QUEUE_GAP,
   RANGES,
   RETALIATION_EVERY,
+  MILESTONE_EVERY,
   RUN_UPGRADES,
   SCALE,
   SPAWN_DIST,
@@ -213,7 +214,13 @@ export class Game {
   runUpgradeBulk(id: RunUpgradeId, max: number): { count: number; cost: number } {
     const def = RUN_UPGRADES.find((u) => u.id === id)!;
     const start = this.run.levels[id];
-    const cap = def.maxLevel === undefined ? Infinity : def.maxLevel - start;
+    let cap = def.maxLevel === undefined ? Infinity : def.maxLevel - start;
+    // Milestone levels (25, 50, ...) are always bought on their own: a bulk buy stops
+    // one level short, and the milestone itself is a single separate purchase.
+    if (def.maxLevel === undefined) {
+      const shown = this.runUpgradeLevel(id);
+      cap = this.isMilestoneNext(id) ? 1 : MILESTONE_EVERY - 1 - (shown % MILESTONE_EVERY);
+    }
     let count = 0;
     let cost = 0;
     while (count < max && count < cap) {
@@ -225,10 +232,17 @@ export class Game {
     return { count, cost };
   }
 
-  /** Buy up to `max` levels at once; returns how many were bought. */
+  /** True when the next level of this power is a milestone boost. */
+  isMilestoneNext(id: RunUpgradeId): boolean {
+    const def = RUN_UPGRADES.find((u) => u.id === id)!;
+    return def.maxLevel === undefined && (this.runUpgradeLevel(id) + 1) % MILESTONE_EVERY === 0;
+  }
+
+  /** Buy up to `max` levels at once (never past a milestone); returns how many were bought. */
   buyRunUpgradeBulk(id: RunUpgradeId, max: number): number {
+    const limit = this.runUpgradeBulk(id, max).count;
     let n = 0;
-    while (n < max && this.buyRunUpgrade(id)) n++;
+    while (n < limit && this.buyRunUpgrade(id)) n++;
     return n;
   }
 
