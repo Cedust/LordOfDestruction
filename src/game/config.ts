@@ -173,17 +173,6 @@ export interface RunUpgradeDef {
   free?: boolean;
 }
 
-export const RUN_UPGRADES: RunUpgradeDef[] = [
-  { id: 'shockwave', name: 'Shockwave', desc: 'Every Few Seconds a Shockwave Hurts Every Hero in the Hall.', baseCost: 8, costGrowth: 1.15, free: true },
-  { id: 'aura', name: 'Dread Aura', desc: 'Every Hero in the Hall Takes Damage Over Time.', baseCost: 8, costGrowth: 1.15, build: 'aura' },
-  { id: 'thorns', name: 'Thorns', desc: 'Every Hero That Hits You Gets Hurt in Return.', baseCost: 8, costGrowth: 1.15, build: 'thorns' },
-  { id: 'lash', name: 'Blood Lash', desc: 'You Pay with Your Own Life to Strike Down the Weakest Hero.', baseCost: 8, costGrowth: 1.15, build: 'blood' },
-  { id: 'vitality', name: 'Vitality', desc: 'You Can Take More Damage Before You Fall.', baseCost: 8, costGrowth: 1.15 },
-  { id: 'hide', name: 'Hide', desc: 'Every Hit Against You Hurts a Little Less.', baseCost: 15, costGrowth: 1.2, maxLevel: 40 },
-  { id: 'regen', name: 'Regeneration', desc: 'You Slowly Heal Over Time.', baseCost: 10, costGrowth: 1.16 },
-  { id: 'bloodPact', name: 'Blood Pact', desc: 'You Heal a Little Whenever a Hero Dies.', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
-];
-
 /** Shockwave, the basic attack: seconds between waves and damage at level 1. */
 export const SHOCKWAVE_INTERVAL = 2;
 export const SHOCKWAVE_DAMAGE = 10;
@@ -192,6 +181,23 @@ export const SHOCKWAVE_DAMAGE = 10;
 export const LASH_INTERVAL = 2;
 export const LASH_SHARE = 0.1;
 export const LASH_COST = 0.03;
+
+// Descriptions say exactly what a power does; the numbers that grow with each level
+// stay in the value line under it (see `statText` in ui.ts).
+const LASH_TEXT = `Every ${LASH_INTERVAL} Seconds, You Strike the Hero with the Least Life. Each Lash Costs ${LASH_COST * 100}% of Your Current Life, and Its Damage Grows with Your Max Life.`;
+const AURA_TEXT = 'Every Hero in the Hall Takes Damage Every Second.';
+const THORNS_TEXT = 'When a Hero Hits You, It Takes a Share of That Hit as Damage.';
+
+export const RUN_UPGRADES: RunUpgradeDef[] = [
+  { id: 'shockwave', name: 'Shockwave', desc: `Every ${SHOCKWAVE_INTERVAL} Seconds, a Shockwave Hits Every Hero in the Hall.`, baseCost: 8, costGrowth: 1.15, free: true },
+  { id: 'aura', name: 'Dread Aura', desc: AURA_TEXT, baseCost: 8, costGrowth: 1.15, build: 'aura' },
+  { id: 'thorns', name: 'Thorns', desc: THORNS_TEXT, baseCost: 8, costGrowth: 1.15, build: 'thorns' },
+  { id: 'lash', name: 'Blood Lash', desc: LASH_TEXT, baseCost: 8, costGrowth: 1.15, build: 'blood' },
+  { id: 'vitality', name: 'Vitality', desc: 'Raises Your Max Life.', baseCost: 8, costGrowth: 1.15 },
+  { id: 'hide', name: 'Hide', desc: 'Blocks a Share of the Damage from Every Hit You Take.', baseCost: 15, costGrowth: 1.2, maxLevel: 40 },
+  { id: 'regen', name: 'Regeneration', desc: 'You Heal a Fixed Amount of Life Every Second.', baseCost: 10, costGrowth: 1.16 },
+  { id: 'bloodPact', name: 'Blood Pact', desc: 'Every Time a Hero Dies, You Heal a Share of Your Max Life.', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
+];
 
 export function runUpgradeCost(def: RunUpgradeDef, level: number): number {
   return Math.ceil(def.baseCost * Math.pow(def.costGrowth, level));
@@ -340,7 +346,7 @@ export const TIER_SIGILS: Record<number, number> = { 2: 1, 3: 5, 4: 15, 5: 30 };
 
 /** Listed branch by branch, each from start pact to capstone. */
 export const PACTS: PactDef[] = [
-  { id: 'pactAura', name: 'Dread Aura', desc: 'Every Hero in the Hall Takes Damage Over Time.', effect: 'Unlocks Dread Aura', branch: 'aura', tier: 1, cost: 1, icon: 'aura' },
+  { id: 'pactAura', name: 'Dread Aura', desc: AURA_TEXT, effect: 'Unlocks Dread Aura', branch: 'aura', tier: 1, cost: 1, icon: 'aura' },
   { id: 'withering', name: 'Withering', desc: 'Heroes in Your Aura Hit You Softer.', effect: '−{p} Hero Damage in the Aura', values: [0.25, 0.35, 0.45], branch: 'aura', tier: 2, cost: 1 },
   { id: 'grasp', name: 'Grasp', desc: 'Heroes in Your Aura Attack Less Often.', effect: 'Heroes in the Aura Attack {p} Slower', values: [0.3, 0.45, 0.6], branch: 'aura', tier: 2, cost: 1 },
   { id: 'longShadow', name: 'Long Shadow', desc: 'Your Aura Hurts Heroes Far Away More.', effect: '+{p} Aura Damage on Distant Heroes', values: [0.6, 0.9, 1.2], branch: 'aura', tier: 2, cost: 1 },
@@ -353,7 +359,7 @@ export const PACTS: PactDef[] = [
   { id: 'blackSun', name: 'Black Sun', desc: 'Every Few Seconds Your Aura Bursts and Hits Everyone at Once.', effect: 'Every 8 s: {x} s of Aura Damage at Once', values: [3, 4, 5], branch: 'aura', tier: 5, cost: 4 },
   { id: 'unmaking', name: 'Unmaking', desc: 'Your Aura Also Eats Away at Every Hero\'s Life, Even the Strongest.', effect: '{p} of Each Hero\'s Life per Second', values: [0.01, 0.015, 0.02], branch: 'aura', tier: 5, cost: 4 },
 
-  { id: 'pactThorns', name: 'Thorns', desc: 'Every Hero That Hits You Gets Hurt in Return.', effect: 'Unlocks Thorns', branch: 'thorns', tier: 1, cost: 1, icon: 'thorns' },
+  { id: 'pactThorns', name: 'Thorns', desc: THORNS_TEXT, effect: 'Unlocks Thorns', branch: 'thorns', tier: 1, cost: 1, icon: 'thorns' },
   { id: 'splinter', name: 'Splinter', desc: 'Your Thorns Also Hurt the Hero Standing Next to the Attacker.', effect: 'Each Strike Also Hits the Nearest Hero for {p}', values: [0.5, 0.75, 1], branch: 'thorns', tier: 2, cost: 1 },
   { id: 'thornBurst', name: 'Thorn Burst', desc: 'Heroes Killed by Your Thorns Explode and Hurt Those Around Them.', effect: "Spikes Hit Nearby Heroes for {p} of the Slain Hero's Life", values: [0.15, 0.2, 0.25], branch: 'thorns', tier: 2, cost: 1 },
   { id: 'barbedGround', name: 'Barbed Ground', desc: 'Heroes Who Step Up Close Tread on Your Thorns Once.', effect: 'Stepping Close Throws Back ×{x} of a Hit', values: [1, 1.5, 2], branch: 'thorns', tier: 2, cost: 1 },
@@ -366,7 +372,7 @@ export const PACTS: PactDef[] = [
   { id: 'ironMaiden', name: 'Iron Maiden', desc: 'When You Are Badly Hurt, Your Thorns Hit Much Harder.', effect: '×{x} Thorns Below 50% Life', values: [3, 4, 5], branch: 'thorns', tier: 5, cost: 4 },
   { id: 'crownOfThorns', name: 'Crown of Thorns', desc: 'Every Hero Your Thorns Kill Sends a Spike Into Another Hero.', effect: "A Spike Hits Another Hero for {p} of the Slain Hero's Life", values: [0.2, 0.3, 0.4], branch: 'thorns', tier: 5, cost: 4 },
 
-  { id: 'pactBlood', name: 'Blood Lash', desc: 'You Pay with Your Own Life to Strike Down the Weakest Hero.', effect: 'Unlocks Blood Lash', branch: 'blood', tier: 1, cost: 1, icon: 'lash' },
+  { id: 'pactBlood', name: 'Blood Lash', desc: LASH_TEXT, effect: 'Unlocks Blood Lash', branch: 'blood', tier: 1, cost: 1, icon: 'lash' },
   { id: 'chain', name: 'Chain', desc: 'When Your Lash Kills, It Jumps On to the Next Weakest Hero.', effect: '{p} of the Leftover Damage Jumps to the Next Weakest Hero', values: [1, 1.25, 1.5], branch: 'blood', tier: 2, cost: 1 },
   { id: 'execute', name: 'Execute', desc: 'Your Lash Instantly Kills Heroes That Are Almost Dead.', effect: 'Heroes Below {p} Life Die to a Lash', values: [0.15, 0.2, 0.25], branch: 'blood', tier: 2, cost: 1 },
   { id: 'bloodletting', name: 'Bloodletting', desc: 'Heroes Struck by Your Lash Keep Bleeding for a While.', effect: '{p} of the Lash per Second for 3 s', values: [0.1, 0.15, 0.2], branch: 'blood', tier: 2, cost: 1 },
