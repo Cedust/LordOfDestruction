@@ -185,8 +185,8 @@ export const LASH_COST = 0.03;
 // Descriptions are short and say what a power does; the numbers that grow with each
 // level stay in the value line under it (see `statText` in ui.ts).
 const LASH_TEXT = 'Sacrifice Life to Strike, Damage Grows with Max Life';
-const AURA_TEXT = 'Damages All Heroes Every Second';
-const THORNS_TEXT = 'Attackers Take Damage Back';
+const AURA_TEXT = 'Constant Damage to All Heroes';
+const THORNS_TEXT = 'Reflects Damage to Attackers';
 
 export const RUN_UPGRADES: RunUpgradeDef[] = [
   { id: 'shockwave', name: 'Shockwave', desc: `Hits All Heroes Every ${SHOCKWAVE_INTERVAL} Seconds`, baseCost: 8, costGrowth: 1.15, free: true },
@@ -195,8 +195,8 @@ export const RUN_UPGRADES: RunUpgradeDef[] = [
   { id: 'lash', name: 'Blood Lash', desc: LASH_TEXT, baseCost: 8, costGrowth: 1.15, build: 'blood' },
   { id: 'vitality', name: 'Vitality', desc: 'More Max Life', baseCost: 8, costGrowth: 1.15 },
   { id: 'hide', name: 'Hide', desc: 'Blocks Damage from Hits', baseCost: 15, costGrowth: 1.2, maxLevel: 40 },
-  { id: 'regen', name: 'Regeneration', desc: 'Healing over Time', baseCost: 10, costGrowth: 1.16 },
-  { id: 'bloodPact', name: 'Blood Pact', desc: 'Kills Heal You', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
+  { id: 'regen', name: 'Regeneration', desc: 'Heals You Every Second', baseCost: 10, costGrowth: 1.16 },
+  { id: 'bloodPact', name: 'Blood Pact', desc: 'Heals You on Every Kill', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
 ];
 
 export function runUpgradeCost(def: RunUpgradeDef, level: number): number {
