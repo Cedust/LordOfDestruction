@@ -182,21 +182,21 @@ export const LASH_INTERVAL = 2;
 export const LASH_SHARE = 0.1;
 export const LASH_COST = 0.03;
 
-// Descriptions say exactly what a power does; the numbers that grow with each level
-// stay in the value line under it (see `statText` in ui.ts).
-const LASH_TEXT = `Every ${LASH_INTERVAL} Seconds, You Strike the Hero with the Least Life. Each Lash Costs ${LASH_COST * 100}% of Your Current Life, and Its Damage Grows with Your Max Life.`;
-const AURA_TEXT = 'Every Hero in the Hall Takes Damage Every Second.';
-const THORNS_TEXT = 'When a Hero Hits You, It Takes a Share of That Hit as Damage.';
+// Descriptions are short and say what a power does; the numbers that grow with each
+// level stay in the value line under it (see `statText` in ui.ts).
+const LASH_TEXT = 'Sacrifice Life to Strike, Damage Grows with Max Life';
+const AURA_TEXT = 'Damages All Heroes Every Second';
+const THORNS_TEXT = 'Attackers Take Damage Back';
 
 export const RUN_UPGRADES: RunUpgradeDef[] = [
-  { id: 'shockwave', name: 'Shockwave', desc: `Every ${SHOCKWAVE_INTERVAL} Seconds, a Shockwave Hits Every Hero in the Hall.`, baseCost: 8, costGrowth: 1.15, free: true },
+  { id: 'shockwave', name: 'Shockwave', desc: `Hits All Heroes Every ${SHOCKWAVE_INTERVAL} Seconds`, baseCost: 8, costGrowth: 1.15, free: true },
   { id: 'aura', name: 'Dread Aura', desc: AURA_TEXT, baseCost: 8, costGrowth: 1.15, build: 'aura' },
   { id: 'thorns', name: 'Thorns', desc: THORNS_TEXT, baseCost: 8, costGrowth: 1.15, build: 'thorns' },
   { id: 'lash', name: 'Blood Lash', desc: LASH_TEXT, baseCost: 8, costGrowth: 1.15, build: 'blood' },
-  { id: 'vitality', name: 'Vitality', desc: 'Raises Your Max Life.', baseCost: 8, costGrowth: 1.15 },
-  { id: 'hide', name: 'Hide', desc: 'Blocks a Share of the Damage from Every Hit You Take.', baseCost: 15, costGrowth: 1.2, maxLevel: 40 },
-  { id: 'regen', name: 'Regeneration', desc: 'You Heal a Fixed Amount of Life Every Second.', baseCost: 10, costGrowth: 1.16 },
-  { id: 'bloodPact', name: 'Blood Pact', desc: 'Every Time a Hero Dies, You Heal a Share of Your Max Life.', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
+  { id: 'vitality', name: 'Vitality', desc: 'More Max Life', baseCost: 8, costGrowth: 1.15 },
+  { id: 'hide', name: 'Hide', desc: 'Blocks Damage from Hits', baseCost: 15, costGrowth: 1.2, maxLevel: 40 },
+  { id: 'regen', name: 'Regeneration', desc: 'Healing over Time', baseCost: 10, costGrowth: 1.16 },
+  { id: 'bloodPact', name: 'Blood Pact', desc: 'Kills Heal You', baseCost: 45, costGrowth: 1.28, maxLevel: 10 },
 ];
 
 export function runUpgradeCost(def: RunUpgradeDef, level: number): number {
