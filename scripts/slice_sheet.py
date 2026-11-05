@@ -100,6 +100,9 @@ def main(argv: list[str]) -> int:
         ifm = read_frontmatter(pf)
         out = Path(ifm["output"])
         out.parent.mkdir(parents=True, exist_ok=True)
+        if ifm.get("rotate"):
+            # Optional frontmatter `rotate: <degrees>` turns a cut-out symbol the sheet drew the wrong way round.
+            square = square.rotate(-int(ifm["rotate"]))
         square.resize(size_tuple(ifm["final_size"]), Image.LANCZOS).save(out, "PNG")
         res = validate(pf, out)
         res["sliced_from"] = f"{fm['output']} cell {c + 1},{r + 1}"
