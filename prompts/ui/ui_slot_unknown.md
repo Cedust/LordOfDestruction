@@ -4,7 +4,7 @@ name: Unknown Slot Icon
 category: ui
 type: ui_icon
 batch: 16-slot-icons
-status: review
+status: approved
 revision: 1
 output: assets/ui/slots/unknown.png
 format: png

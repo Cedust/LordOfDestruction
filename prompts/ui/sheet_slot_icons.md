@@ -4,7 +4,7 @@ name: Gear Slot Icons Sheet
 category: ui
 type: icon_sheet
 batch: 16-slot-icons
-status: review
+status: approved
 revision: 1
 output: assets/ui/sheets/slot-icons.png
 format: png

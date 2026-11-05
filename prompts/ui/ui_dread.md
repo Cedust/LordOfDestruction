@@ -4,7 +4,7 @@ name: Dread Icon
 category: ui
 type: ui_icon
 batch: 15-ui-icons
-status: review
+status: approved
 revision: 1
 output: assets/ui/dread.png
 format: png

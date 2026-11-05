@@ -4,7 +4,7 @@ name: UI Icons Sheet
 category: ui
 type: icon_sheet
 batch: 15-ui-icons
-status: review
+status: approved
 revision: 1
 output: assets/ui/sheets/ui-icons.png
 format: png
