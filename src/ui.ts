@@ -20,11 +20,11 @@ function iconHtml(id: string, name: string): string {
 function statText(id: RunUpgradeId, s: LordStats, wave: number): string {
   switch (id) {
     case 'vitality':
-      return `${fmt(s.maxHp)} Life`;
+      return `${fmt(s.maxHp)} Max Life`;
     case 'hide':
       return `${Math.round(blockShare(s.armor, wave) * 100)}% Blocked`;
     case 'regen':
-      return `${fmt(s.regen)}/s`;
+      return `${fmt(s.regen)} Life/s`;
     case 'shockwave':
       return `${fmt(s.shockwave)} Dmg to All`;
     case 'aura':
