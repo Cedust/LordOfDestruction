@@ -20,8 +20,6 @@ export interface RunState {
   levelSigils?: number;
   /** Spoils earned during this run, for the run summary. */
   spoilsGained?: number;
-  /** First wave of this run in which the Lord lost a real share of life. */
-  firstHurt?: number;
 }
 
 export interface SaveData {
@@ -31,8 +29,6 @@ export interface SaveData {
   /** Total experience ever earned. The Lord's level comes from it and is never lost. */
   xp: number;
   bestWave: number;
-  /** Where the last run first got dangerous; the next run starts a little before it. */
-  fightWave?: number;
   runs: number;
   prestige: PrestigeLevels;
   sigils: number;

@@ -32,8 +32,6 @@ import {
   HERO_DAMAGE,
   HERO_PACE,
   flattenHit,
-  RUN_START_SHARE,
-  FIGHT_START_SHARE,
   RUSH_WALK,
   EXTRA_BUILD_COST,
   SIGIL_LEVELS,
@@ -169,9 +167,7 @@ export class Game {
 
   private freshRun(): RunState {
     const head = this.save.prestige.headStart;
-    // Runs begin close to where the fighting gets real, not with a long stretch of instant kills.
-    const fight = this.save.fightWave ?? Math.floor(this.save.bestWave * RUN_START_SHARE);
-    const startWave = Math.max(1 + 5 * head, Math.min(Math.floor(this.save.bestWave * RUN_START_SHARE), Math.floor(fight * FIGHT_START_SHARE)));
+    const startWave = 1 + 5 * head;
     let gold = 0;
     // The gold the skipped waves would have dropped, with Dread and gear gold bonuses.
     const goldMult = computeStats(emptyRunLevels(), this.save.prestige, this.save.pacts, this.save.gear).goldMult;
@@ -462,7 +458,6 @@ export class Game {
     this.bloodLash(dt);
     this.removeDead();
 
-    if (this.run.firstHurt === undefined && this.run.lordHp < this.stats.maxHp * 0.9) this.run.firstHurt = this.run.wave;
     if (this.run.lordHp <= 0) {
       this.endRun(false);
       return;
@@ -931,7 +926,6 @@ export class Game {
     const recordSigils = sigilsForRecord(this.save.bestWave, wave);
     const sigils = recordSigils + (this.run.levelSigils ?? 0);
     this.save.bestWave = Math.max(this.save.bestWave, wave);
-    this.save.fightWave = Math.max(this.run.firstHurt ?? wave, this.save.fightWave ?? 0);
     this.save.sigils += recordSigils;
     this.save.runs++;
     this.save.run = null;

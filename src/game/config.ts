@@ -128,18 +128,13 @@ export function fieldPos(dist: number, lane: number): { x: number; y: number } {
 /** Height of the Lord's chest above LORD_Y, where projectiles hit and numbers pop. */
 export const LORD_CHEST = 55;
 export const SPAWN_DIST = 330;
-export const WAVE_PAUSE = 0.6; // seconds between waves
+export const WAVE_PAUSE = 0.4; // seconds between waves
 /** Heroes walk this much faster until they step onto the field, so easy waves fly by. */
-export const RUSH_WALK = 3;
+export const RUSH_WALK = 6;
 /** Share of max life the Lord recovers whenever a wave is cleared. */
 export const WAVE_HEAL = 0.25;
 /** Gold every run starts with, so the first powers can be bought right away. */
 export const START_GOLD = 40;
-/** A new run starts at this share of the best wave, with the gold of the waves it skips. */
-export const RUN_START_SHARE = 0.9;
-/** ...but never later than this share of the wave where the last run first got dangerous. */
-export const FIGHT_START_SHARE = 0.9;
-
 /**
  * A hero hit never takes more than HIT_MAX of the Lord's max life. Small hits count in full, big ones
  * flatten out toward HIT_MAX (x · M / (x + M), x = hit / max life). Being far behind still kills within
