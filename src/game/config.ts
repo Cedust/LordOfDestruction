@@ -131,6 +131,13 @@ export const SPAWN_DIST = 330;
 export const WAVE_PAUSE = 0.4; // seconds between waves
 /** Heroes walk this much faster until they step onto the field, so easy waves fly by. */
 export const RUSH_WALK = 6;
+/** Wave skip: a wave cleared within SKIP_TIME seconds while the Lord stays almost unhurt jumps SKIP_WAVES further. */
+export const SKIP_WAVES = 3;
+export const SKIP_TIME = 3;
+/** Average gold per hero in wave 1, paid for each skipped hero. */
+export const SKIP_GOLD_PER_HERO = 7;
+/** The Lord must stay above this share of max life for the whole wave to skip. */
+export const SKIP_MIN_LIFE = 0.95;
 /** Share of max life the Lord recovers whenever a wave is cleared. */
 export const WAVE_HEAL = 0.25;
 /** Gold every run starts with, so the first powers can be bought right away. */
@@ -474,7 +481,9 @@ export const DREAD_GROWTH: Partial<Record<PrestigeId, { linear: number; exp: num
 
 /** Milestones for run powers without a level cap: every MILESTONE_EVERY levels, ×MILESTONE_MULT. */
 export const MILESTONE_EVERY = 25;
-export const MILESTONE_MULT = 1.5;
+export const MILESTONE_MULT = 2;
+/** A milestone level costs this many times a normal level: something to save up for. */
+export const MILESTONE_COST = 10;
 
 export const DREAD_HARVEST_PER_LEVEL = 0.1;
 export const AVARICE_PER_LEVEL = 0.05;
