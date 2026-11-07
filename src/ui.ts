@@ -1,5 +1,5 @@
 import { HEROES, MILESTONE_EVERY, MILESTONE_MULT, PRESTIGE_UPGRADES, RUN_UPGRADES, type PrestigeId, type RunUpgradeId } from './game/config';
-import { fmt, type Game } from './game/game';
+import { fmt, fmtBonus, fmtShare, type Game } from './game/game';
 import { computeStats, dreadMult, type LordStats } from './game/stats';
 import { assetUrl } from './assets';
 import { lockHtml, SkillTree } from './tree';
@@ -22,7 +22,7 @@ function statText(id: RunUpgradeId, s: LordStats): string {
     case 'vitality':
       return `${fmt(s.maxHp)} Max Life`;
     case 'hide':
-      return `${Math.round(s.armor * 100)}% Blocked`;
+      return `${fmt(s.armor)} Armor`;
     case 'regen':
       return `${fmt(s.regen)} Life/s`;
     case 'shockwave':
@@ -30,7 +30,7 @@ function statText(id: RunUpgradeId, s: LordStats): string {
     case 'aura':
       return `${fmt(s.auraDps[1])} Dmg/s`;
     case 'thorns':
-      return `${Math.round(s.thorns * 100)}% of Each Hit`;
+      return `${fmtShare(s.thorns)} of Each Hit`;
     case 'lash':
       return `${fmt(s.maxHp * s.lash)} Dmg per Lash`;
     case 'bloodPact':
@@ -40,7 +40,7 @@ function statText(id: RunUpgradeId, s: LordStats): string {
 
 /** What a Dread upgrade gives at a level, in plain numbers. */
 function dreadText(id: PrestigeId, lvl: number): string {
-  const pct = (n: number) => `+${fmt(Math.round(n * 100))}%`;
+  const pct = fmtBonus;
   const m = dreadMult(id, lvl) - 1;
   switch (id) {
     case 'blackHeart':
@@ -387,7 +387,8 @@ export class UI {
       const afford = !maxed && bulk.count > 0 && g.run.gold >= bulk.cost;
       const boost = !maxed && g.isMilestoneNext(def.id);
       row.buy.classList.toggle('boost', boost);
-      row.buy.innerHTML = maxed ? 'MAX' : boost ? `${fmt(bulk.cost)}g<small>×${MILESTONE_MULT} Boost</small>` : `${fmt(bulk.cost)}g<small>+${Math.max(1, bulk.count)} Lv</small>`;
+      const gold = curHtml('gold').replace('class="cur"', 'class="cur inline-cur"');
+      row.buy.innerHTML = maxed ? 'MAX' : boost ? `<span class="price">${fmt(bulk.cost)} ${gold}</span><small>×${MILESTONE_MULT} Boost</small>` : `<span class="price">${fmt(bulk.cost)} ${gold}</span><small>+${Math.max(1, bulk.count)} Lv</small>`;
       row.buy.disabled = !afford || between;
       if (afford) powersReady = true;
     }
@@ -439,7 +440,8 @@ export class UI {
     setBadge('powers', powersReady && this.tab !== 'powers');
     setBadge('dread', dreadReady);
     setBadge('pacts', pactsReady);
-    setBadge('gear', g.save.gear.spoils >= g.forgeCost() && g.canForge() && this.tab !== 'gear');
+    // Not tied to the short break between waves, so the dot does not flicker on and off.
+    setBadge('gear', g.save.gear.spoils >= g.forgeCost() && this.tab !== 'gear');
 
     // Run summary
     $('#summary').hidden = !this.summaryOpen;

@@ -22,11 +22,22 @@ import {
   RANGES,
   RETALIATION_EVERY,
   MILESTONE_EVERY,
+  MILESTONE_COST,
   RUN_UPGRADES,
   SCALE,
   SPAWN_DIST,
   THORN_BURST_RADIUS,
   WAVE_PAUSE,
+  WAVE_HEAL,
+  START_GOLD,
+  HERO_DAMAGE,
+  HERO_PACE,
+  SKIP_WAVES,
+  SKIP_TIME,
+  SKIP_GOLD_PER_HERO,
+  SKIP_MIN_LIFE,
+  flattenHit,
+  RUSH_WALK,
   EXTRA_BUILD_COST,
   SIGIL_LEVELS,
   dreadForLevel,
@@ -47,7 +58,7 @@ import {
   type RangeId,
   type RunUpgradeId,
 } from './config';
-import { computeStats, powerLevel, type LordStats } from './stats';
+import { blockShare, computeStats, powerLevel, type LordStats } from './stats';
 import { emptyPacts, emptyRunLevels, type RunState, type SaveData } from './state';
 import { fieldPos } from './config';
 import { ITEMS, ITEM_BY_ID, forgeCost, spoilsForChampion, type ItemDef } from './gear';
@@ -129,6 +140,10 @@ export class Game {
   lastSummary: RunSummary | null = null;
   /** Heroes the current wave started with, for the wave progress bar. */
   waveTotal = 0;
+  /** Seconds the current wave has been fought. */
+  waveTime = 0;
+  /** Lowest share of max life during the current wave, for the wave skip. */
+  private waveLow = 1;
   /** Gold earned during the current wave; not saved, so a reload replays the wave fairly. */
   private waveGold = 0;
   /** Experience and Dread from levels earned during the current wave; left out of saves like `waveGold`. */
@@ -161,7 +176,10 @@ export class Game {
     const head = this.save.prestige.headStart;
     const startWave = 1 + 5 * head;
     let gold = 0;
-    for (let w = 1; w < startWave; w++) gold += heroCountForWave(w) * 7 * Math.pow(SCALE.gold, w - 1) * 0.7;
+    // The gold the skipped waves would have dropped, with Dread and gear gold bonuses.
+    const goldMult = computeStats(emptyRunLevels(), this.save.prestige, this.save.pacts, this.save.gear).goldMult;
+    for (let w = 1; w < startWave; w++) gold += heroCountForWave(w) * 7 * Math.pow(SCALE.gold, w - 1) * goldMult;
+    gold = Math.max(gold, START_GOLD);
     const run: RunState = { wave: startWave, gold: Math.floor(gold), levels: emptyRunLevels(), lordHp: 0, hitsTaken: 0, startLevel: this.level(), dreadGained: 0 };
     return run;
   }
@@ -201,8 +219,7 @@ export class Game {
   }
 
   runUpgradeCost(id: RunUpgradeId): number {
-    const def = RUN_UPGRADES.find((u) => u.id === id)!;
-    return Math.ceil(runUpgradeCost(def, this.run.levels[id]) * this.stats.costMult);
+    return this.levelCost(id, this.run.levels[id]);
   }
 
   isRunUpgradeMaxed(id: RunUpgradeId): boolean {
@@ -224,12 +241,20 @@ export class Game {
     let count = 0;
     let cost = 0;
     while (count < max && count < cap) {
-      const next = Math.ceil(runUpgradeCost(def, start + count) * this.stats.costMult);
+      const next = this.levelCost(id, start + count);
       if (count > 0 && cost + next > this.run.gold) break;
       cost += next;
       count++;
     }
     return { count, cost };
+  }
+
+  /** Gold for the level after `bought` bought levels. Milestone levels cost MILESTONE_COST times more. */
+  private levelCost(id: RunUpgradeId, bought: number): number {
+    const def = RUN_UPGRADES.find((u) => u.id === id)!;
+    const shown = bought + this.runUpgradeLevel(id) - this.run.levels[id];
+    const milestone = def.maxLevel === undefined && (shown + 1) % MILESTONE_EVERY === 0;
+    return Math.ceil(runUpgradeCost(def, bought) * (milestone ? MILESTONE_COST : 1) * this.stats.costMult);
   }
 
   /** True when the next level of this power is a milestone boost. */
@@ -436,6 +461,7 @@ export class Game {
       return;
     }
 
+    this.waveTime += dt;
     this.regen(dt);
     this.moveAndAttack(dt);
     this.applyAura(dt);
@@ -446,12 +472,16 @@ export class Game {
     this.bloodLash(dt);
     this.removeDead();
 
+    this.waveLow = Math.min(this.waveLow, this.run.lordHp / this.stats.maxHp);
     if (this.run.lordHp <= 0) {
       this.endRun(false);
       return;
     }
     if (this.heroes.length === 0) {
-      this.run.wave++;
+      // A short breath between waves (never a shield, even with Blood Moon).
+      this.run.lordHp = Math.min(this.stats.maxHp, this.run.lordHp + this.stats.maxHp * WAVE_HEAL);
+      const skipped = this.skipWaves();
+      this.run.wave += 1 + skipped;
       this.waveGold = 0;
       this.waveXp = 0;
       this.waveDread = 0;
@@ -461,6 +491,26 @@ export class Game {
       this.pauseTimer = WAVE_PAUSE;
       this.onPersist();
     }
+  }
+
+  /**
+   * Wave skip: a wave wiped out quickly while the Lord barely lost any life sends him SKIP_WAVES waves
+   * further, with the gold and experience of the skipped waves. Champion waves are never skipped.
+   */
+  private skipWaves(): number {
+    if (this.waveLow < SKIP_MIN_LIFE || this.waveTime > SKIP_TIME) return 0;
+    let n = 0;
+    while (n < SKIP_WAVES && (this.run.wave + n + 1) % CHAMPION_EVERY !== 0) {
+      const w = this.run.wave + n + 1;
+      const count = heroCountForWave(w);
+      const gold = count * SKIP_GOLD_PER_HERO * Math.pow(SCALE.gold, w - 1) * this.stats.goldMult;
+      this.run.gold += gold;
+      this.waveGold += gold;
+      this.gainXp(count * xpForKill(w, false) * this.stats.xpMult);
+      n++;
+    }
+    if (n > 0) this.effects.push({ type: 'text', x: LORD_X + 60, y: LORD_Y - LORD_CHEST - 40, text: `Skip +${n}!`, color: '#9fe6ff', t: 0, ttl: 1.2 });
+    return n;
   }
 
   /** Heal the lord; with Blood Moon, healing beyond the maximum becomes a shield. */
@@ -512,8 +562,8 @@ export class Game {
         dist: SPAWN_DIST + i * 22 + this.rng() * 20,
         hp: def.hp * hpMult,
         maxHp: def.hp * hpMult,
-        damage: def.damage * Math.pow(SCALE.damage, wave - 1),
-        attackTimer: def.attackInterval * (0.3 + this.rng() * 0.7),
+        damage: def.damage * HERO_DAMAGE * HERO_PACE * Math.pow(SCALE.damage, wave - 1),
+        attackTimer: def.attackInterval * HERO_PACE * (0.3 + this.rng() * 0.7),
         gold: def.gold * Math.pow(SCALE.gold, wave - 1),
         hurt: 99,
         anim: this.rng() * 10,
@@ -528,6 +578,8 @@ export class Game {
     });
     this.stacks = { aura: 0, thorns: 0, lash: 0 };
     this.waveTotal = this.heroes.length;
+    this.waveTime = 0;
+    this.waveLow = 1;
     this.phase = 'fighting';
   }
 
@@ -546,7 +598,8 @@ export class Game {
       }
       if (h.dist > target) {
         const slow = this.inAura(h) ? 1 + this.pv('creepingDark') : 1;
-        h.dist = Math.max(target, h.dist - (def.speed / slow) * dt);
+        const rush = h.dist > RANGES[RANGES.length - 1].edge ? RUSH_WALK : 1;
+        h.dist = Math.max(target, h.dist - ((def.speed * rush) / slow) * dt);
         continue;
       }
       if (!h.stepped && h.slot >= 0 && def.range === 'near') {
@@ -557,7 +610,7 @@ export class Game {
       h.attackTimer -= dt;
       if (h.attackTimer <= 0) {
         const slowed = this.inAura(h) ? 1 + this.pv('grasp') : 1;
-        h.attackTimer = def.attackInterval * slowed;
+        h.attackTimer = def.attackInterval * HERO_PACE * slowed;
         this.heroHitsLord(h);
       }
     }
@@ -576,8 +629,9 @@ export class Game {
     const def = HEROES[h.kind];
     const withered = this.inAura(h) ? 1 - this.pv('withering') : 1;
     const raw = h.damage * withered;
-    const blocked = raw * this.stats.armor;
-    let taken = raw - blocked;
+    const blocked = raw * blockShare(this.stats.armor, this.run.wave);
+    // Big hits flatten out below a slice of max life, so life drains visibly instead of vanishing at once.
+    let taken = flattenHit(raw - blocked, this.stats.maxHp);
     const shield = this.run.shield ?? 0;
     if (shield > 0) {
       const absorbed = Math.min(shield, taken);
@@ -946,4 +1000,14 @@ export function fmt(n: number): string {
     u++;
   }
   return (n < 100 ? n.toFixed(1) : Math.round(n).toString()).replace(/\.0$/, '') + units[u];
+}
+
+/** A bonus on top of the base (0.5 = +50%). Up to +999% it shows as a percent, beyond that as a short multiplier like ×1.2K. */
+export function fmtBonus(extra: number): string {
+  return extra < 10 ? `+${Math.round(extra * 100)}%` : `×${fmt(1 + extra)}`;
+}
+
+/** A share of something (1.5 = 150%). Up to 999% it shows as a percent, beyond that as a short multiplier like ×1.2K. */
+export function fmtShare(share: number): string {
+  return share < 10 ? `${Math.round(share * 100)}%` : `×${fmt(share)}`;
 }

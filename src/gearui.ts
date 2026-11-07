@@ -1,5 +1,5 @@
 import { BUILDS } from './game/config';
-import { fmt, type Game } from './game/game';
+import { fmt, fmtBonus, type Game } from './game/game';
 import { BONUS_NAMES, BONUS_PER_LEVEL, ITEMS, SETS, SET_BONUS_2, SET_BONUS_4, SLOTS, setPieces, type ItemDef, type SlotId } from './game/gear';
 import { assetUrl } from './assets';
 
@@ -119,7 +119,7 @@ export class GearPanel {
       row.disabled = level === 0 || worn;
       row.classList.toggle('unk', level === 0);
       row.style.setProperty('--set', level && item.set ? setColor(item) : 'var(--line)');
-      const bonus = `+${fmt(Math.round(BONUS_PER_LEVEL[item.bonus] * Math.max(1, level) * 100))}% ${BONUS_NAMES[item.bonus]}`;
+      const bonus = `${fmtBonus(BONUS_PER_LEVEL[item.bonus] * Math.max(1, level))} ${BONUS_NAMES[item.bonus]}`;
       row.innerHTML = level
         ? `${itemIcon(item, '')}<span class="dt"><span class="cn">${item.name}</span><span class="cl">${bonus} · Lv ${level}</span></span><span class="tag ${worn ? '' : 'wear'}">${worn ? 'Worn' : 'Wear'}</span>`
         : `${unknownIcon()}<span class="dt"><span class="cn">Unknown</span><span class="cl">Not Forged Yet</span></span>`;
@@ -138,7 +138,7 @@ export class GearPanel {
     }).join('');
 
     const cost = this.game.forgeCost();
-    this.forgeBtn.innerHTML = `Forge · ${fmt(cost)} ${curHtml('spoils')}`;
+    this.forgeBtn.innerHTML = this.game.canForge() || gear.spoils < cost ? `Forge · ${fmt(cost)} ${curHtml('spoils')}` : 'Forge After This Wave';
     this.forgeBtn.disabled = gear.spoils < cost || !this.game.canForge();
     this.spoilsEl.textContent = fmt(gear.spoils);
     this.result.textContent = this.last;
