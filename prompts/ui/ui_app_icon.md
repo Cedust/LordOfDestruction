@@ -4,7 +4,7 @@ name: App Icon
 category: ui
 type: app_icon
 batch: 18-logo
-status: review
+status: approved
 revision: 1
 output: assets/ui/app-icon.png
 format: png
