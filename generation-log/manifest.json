@@ -8642,6 +8642,22 @@
           "note": "Timo: 'Approved'"
         }
       ]
+    },
+    {
+      "asset_id": "ui_logo",
+      "prompt": "prompts/ui/ui_logo.md",
+      "output": "assets/ui/logo.png",
+      "batch": "18-logo",
+      "status": "ready",
+      "revision": 1,
+      "history": [
+        {
+          "date": "2026-11-09",
+          "status": "ready",
+          "by": "claude",
+          "note": "created"
+        }
+      ]
     }
   ]
 }
