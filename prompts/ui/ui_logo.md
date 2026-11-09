@@ -4,7 +4,7 @@ name: Game Logo
 category: ui
 type: logo
 batch: 18-logo
-status: ready
+status: review
 revision: 1
 output: assets/ui/logo.png
 format: png
